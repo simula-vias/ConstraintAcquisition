@@ -3,6 +3,7 @@ package fr.lirmm.coconut.acquisition.core.learner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import fr.lirmm.coconut.acquisition.core.acqconstraint.ACQ_Network;
 
@@ -36,6 +37,17 @@ public class ACQ_Learner implements ILearner {
 	public boolean ask(ACQ_Query e) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public void answer(Classification result) {
+
+	}
+
+	public Iterable<ACQ_Query> complete(ACQ_Query e) {
+		List<ACQ_Query> res = new ArrayList<>();
+		e.classify(ask(e));
+		res.add(e);
+		return res;
 	}
 
 	/**
