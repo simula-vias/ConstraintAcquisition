@@ -153,15 +153,11 @@ public class ExpeFromParser extends DefaultExperience {
 					while (pIterator.hasNext()) {
 						int[] pos = pIterator.next();
 
-						if (rel.isSymmetric() && vars[pos[0]] < vars[pos[1]]) {
+						if (vars[pos[0]] < vars[pos[1]]) {
 							constraints.add(new BinaryArithmetic(rel.name(), vars[pos[0]], rel.getOperator(),
 									vars[pos[1]], rel.getNegation().name()));
 
-						} else {
-							constraints.add(new BinaryArithmetic(rel.name(), vars[pos[0]], rel.getOperator(),
-									vars[pos[1]], rel.getNegation().name()));
-
-						}
+						} 
 					}
 				}
 				if (rel.IsPrecedence()) {
