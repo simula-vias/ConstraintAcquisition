@@ -53,6 +53,8 @@ public class ACQ_CONACQv1 {
 	protected int n_asked = 0;
 	protected ArrayList<ACQ_Query> queries;
 	protected ArrayList<ConstraintSet> Clauses;
+	protected ACQ_Network minimalNetwork;
+	protected ACQ_Network mostSpecificNetwork;
 
 	public ACQ_CONACQv1(ACQ_Learner learner, ACQ_Bias bias, SATSolver sat, ACQ_ConstraintSolver solv, String queries) {
 		this.bias = bias;
@@ -512,6 +514,8 @@ public class ACQ_CONACQv1 {
 		chrono = chronom;
 		boolean convergence = false;
 		Clauses = new ArrayList<ConstraintSet>();
+		minimalNetwork = new ACQ_Network(constraintFactory, bias.getVars());
+		mostSpecificNetwork = new ACQ_Network(constraintFactory, bias.getVars());
 		boolean collapse = false;
 		ACQ_CNF T = new ACQ_CNF();
 		ContradictionSet N;
@@ -600,21 +604,24 @@ public class ACQ_CONACQv1 {
 
 		}
 		chrono.stop("total_acq_time");
+		
 		if (!collapse) {
-			if (verbose)
-				System.out.print("[INFO] Extract network from T: ");
-
-			SATModel model = satSolver.solve(T);
-			if (verbose)
-				System.out.println("Done");
-			System.out.println("##### CM ####");
 			
+			//Compute the minimal Network (= constraints in unit clauses)
 			for(ConstraintSet c:Clauses) {
 				if(c.size()==1)
-					System.out.println(c.get_Constraint(0));
+					minimalNetwork.add(c.get_Constraint(0), true);
 			}
-			System.out.println("##### CS ####");
-			System.out.println("Bias = " + bias);
+			System.out.println("############## CM (Minimal Network)##############");
+			System.out.println(minimalNetwork.getConstraints().toString2());
+			
+			//Compute the most specific Network (= all constraints in the bias)
+			for (ACQ_IConstraint constr: bias.getConstraints()) {
+					mostSpecificNetwork.add(constr, true);
+			}
+			
+			System.out.println("############## CS (Moast Spesific Network)##############");
+			System.out.println(mostSpecificNetwork.getConstraints().toString2());
 
 			//learned_network.clean();
 		}
