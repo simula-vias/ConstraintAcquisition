@@ -213,7 +213,7 @@ public class ACQ_Network implements Iterable<ACQ_IConstraint> {
 	 * @param query Example
 	 * @return false if query violates at least one constraint of this network
 	 */
-	boolean check(ACQ_Query query) {
+	public boolean check(ACQ_Query query) {
 		for (ACQ_IConstraint constraint : constraints) {
 			if (query.getScope().containsAll(constraint.getScope())
 					&& !constraint.checker(constraint.getProjection(query))) {
