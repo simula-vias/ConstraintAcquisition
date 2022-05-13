@@ -1,10 +1,17 @@
 import gym
+import gym_minigrid
+import envs
+
+from gym_minigrid.wrappers import FlatObsWrapper
 
 from stable_baselines3 import PPO
 from stable_baselines3.ppo.policies import MlpPolicy
 from stable_baselines3.common.evaluation import evaluate_policy
 
-env = gym.make('CartPole-v1')
+# Set the environment; minigrid names are registered in envs/__init__.py
+env = gym.make('MiniGrid-Combination-Picker-8x8-v0')
+# env = gym.make("MiniGrid-Empty-5x5-v0")
+env = FlatObsWrapper(env)
 
 model = PPO(MlpPolicy, env, verbose=0)
 
