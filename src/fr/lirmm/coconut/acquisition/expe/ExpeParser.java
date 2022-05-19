@@ -31,7 +31,7 @@ public class ExpeParser extends DefaultExperience {
 	private ArrayList<ArrayList<String>> targetConstraints;
 	private ArrayList<ArrayList<String>> initConstraints;
 
-	private final File benchDir = new File("./benchmarks/");
+	private final File benchDir = new File("./ConstraintAcquisition/benchmarks/");
 	private final String biasExtension = ".bias";
 	private final String targetExtension = ".target";
 	private final String initExtension = ".init";
