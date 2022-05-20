@@ -1,5 +1,6 @@
 package fr.lirmm.coconut.acquisition.core.algorithms;
 
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,16 +8,7 @@ import java.io.IOException;
 import java.util.*;
 
 import fr.lirmm.coconut.acquisition.core.acqconstraint.ACQ_CNF;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ACQ_Clause;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ACQ_ConjunctionConstraint;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ACQ_Formula;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ACQ_IConstraint;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ACQ_Network;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ConstraintFactory;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ConstraintMapping;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.Contradiction;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ContradictionSet;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.Unit;
+import fr.lirmm.coconut.acquisition.core.acqconstraint.*;
 import fr.lirmm.coconut.acquisition.core.acqconstraint.ConstraintFactory.ConstraintSet;
 import fr.lirmm.coconut.acquisition.core.acqsolver.ACQ_ConstraintSolver;
 import fr.lirmm.coconut.acquisition.core.acqsolver.ACQ_IDomain;
@@ -28,6 +20,8 @@ import fr.lirmm.coconut.acquisition.core.learner.ACQ_Query;
 import fr.lirmm.coconut.acquisition.core.learner.ACQ_Scope;
 import fr.lirmm.coconut.acquisition.core.tools.Chrono;
 import fr.lirmm.coconut.acquisition.core.tools.FileManager;
+import fr.lirmm.coconut.acquisition.core.learner.*;
+
 
 public class ACQ_CONACQv1 {
 	protected ACQ_Bias bias;
@@ -53,6 +47,9 @@ public class ACQ_CONACQv1 {
 
 	protected ACQ_Network minimalNetwork;
 	protected ACQ_Network mostSpecificNetwork;
+
+	protected ACQ_CNF T;
+	protected ContradictionSet N;
 
 	public ACQ_CONACQv1(ACQ_Learner learner, ACQ_Bias bias, SATSolver sat, ACQ_ConstraintSolver solv, String queries) {
 		this.bias = bias;
@@ -82,7 +79,7 @@ public class ACQ_CONACQv1 {
 		try {
 			reader = new BufferedReader(new FileReader("ConstraintAcquisition/benchmarks/queries/" + queries2 + ".queries"));
 			String line;
-			String str;
+//			String str;
 			while (((line = reader.readLine()) != null)) {
 				String[] lineSplited = line.split(" ");
 				int[] values = new int[lineSplited.length - 1];
@@ -166,7 +163,31 @@ public class ACQ_CONACQv1 {
 	}
 
 
+	protected ACQ_Query getQuery(String line){
+		assert (line!=null):"the sample is null";
 
+			String[] lineSplited = line.split(" ");
+			int[] values = new int[lineSplited.length - 1];
+
+			int label = Integer.parseInt(lineSplited[lineSplited.length - 1]);
+			int i = 0;
+			for (String s : lineSplited) {
+				if (i == lineSplited.length - 1)
+					break;
+				values[i] = Integer.parseInt(s);
+				i++;
+			}
+			BitSet bs = new BitSet();
+			bs.set(0, i);
+			ACQ_Scope scope = new ACQ_Scope(bs);
+			ACQ_Query q = new ACQ_Query(scope, values);
+			if (label == 1)
+				q.classify(true);
+			else
+				q.classify(false);
+
+			return q;
+	}
 
 
 	public boolean process(Chrono chronom, int max_queries) throws Exception {
@@ -320,10 +341,72 @@ public class ACQ_CONACQv1 {
 			if (same_cs_cm) break;
 		}
 		chrono.stop("total_acq_time");
-		
 
+		System.out.println("example : 3 3 3 1 is --> "+ classify(getQuery("3 3 3 1")));
+		System.out.println("example : 4 3 2 1 is --> "+ classify(getQuery("4 3 2 1")));
+		
 		return !collapse;
 	}
+
+	public Classification classify(ACQ_Query query) {
+//		updateNetworks();
+		boolean generalAccepts = false;
+		boolean isCompleteQuery = true;
+		boolean specificAccepts = false;
+
+		assert (minimalNetwork!=null || mostSpecificNetwork!=null ):"the network is not ready, please continue learning";
+
+
+		if (isCompleteQuery) {
+			generalAccepts = minimalNetwork.check(query);
+			specificAccepts = mostSpecificNetwork.check(query);
+		}
+		if (generalAccepts == false && specificAccepts == false) return Classification.UNKNOWN;
+
+		return (generalAccepts ? Classification.NEGATIVE:Classification.POSITIVE);
+	}
+
+//	protected boolean isUnset(ACQ_IConstraint constr, ACQ_CNF T, ContradictionSet N) {
+//		Unit unit = mapping.get(constr);
+//		Unit neg = unit.clone();
+//		neg.setNeg();
+//
+//		ACQ_CNF tmp1 = T.clone();
+//		tmp1.concat(N.toCNF());
+//		ACQ_CNF tmp2 = tmp1.clone();
+//
+//		tmp1.add(new ACQ_Clause(unit));
+//		tmp2.add(new ACQ_Clause(neg));
+//
+//		return satSolver.solve(tmp1) != null && satSolver.solve(tmp2) != null;
+//	}
+
+//	protected void updateNetworks() {
+//		assert (T.isMonomial());
+//
+//		if (minimalNetwork == null) {
+//			SATModel model = satSolver.solve(T);
+//			minimalNetwork = new ACQ_Network(constraintFactory, bias.getVars());
+//
+//			for (Unit unit : mapping.values()) {
+//				if (!unit.isNeg() && model.get(unit)) {
+//					minimalNetwork.add(unit.getConstraint(), true);
+//				}
+//			}
+//		}
+//
+//		if (mostSpecificNetwork == null) {
+//			mostSpecificNetwork = new ACQ_Network(constraintFactory, bias.getVars());
+//			for (ACQ_IConstraint constr: bias.getConstraints()) {
+//				if (!isUnset(constr, T, N)) {
+//					mostSpecificNetwork.add(constr, true);
+//				}
+//			}
+//		}
+//	}
+
+
+
 
 	public ACQ_Network getMinimalNetwork() {
 		return minimalNetwork;
