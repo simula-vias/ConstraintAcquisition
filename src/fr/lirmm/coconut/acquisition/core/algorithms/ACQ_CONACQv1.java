@@ -5,7 +5,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 import fr.lirmm.coconut.acquisition.core.acqconstraint.ACQ_CNF;
 import fr.lirmm.coconut.acquisition.core.acqconstraint.*;
@@ -21,6 +25,7 @@ import fr.lirmm.coconut.acquisition.core.learner.ACQ_Scope;
 import fr.lirmm.coconut.acquisition.core.tools.Chrono;
 import fr.lirmm.coconut.acquisition.core.tools.FileManager;
 import fr.lirmm.coconut.acquisition.core.learner.*;
+import nill.morena.services.BIOSService;
 
 
 public class ACQ_CONACQv1 {
@@ -59,7 +64,7 @@ public class ACQ_CONACQv1 {
 		this.constrSolver = solv;
 		this.domain = solv.getDomain();
 		this.mapping = new ConstraintMapping();
-		this.queries = getQueries(queries);
+//		this.queries = getQueries(queries);
 		this.init_network = new ACQ_Network(constraintFactory, bias.getVars());
 
 		for (ACQ_IConstraint c : bias.getConstraints()) {
@@ -77,7 +82,8 @@ public class ACQ_CONACQv1 {
 		ArrayList<ACQ_Query> queries = new ArrayList<ACQ_Query>();
 		BufferedReader reader;//
 		try {
-			reader = new BufferedReader(new FileReader("ConstraintAcquisition/benchmarks/queries/" + queries2 + ".queries"));
+//			reader = new BufferedReader(new FileReader("ConstraintAcquisition/benchmarks/queries/" + queries2 + ".queries"));
+			reader = new BufferedReader(new FileReader( queries2 ));
 			String line;
 //			String str;
 			while (((line = reader.readLine()) != null)) {
@@ -192,8 +198,10 @@ public class ACQ_CONACQv1 {
 
 	public boolean process(Chrono chronom, int max_queries) throws Exception {
 		chrono = chronom;
+		HashSet<String> visited = new HashSet<String>();
+		HashSet<String> newQueries = new HashSet<String>();
+		int max_query = Integer.valueOf(BIOSService.getBIOS().getString("max_queries")); // should get from method
 
-		max_queries = 5; // should get from method
 		boolean convergence = false;
 		Clauses = new ArrayList<ConstraintSet>();
 		minimalNetwork = new ACQ_Network(constraintFactory, bias.getVars());
@@ -232,90 +240,107 @@ public class ACQ_CONACQv1 {
 		// or get the answer from the learner , how to communicate between (e.g: zeroMessageQ), or DB.
 		// n = 100 , max = 9
 
-		// counters of batchs
-		int batchs = (queries.size() / max_queries) + 1;
-
-		Iterator<ACQ_Query> iter_queries = queries.iterator();
-
-		System.out.println("batchs : " + String.valueOf(batchs));
-		// create batch with count of  max_queries
-		for (int batch_counter =0 ;batch_counter < batchs ; batch_counter++) {
-
-			ArrayList<ACQ_Query> batch_query = new ArrayList<ACQ_Query>();
-
-			for (int qsize = 0; qsize < max_queries; qsize++)
-				if(iter_queries.hasNext())
-					batch_query.add(iter_queries.next());
-
-			for (ACQ_Query membership_query : batch_query) {
-
-				if (bias.getConstraints().isEmpty())
-					break;
-
-				assert membership_query != null : "membership query can't be null";
-
-				assert !asked.contains(membership_query.toString());
-				asked.add(membership_query.toString());
-				if (verbose)
-					System.out.print(membership_query.getScope() + "::" + Arrays.toString(membership_query.values));
-				boolean answer = membership_query.isPositive();
-				if (log_queries)
-					FileManager.printFile(membership_query, "queries");
-				n_asked++;
-				ConstraintSet kappa = bias.getKappa(membership_query);
-
-				assert kappa.size() > 0;
-				if (verbose)
-					System.out.println("::" + membership_query.isPositive());
-				if (answer) {
-					for (ACQ_IConstraint c : kappa) {
-						Unit unit = mapping.get(c).clone();
-						unit.setNeg();
-						T.unitPropagate(unit, chrono);
-						N.unitPropagate(unit, chrono);
+		while (true) {
+			System.out.println("Searching new query files..");
+			try (Stream<Path> paths = Files.walk(Paths.get("ConstraintAcquisition/benchmarks/queries/"+BIOSService.getBIOS().getString("file")+"/"))) {
+				paths.filter(Files::isRegularFile).forEach(Pth ->{
+					if (! visited.contains(Pth.toString())) {
+						System.out.println("new query files found.");
+						visited.add(Pth.toString());
+						newQueries.add(Pth.toString());
 					}
-					bias.reduce(kappa);
+				} );
+			}
+			for (String p : newQueries){
 
-					for (ConstraintSet c : Clauses) {
-						for (int i = 0; i < kappa.size(); i++) {
-							if (c.contains(kappa.get_Constraint(i))) {
-								c.remove(kappa.get_Constraint(i));
-							}
-						}
-					}
+				System.out.println("process query file :"+p);
+			// counters of batchs
+			queries = getQueries(p);
+			newQueries.remove(p);
+			int batchs = (queries.size() / max_query) + 1;
 
-				} else {
-					Clauses.add(kappa);
-					if (kappa.size() == 1) {
-						ACQ_IConstraint c = kappa.get_Constraint(0);
-						Unit unit = mapping.get(c).clone();
-						T.unitPropagate(unit, chrono);
-						N.unitPropagate(unit, chrono);
-						T.add(new ACQ_Clause(mapping.get(c)));
-						bias.reduce(c.getNegation());
-					} else {
-						ACQ_Clause disj = new ACQ_Clause();
+			Iterator<ACQ_Query> iter_queries = queries.iterator();
+
+			System.out.println("batches : " + String.valueOf(batchs));
+
+			// create batch with count of  max_queries
+			for (int batch_counter = 0; batch_counter < batchs; batch_counter++) {
+
+				ArrayList<ACQ_Query> batch_query = new ArrayList<ACQ_Query>();
+
+				for (int qsize = 0; qsize < max_queries; qsize++)
+					if (iter_queries.hasNext())
+						batch_query.add(iter_queries.next());
+
+				for (ACQ_Query membership_query : batch_query) {
+
+					if (bias.getConstraints().isEmpty())
+						break;
+
+					assert membership_query != null : "membership query can't be null";
+
+					assert !asked.contains(membership_query.toString());
+					asked.add(membership_query.toString());
+					if (verbose)
+						System.out.print(membership_query.getScope() + "::" + Arrays.toString(membership_query.values));
+					boolean answer = membership_query.isPositive();
+					if (log_queries)
+						FileManager.printFile(membership_query, "queries");
+					n_asked++;
+					ConstraintSet kappa = bias.getKappa(membership_query);
+
+					assert kappa.size() > 0;
+					if (verbose)
+						System.out.println("::" + membership_query.isPositive());
+					if (answer) {
 						for (ACQ_IConstraint c : kappa) {
 							Unit unit = mapping.get(c).clone();
-							disj.add(unit);
+							unit.setNeg();
+							T.unitPropagate(unit, chrono);
+							N.unitPropagate(unit, chrono);
 						}
-						T.add(disj);
-						// T.unitPropagate(chrono);
+						bias.reduce(kappa);
+
+						for (ConstraintSet c : Clauses) {
+							for (int i = 0; i < kappa.size(); i++) {
+								if (c.contains(kappa.get_Constraint(i))) {
+									c.remove(kappa.get_Constraint(i));
+								}
+							}
+						}
+
+					} else {
+						Clauses.add(kappa);
+						if (kappa.size() == 1) {
+							ACQ_IConstraint c = kappa.get_Constraint(0);
+							Unit unit = mapping.get(c).clone();
+							T.unitPropagate(unit, chrono);
+							N.unitPropagate(unit, chrono);
+							T.add(new ACQ_Clause(mapping.get(c)));
+							bias.reduce(c.getNegation());
+						} else {
+							ACQ_Clause disj = new ACQ_Clause();
+							for (ACQ_IConstraint c : kappa) {
+								Unit unit = mapping.get(c).clone();
+								disj.add(unit);
+							}
+							T.add(disj);
+							// T.unitPropagate(chrono);
+						}
 					}
+
 				}
 
-			}
-
 				//Compute the minimal Network (= constraints in unit clauses)
-				for(ConstraintSet c:Clauses) {
-					if(c.size()==1)
+				for (ConstraintSet c : Clauses) {
+					if (c.size() == 1)
 						minimalNetwork.add(c.get_Constraint(0), true);
 				}
 				System.out.println("############## CM (Minimal Network)##############");
 				System.out.println(minimalNetwork.getConstraints().toString2());
 
 				//Compute the most specific Network (= all constraints in the bias)
-				for (ACQ_IConstraint constr: bias.getConstraints()) {
+				for (ACQ_IConstraint constr : bias.getConstraints()) {
 					mostSpecificNetwork.add(constr, true);
 				}
 
@@ -324,28 +349,32 @@ public class ACQ_CONACQv1 {
 
 				//learned_network.clean();
 
-			//comparing cs & cm if there were same means it converged
-			boolean same_cs_cm = true;
-			Iterator<ACQ_IConstraint> cs_iter = mostSpecificNetwork.iterator() ;
-			Iterator<ACQ_IConstraint> cm_iter = minimalNetwork.iterator();
+				//comparing cs & cm if there were same means it converged
+				boolean same_cs_cm = true;
+				Iterator<ACQ_IConstraint> cs_iter = mostSpecificNetwork.iterator();
+				Iterator<ACQ_IConstraint> cm_iter = minimalNetwork.iterator();
 
-			while(cs_iter.hasNext()){
-				ACQ_IConstraint cons=  cs_iter.next();
-				System.out.println(cons.getName());
-				if( !cm_iter.hasNext() || !cons.equals(cm_iter.next()))
-					same_cs_cm= false;
+				while (cs_iter.hasNext()) {
+					ACQ_IConstraint cons = cs_iter.next();
+					System.out.println(cons.getName());
+					if (!cm_iter.hasNext() || !cons.equals(cm_iter.next()))
+						same_cs_cm = false;
+				}
+
+				//  bias  = CS
+				bias = new ACQ_Bias(mostSpecificNetwork);
+				if (same_cs_cm) break;
 			}
 
-			//  bias  = CS
-			bias =new ACQ_Bias(mostSpecificNetwork);
-			if (same_cs_cm) break;
+			chrono.stop("total_acq_time");
+
+			System.out.println("example : 3 3 3 1 is --> " + classify(getQuery("3 3 3 1")));
+			System.out.println("example : 4 3 2 1 is --> " + classify(getQuery("4 3 2 1")));
+
 		}
-		chrono.stop("total_acq_time");
-
-		System.out.println("example : 3 3 3 1 is --> "+ classify(getQuery("3 3 3 1")));
-		System.out.println("example : 4 3 2 1 is --> "+ classify(getQuery("4 3 2 1")));
-
-		return !collapse;
+			Thread.sleep(10000);
+		}
+//		return !collapse;
 	}
 
 	public static Classification classify(ACQ_Query query) {

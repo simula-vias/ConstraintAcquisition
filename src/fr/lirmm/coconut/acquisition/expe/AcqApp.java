@@ -88,6 +88,7 @@ public class AcqApp {
 		for (Option opt : line.getOptions()) {
 			checkOption(line, opt.getLongOpt());
 		}
+		runServer();
 		// Build Experience
 		IExperience expe = new ExpeBuilder().setExpe(exp).setFile(file).setAlgo(mode).setMaxqueries(maxqueries).setExamplesFile(examplesfile).setPartition(partition).setNbThreads(nb_threads)
 				.setInstance(instance).setNormalizedCSP(normalizedCSP).setShuffle(shuffle).setTimeout(timeout)
@@ -97,7 +98,7 @@ public class AcqApp {
 		// Launch Experience
 		expe.process();
 
-		runServer();
+
 
 	}
 
