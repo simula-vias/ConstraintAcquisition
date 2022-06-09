@@ -61,6 +61,46 @@ class RestQueryStateWrapper(ObservationWrapper):
         return observation
 # Morena REST Wrapper
 
+#Morena - Observation file writer
+class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
+    N = 1
+    MaxRecordsNumber = 1000
+    recNo = 1
+    logs = []
+    def __init__(self, env):
+        super(GridworldInteractionFileLoggerWrapper, self).__init__(env)
+        # self.prev_obs = None
+
+    def reset(self, **kwargs):
+        self.prev_obs = super(GridworldInteractionFileLoggerWrapper, self).reset(**kwargs)
+        return self.prev_obs
+
+    def step(self, action):
+        observation, reward, done, info = self.env.step(action)
+
+        if(self.recNo < self.MaxRecordsNumber):
+            self.recNo = self.recNo + 1
+            observationStr = ','.join([str(elem) for elem in observation])
+
+            record = observationStr + "," +str(reward) + "," +str(action) + "\n"
+            print(record)
+            self.logs.append(record)
+        else:
+            with open('grid_log_'+ str(self.N)+".queries" , 'w') as f:
+                f.write('\n'.join(self.logs))
+            print("the filename is created :",'grid_log_', self.N)
+            self.N = self.N +1
+            self.recNo = 1
+            self.logs = []
+
+        # print(data, res)
+        self.prev_obs = observation
+        return observation, reward, done, info
+
+    def observation(self, observation):
+        return observation
+#Morena - Observation file writer
+
 
 
 class ParallelConstraintWrapper(ObservationWrapper):

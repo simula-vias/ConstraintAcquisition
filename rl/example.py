@@ -2,6 +2,7 @@ import gym
 import gym_minigrid
 import envs
 from ca import GridworldInteractionLoggerWrapper
+from ca import GridworldInteractionFileLoggerWrapper
 from ca import ParallelConstraintWrapper
 from ca import RestQueryStateWrapper
 from gym_minigrid.wrappers import FlatObsWrapper
@@ -18,6 +19,7 @@ env = gym.make('MiniGrid-Combination-Picker-8x8-v0')
 
 env = FlatObsWrapper(env)
 env = ParallelConstraintWrapper(env)
+env = GridworldInteractionFileLoggerWrapper(env)
 env = RestQueryStateWrapper(env)
 model = PPO(MlpPolicy, env, verbose=0)
 
