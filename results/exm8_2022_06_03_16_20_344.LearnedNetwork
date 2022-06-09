@@ -1,0 +1,14 @@
+network var=3 cst=2
+-------------------------
+CONSTRAINTS:
+GreaterEqualXY[2, 1]
+LessEqualXY[0, 1]
+-------------------------
+
+network var=3 cst=2
+-------------------------
+CONSTRAINTS:
+GreaterEqualXY[2, 1]
+LessEqualXY[0, 1]
+-------------------------
+

@@ -45,8 +45,8 @@ public class ACQ_CONACQv1 {
 	protected ArrayList<ACQ_Query> queries;
 	protected ArrayList<ConstraintSet> Clauses;
 
-	protected ACQ_Network minimalNetwork;
-	protected ACQ_Network mostSpecificNetwork;
+	protected static ACQ_Network minimalNetwork;
+	protected static ACQ_Network mostSpecificNetwork;
 
 	protected ACQ_CNF T;
 	protected ContradictionSet N;
@@ -163,7 +163,7 @@ public class ACQ_CONACQv1 {
 	}
 
 
-	protected ACQ_Query getQuery(String line){
+	public static ACQ_Query getQuery(String line){
 		assert (line!=null):"the sample is null";
 
 			String[] lineSplited = line.split(" ");
@@ -344,11 +344,11 @@ public class ACQ_CONACQv1 {
 
 		System.out.println("example : 3 3 3 1 is --> "+ classify(getQuery("3 3 3 1")));
 		System.out.println("example : 4 3 2 1 is --> "+ classify(getQuery("4 3 2 1")));
-		
+
 		return !collapse;
 	}
 
-	public Classification classify(ACQ_Query query) {
+	public static Classification classify(ACQ_Query query) {
 //		updateNetworks();
 		boolean generalAccepts = false;
 		boolean isCompleteQuery = true;

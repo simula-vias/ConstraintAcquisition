@@ -3,6 +3,7 @@ package fr.lirmm.coconut.acquisition.expe;
 import java.io.File;
 import java.io.IOException;
 
+import fr.lirmm.coconut.acquisition.core.algorithms.ACQ_CONACQv1;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -19,6 +20,8 @@ import fr.lirmm.coconut.acquisition.core.parallel.ACQ_Partition;
 import fr.lirmm.coconut.acquisition.core.tools.FileManager;
 import fr.lirmm.coconut.acquisition.core.workspace.IExperience;
 
+import io.javalin.Javalin;
+import nill.morena.services.BIOSService;
 public class AcqApp {
 
 	private static String exp;
@@ -39,6 +42,8 @@ public class AcqApp {
 	private static boolean log_queries;
 	private static boolean gui;
 
+
+	private static Javalin app;
 	public static void main(String args[]) throws IOException, ParseException {
 
 		final Options options = configParameters();
@@ -60,23 +65,23 @@ public class AcqApp {
 		}
 
 		// defaults options
-		exp = "sudoku";
-		normalizedCSP = true;
-		shuffle = true;
-		mode = ACQ_Algorithm.QUACQ;
-		timeout = 50000; // five seconds
-		heuristic = ACQ_Heuristic.SOL;
+		exp = BIOSService.getBIOS().getString("exp");
+		normalizedCSP = Boolean.getBoolean(BIOSService.getBIOS().getString("normalizedCSP"));
+		shuffle = Boolean.getBoolean(BIOSService.getBIOS().getString("shuffle"));
+		mode = ACQ_Algorithm.valueOf(BIOSService.getBIOS().getString("mode"));
+		timeout = Long.valueOf(BIOSService.getBIOS().getString("timeout")); // five seconds
+		heuristic = ACQ_Heuristic.valueOf(BIOSService.getBIOS().getString("heuristic"));
 		vls = ValSelector.IntDomainRandom.toString();
 		vrs = VarSelector.Random.toString();
-		partition = ACQ_Partition.RANDOM;
-		verbose = true;
-		log_queries = false;
-		gui = false;
-		nb_threads = 10;
-		instance = "10";
+		partition = ACQ_Partition.valueOf(BIOSService.getBIOS().getString("partition"));
+		verbose = Boolean.getBoolean(BIOSService.getBIOS().getString("verbose"));;
+		log_queries = Boolean.getBoolean(BIOSService.getBIOS().getString("log_queries"));
+		gui = Boolean.getBoolean(BIOSService.getBIOS().getString("gui"));
+		nb_threads = Integer.valueOf(BIOSService.getBIOS().getString("nb_threads")); // five seconds
+		instance = BIOSService.getBIOS().getString("instance");
 		examplesfile="";
 		file="";
-		maxqueries=100;
+		maxqueries=Integer.valueOf(BIOSService.getBIOS().getString("maxqueries")); // five seconds;
 		///////////////////////
 
 		// Check arguments and options
@@ -91,6 +96,20 @@ public class AcqApp {
 				.build();
 		// Launch Experience
 		expe.process();
+
+		runServer();
+
+	}
+
+	protected static void runServer(){
+
+		app = Javalin.create().start(7044);
+		app.post("/check/*", ctx -> {
+
+			String line = ctx.body();
+//			ACQ_CONACQv1.classify(ACQ_CONACQv1.getQuery(line));
+			ctx.result(ACQ_CONACQv1.classify(ACQ_CONACQv1.getQuery(line)).toString());
+		});
 
 	}
 
@@ -299,6 +318,13 @@ public class AcqApp {
 		return null;
 	}
 
+	public static Javalin getApp() {
+		return app;
+	}
+
+	public static void setApp(Javalin app) {
+		AcqApp.app = app;
+	}
 	private static void printHeader() {
 
 		String header = "--------------------------------------------------------------------------\n";
