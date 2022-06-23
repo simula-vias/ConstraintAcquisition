@@ -13,6 +13,8 @@ from multiprocessing import Pool
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):
     server_health = None
+    GOOD = "1"
+    BAD = "0"
     def __init__(self, env):
         super(RestQueryStateWrapper, self).__init__(env)
         self.server_health = True
@@ -24,17 +26,28 @@ class RestQueryStateWrapper(ObservationWrapper):
         # var_dicts = []
         last_obser = self.prev_obs
         if (self.server_health):
-            print("last observation is : ", last_obser, "the action was :",action)
-            print("last observation size is : ", last_obser.size, "the action was :", action)
-            State_Action  = {'state':last_obser,'action':action}
-            print(State_Action)
-            boddy = '3 3 3 1'
+            #print("last observation is : ", last_obser, "the action was :",action)
+            #print("last observation size is : ", last_obser.size, "the action was :", action)
+            # State_Action  = {'state':last_obser,'action':action}
+            prev_stat = ''
+            for s in last_obser:
+                prev_stat = prev_stat + " " + str(int(s))
+            databody = str( prev_stat) + " " + str(int(action))
+            # databody = str.replace(databody,","," ")
+
+            # print(databody)
+
         response = None
 
         try:
             if (self.server_health):
-                response = requests.post("http://192.168.1.100:7044/check/line",data=boddy)
-                print(response.content)
+                response = requests.post("http://192.168.1.103:7044/check/line",data=databody)
+                restr = response.content
+                print(restr)
+                if restr == 'NEGATIVE' :
+                    # replace with save action
+                    action = 0
+
         except requests.exceptions.HTTPError as error:
             self.server_health = False
             print(error)
@@ -80,14 +93,20 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         if(self.recNo < self.MaxRecordsNumber):
             self.recNo = self.recNo + 1
-            observationStr = ','.join([str(elem) for elem in observation])
+            observationStr = ' '.join([str(int(elem)) for elem in observation])
 
-            record = observationStr + "," +str(reward) + "," +str(action) + "\n"
+            record =' '
+
+            if reward > 0:
+                record = observationStr + " " + str(action) + " " + "1" + "\n"
+            else:
+                record = observationStr + " " + str(action) + " " + "0" + "\n"
+
             print(record)
             self.logs.append(record)
         else:
-            with open('grid_log_'+ str(self.N)+".queries" , 'w') as f:
-                f.write('\n'.join(self.logs))
+            with open('D:/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_'+ str(self.N)+".queries" , 'w') as f:
+                f.write(''.join(self.logs))
             print("the filename is created :",'grid_log_', self.N)
             self.N = self.N +1
             self.recNo = 1

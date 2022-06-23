@@ -1,5 +1,6 @@
 package fr.lirmm.coconut.acquisition.expe;
 
+
 import java.io.File;
 import java.io.IOException;
 
@@ -22,6 +23,7 @@ import fr.lirmm.coconut.acquisition.core.workspace.IExperience;
 
 import io.javalin.Javalin;
 import nill.morena.services.BIOSService;
+
 public class AcqApp {
 
 	private static String exp;
@@ -57,7 +59,8 @@ public class AcqApp {
 		printHeader();
 
 		
-		boolean helpMode = line.hasOption("help") || args.length == 0;
+		// change condition and remove length validation
+		boolean helpMode = line.hasOption("help"); // || args.length == 0;
 		if (helpMode) {
 			final HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("puacq", options, true);

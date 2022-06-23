@@ -242,7 +242,7 @@ public class ACQ_CONACQv1 {
 
 		while (true) {
 			System.out.println("Searching new query files..");
-			try (Stream<Path> paths = Files.walk(Paths.get("ConstraintAcquisition/benchmarks/queries/"+BIOSService.getBIOS().getString("file")+"/"))) {
+			try (Stream<Path> paths = Files.walk(Paths.get(BIOSService.getBIOS().getString("examplePath") +BIOSService.getBIOS().getString("file")+"/"))) {
 				paths.filter(Files::isRegularFile).forEach(Pth ->{
 					if (! visited.contains(Pth.toString())) {
 						System.out.println("new query files found.");
@@ -344,7 +344,7 @@ public class ACQ_CONACQv1 {
 					mostSpecificNetwork.add(constr, true);
 				}
 
-				System.out.println("############## CS (Moast Spesific Network)##############");
+				System.out.println("############## CS (Most Specific Network)##############");
 				System.out.println(mostSpecificNetwork.getConstraints().toString2());
 
 				//learned_network.clean();
@@ -368,8 +368,8 @@ public class ACQ_CONACQv1 {
 
 			chrono.stop("total_acq_time");
 
-			System.out.println("example : 3 3 3 1 is --> " + classify(getQuery("3 3 3 1")));
-			System.out.println("example : 4 3 2 1 is --> " + classify(getQuery("4 3 2 1")));
+//			System.out.println("example : 3 3 3 1 is --> " + classify(getQuery("3 3 3 1")));
+//			System.out.println("example : 4 3 2 1 is --> " + classify(getQuery("4 3 2 1")));
 
 		}
 			Thread.sleep(10000);
