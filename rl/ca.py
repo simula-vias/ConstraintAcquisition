@@ -9,7 +9,9 @@ import zmq
 from gym import ObservationWrapper
 from gym_minigrid.minigrid import MiniGridEnv
 from multiprocessing import Pool
+from gym_minigrid.window import Window
 
+hlogs = set()
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):
     server_health = None
@@ -31,39 +33,42 @@ class RestQueryStateWrapper(ObservationWrapper):
             # State_Action  = {'state':last_obser,'action':action}
             prev_stat = ''
             for s in last_obser:
-                prev_stat = prev_stat + " " + str(int(s))
-            databody = str( prev_stat) + " " + str(int(action))
+                prev_stat = prev_stat + " " + str(s)
+            databody = str( prev_stat) + " " + str(action)
             # databody = str.replace(databody,","," ")
 
             # print(databody)
 
         response = None
 
-        try:
-            if (self.server_health):
-                response = requests.post("http://192.168.1.103:7044/check/line",data=databody)
-                restr = response.content
-                print(restr)
-                if restr == 'NEGATIVE' :
-                    # replace with save action
-                    action = 0
+        # try:
+        #     if (self.server_health):
+        #         response = requests.post("http://192.168.1.103:7044/check/line",data=databody)
+        #         restr = response.content
+        #         print(restr)
+        #         if restr == 'NEGATIVE' :
+        #             # replace with save action
+        #             action = 0
+        #
+        # except requests.exceptions.HTTPError as error:
+        #     self.server_health = False
+        #     print(error)
+        # except requests.exceptions.ConnectionError  as cerror:
+        #     self.server_health = False
+        #     print(cerror)
+        # except requests.exceptions.Timeout  as terror:
+        #     print(terror)
+        #
+        # if (response != None and response.status_code == 200):
+        #     print(response)
 
-        except requests.exceptions.HTTPError as error:
-            self.server_health = False
-            print(error)
-        except requests.exceptions.ConnectionError  as cerror:
-            self.server_health = False
-            print(cerror)
-        except requests.exceptions.Timeout  as terror:
-            print(terror)
 
-        if (response != None and response.status_code == 200):
-            print(response)
+        observation, reward, done, info = self.env.step(action)
 
-
-        self.prev_obs, reward, done, info = self.env.step(action)
-
-        return self.prev_obs, reward, done, info
+        # if done:
+        #     self.reset()
+        self.prev_obs =  observation
+        return observation, reward, done, info
 
 
     def reset(self, **kwargs):
@@ -77,9 +82,26 @@ class RestQueryStateWrapper(ObservationWrapper):
 #Morena - Observation file writer
 class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     N = 1
+    negq = 0
+    posq = 0
     MaxRecordsNumber = 1000
+    # TODO :   add duplicate checker before store observaion
+    # TODO :  add random
+    # TODO :  lavagrid environment , check if it is there in stablebaseline3 / fronzen lake
+    # TODO : done & negative
+    # TODO : how to decide which action is better for negative response .Query from action for each state and select those safe action ( not terminated after action(not die) : safe)
+    # TODO : check the future conference (Next week)
+    # TODO : add cache (safe/un-safe action only) for state/action not to call API each time
+    # TODO : 1. create lava gap .queries
+    #  2. ask CA to learn constraints
+    #  3. run RL again by asking action type ( safe/not safe) before taking decision
+    #       3.1 if action was unsafe query all action and select which action is safe.
+    #       3.2 if action was uncertain/safe  then continue explore
+
+
     recNo = 1
-    logs = []
+    # logs = []
+
     def __init__(self, env):
         super(GridworldInteractionFileLoggerWrapper, self).__init__(env)
         # self.prev_obs = None
@@ -90,24 +112,38 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
     def step(self, action):
         observation, reward, done, info = self.env.step(action)
-
+        # if done:
+        #         print('done and reward :',reward)
         if(self.recNo < self.MaxRecordsNumber):
-            self.recNo = self.recNo + 1
-            observationStr = ' '.join([str(int(elem)) for elem in observation])
+
+
+            observationStr = ' '.join([str(elem) for elem in observation])
 
             record =' '
 
             if reward > 0:
                 record = observationStr + " " + str(action) + " " + "1" + "\n"
-            else:
+                # print('Positive found :',reward)
+            elif done & reward.__eq__(0):
                 record = observationStr + " " + str(action) + " " + "0" + "\n"
 
-            print(record)
-            self.logs.append(record)
+            # print(reward,record)
+            # self.logs.append(record)
+            if (not hlogs.__contains__(record)):
+                self.recNo = self.recNo + 1
+                hlogs.add(record)
+                if reward > 0:
+                    self.posq = self.posq + 1
+                    print('a SAFE observation added , queries size :',self.posq)
+                elif done & reward.__eq__(0):
+                    self.negq = self.negq + 1
+                    print('a un-safe observation added , queries size :',self.negq)
+
         else:
-            with open('D:/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_'+ str(self.N)+".queries" , 'w') as f:
-                f.write(''.join(self.logs))
-            print("the filename is created :",'grid_log_', self.N)
+            with open('/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_'+ str(self.N)+".queries" , 'w') as f:
+                # f.write(''.join(self.logs))
+                f.write(''.join(self.hlogs))
+            print("the filename is created :",'minigrid_', self.N)
             self.N = self.N +1
             self.recNo = 1
             self.logs = []
@@ -143,122 +179,122 @@ class ParallelConstraintWrapper(ObservationWrapper):
         return observation
 
 
-class GridworldInteractionLoggerWrapper(ObservationWrapper):
-    def __init__(self, env, db_file=":memory:"):
-        super(GridworldInteractionLoggerWrapper, self).__init__(env)
-        self.prev_obs = None
+# class GridworldInteractionLoggerWrapper(ObservationWrapper):
+#     def __init__(self, env, db_file=":memory:"):
+#         super(GridworldInteractionLoggerWrapper, self).__init__(env)
+#         self.prev_obs = None
+#
+#         self.cell_mapping = {}
+#         self.env_name = type(env.envs[0]).__name__
+#         self.db = sqlite3.connect(db_file)
+#         self.setup_db()
+#
+#     def setup_db(self):
+#         cur = self.db.cursor()
+#         cur.execute("CREATE TABLE IF NOT EXISTS logs (data json);")
+#         cur.execute("""PRAGMA synchronous = EXTRA""")
+#         cur.execute("""PRAGMA journal_mode = WAL""")
+#         # cur.execute("BEGIN TRANSACTION")
+#
+#     def reset(self, **kwargs):
+#         self.prev_obs = super(GridworldInteractionLoggerWrapper, self).reset(**kwargs)
+#         return self.prev_obs
+#
+#     def step(self, action):
+#         observation, reward, done, info = self.env.step(action)
+#
+#         logs = []
+#         for obs, a, r, next_obs, d, i in zip(
+#                 self.prev_obs, action, reward, observation, done, info
+#         ):
+#             obs_vars = self._build_var_vector(None, obs)
+#             next_obs_vars = self._build_var_vector(None, next_obs)
+#             logs.append(
+#                 (
+#                     json.dumps(
+#                         {
+#                             "variables": obs_vars,
+#                             "next_variables": next_obs_vars,
+#                             "observation": obs,
+#                             "next_observation": next_obs,
+#                             "action": int(a),
+#                             "reward": r,
+#                             "done": d,
+#                             "info": i,
+#                             "env": self.env_name,
+#                         },
+#                         cls=NumpyEncoder,
+#                     ),
+#                 )
+#             )
+#
+#         self.db.executemany("INSERT INTO logs VALUES (?);", logs)
+#         # print(data, res)
+#         self.db.commit()
+#         self.prev_obs = observation
+#         return observation, reward, done, info
+#
+#     def _build_var_vector(self, action, obs):
+#         return _build_var_vector(action, obs, self.cell_mapping)
+#
+#     def observation(self, observation):
+#         return observation
 
-        self.cell_mapping = {}
-        self.env_name = type(env.envs[0]).__name__
-        self.db = sqlite3.connect(db_file)
-        self.setup_db()
 
-    def setup_db(self):
-        cur = self.db.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS logs (data json);")
-        cur.execute("""PRAGMA synchronous = EXTRA""")
-        cur.execute("""PRAGMA journal_mode = WAL""")
-        # cur.execute("BEGIN TRANSACTION")
-
-    def reset(self, **kwargs):
-        self.prev_obs = super(GridworldInteractionLoggerWrapper, self).reset(**kwargs)
-        return self.prev_obs
-
-    def step(self, action):
-        observation, reward, done, info = self.env.step(action)
-
-        logs = []
-        for obs, a, r, next_obs, d, i in zip(
-                self.prev_obs, action, reward, observation, done, info
-        ):
-            obs_vars = self._build_var_vector(None, obs)
-            next_obs_vars = self._build_var_vector(None, next_obs)
-            logs.append(
-                (
-                    json.dumps(
-                        {
-                            "variables": obs_vars,
-                            "next_variables": next_obs_vars,
-                            "observation": obs,
-                            "next_observation": next_obs,
-                            "action": int(a),
-                            "reward": r,
-                            "done": d,
-                            "info": i,
-                            "env": self.env_name,
-                        },
-                        cls=NumpyEncoder,
-                    ),
-                )
-            )
-
-        self.db.executemany("INSERT INTO logs VALUES (?);", logs)
-        # print(data, res)
-        self.db.commit()
-        self.prev_obs = observation
-        return observation, reward, done, info
-
-    def _build_var_vector(self, action, obs):
-        return _build_var_vector(action, obs, self.cell_mapping)
-
-    def observation(self, observation):
-        return observation
-
-
-class ActionReplacementWrapper(ParallelConstraintWrapper):
-    def __init__(self, env, solver="native"):
-        super(ActionReplacementWrapper, self).__init__(env)
-
-        self.solver = solver
-
-        if solver != "native":
-            self.pool.close()
-            self.pool = None
-
-        self.default_action = MiniGridEnv.Actions.right
-        self.cell_mapping = {(-1, -1): 0}
-
-        self.state_set = set([])
-
-        # TODO Cache queries that cannot change; only CA positive case?
-        self.query_cache = {}
-
-    def step(self, action):
-        try:
-            safe_actions = []
-            var_dicts = []
-            for a, o in zip(action, self.prev_obs):
-                new_action, var_dict = self._replace_action(a, o)
-                safe_actions.append(new_action)
-                var_dicts.append(var_dict)
-        except TypeError as e:
-            safe_actions, var_dicts = self._replace_action(action, self.prev_obs)
-
-        self.prev_obs, reward, done, info = self.env.step(safe_actions)
-
-        for var_dict, r in zip(var_dicts, reward):
-            var_dict["label"] = r < 0  # TODO Define safety definition function
-            self._send_training_example(var_dict)
-
-        return self.prev_obs, reward, done, info
-
-    def _replace_action(self, action, prev_obs):
-        var_dict = {"variables": self._build_var_vector(action, prev_obs)}
-        is_safe = self._query_state(var_dict)
-
-        if not is_safe:
-            return self.default_action, var_dict
-        else:
-            return action, var_dict
-
-    def _build_var_vector(self, action, obs):
-        return _build_var_vector(action, obs, self.cell_mapping)
-
-    def _send_training_example(self, var_dict):
-        pass
-
-    def _query_state(self, var_dict) -> bool:
-        pass
+# class ActionReplacementWrapper(ParallelConstraintWrapper):
+#     def __init__(self, env, solver="native"):
+#         super(ActionReplacementWrapper, self).__init__(env)
+#
+#         self.solver = solver
+#
+#         if solver != "native":
+#             self.pool.close()
+#             self.pool = None
+#
+#         self.default_action = MiniGridEnv.Actions.right
+#         self.cell_mapping = {(-1, -1): 0}
+#
+#         self.state_set = set([])
+#
+#         # TODO Cache queries that cannot change; only CA positive case?
+#         self.query_cache = {}
+#
+#     def step(self, action):
+#         try:
+#             safe_actions = []
+#             var_dicts = []
+#             for a, o in zip(action, self.prev_obs):
+#                 new_action, var_dict = self._replace_action(a, o)
+#                 safe_actions.append(new_action)
+#                 var_dicts.append(var_dict)
+#         except TypeError as e:
+#             safe_actions, var_dicts = self._replace_action(action, self.prev_obs)
+#
+#         self.prev_obs, reward, done, info = self.env.step(safe_actions)
+#
+#         for var_dict, r in zip(var_dicts, reward):
+#             var_dict["label"] = r < 0  # TODO Define safety definition function
+#             self._send_training_example(var_dict)
+#
+#         return self.prev_obs, reward, done, info
+#
+#     def _replace_action(self, action, prev_obs):
+#         var_dict = {"variables": self._build_var_vector(action, prev_obs)}
+#         is_safe = self._query_state(var_dict)
+#
+#         if not is_safe:
+#             return self.default_action, var_dict
+#         else:
+#             return action, var_dict
+#
+#     def _build_var_vector(self, action, obs):
+#         return _build_var_vector(action, obs, self.cell_mapping)
+#
+#     def _send_training_example(self, var_dict):
+#         pass
+#
+#     def _query_state(self, var_dict) -> bool:
+#         pass
 
 
 # class ActionReplacementWrapperMQ(ActionReplacementWrapper):
