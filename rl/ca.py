@@ -1,17 +1,24 @@
 import json
+import time
 from typing import List, Dict
 
+import operator
+from functools import reduce
+import numpy
 import numpy as np
 import sqlite3
 import requests
 
 import zmq
 from gym import ObservationWrapper
+from gym.spaces.space import Space
 from gym_minigrid.minigrid import MiniGridEnv
 from multiprocessing import Pool
 from gym_minigrid.window import Window
+from gym import error, spaces, utils
 
 hlogs = set()
+N = 1
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):
     server_health = None
@@ -27,40 +34,46 @@ class RestQueryStateWrapper(ObservationWrapper):
         safe_actions = []
         # var_dicts = []
         last_obser = self.prev_obs
+        #print(len(last_obser))
+
         if (self.server_health):
             #print("last observation is : ", last_obser, "the action was :",action)
             #print("last observation size is : ", last_obser.size, "the action was :", action)
             # State_Action  = {'state':last_obser,'action':action}
             prev_stat = ''
             for s in last_obser:
-                prev_stat = prev_stat + " " + str(s)
-            databody = str( prev_stat) + " " + str(action)
+                prev_stat = prev_stat + " " + str(int(s))
+            databody = str( prev_stat) + " " + str(int(action))
+
             # databody = str.replace(databody,","," ")
 
-            # print(databody)
+
 
         response = None
 
-        # try:
-        #     if (self.server_health):
-        #         response = requests.post("http://192.168.1.103:7044/check/line",data=databody)
-        #         restr = response.content
-        #         print(restr)
-        #         if restr == 'NEGATIVE' :
-        #             # replace with save action
-        #             action = 0
-        #
-        # except requests.exceptions.HTTPError as error:
-        #     self.server_health = False
-        #     print(error)
-        # except requests.exceptions.ConnectionError  as cerror:
-        #     self.server_health = False
-        #     print(cerror)
-        # except requests.exceptions.Timeout  as terror:
-        #     print(terror)
-        #
+        try:
+            if (self.server_health):
+                response = requests.post("http://192.168.1.107:7044/check/line",data=databody)
+                restr = response.content.decode("utf-8")
+                # print(restr)
+                if restr.__contains__('NEGATIVE'):
+                    # print("replace with safe action")
+                    action = 0
+                elif restr.__contains__('POSITIVE'):
+                    print(databody)
+                    print("action is possitive and allowed")
+            time.sleep(0.1)
+        except requests.exceptions.HTTPError as error:
+            self.server_health = False
+            print(error)
+        except requests.exceptions.ConnectionError  as cerror:
+            self.server_health = False
+            print(cerror)
+        except requests.exceptions.Timeout  as terror:
+            print(terror)
+
         # if (response != None and response.status_code == 200):
-        #     print(response)
+        #     print(response.content)
 
 
         observation, reward, done, info = self.env.step(action)
@@ -81,7 +94,7 @@ class RestQueryStateWrapper(ObservationWrapper):
 
 #Morena - Observation file writer
 class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
-    N = 1
+    # N = 1
     negq = 0
     posq = 0
     MaxRecordsNumber = 1000
@@ -114,39 +127,40 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         observation, reward, done, info = self.env.step(action)
         # if done:
         #         print('done and reward :',reward)
+        # obsImage = observation['image']
+        # fobsImage = obsImage.flatten()
         if(self.recNo < self.MaxRecordsNumber):
 
 
-            observationStr = ' '.join([str(elem) for elem in observation])
+            observationStr = ' '.join([str(int(elem)) for elem in observation])
 
             record =' '
 
-            if reward > 0:
-                record = observationStr + " " + str(action) + " " + "1" + "\n"
+            if (not done ):
+                record = observationStr + " " + str(int(action)) + " " + "1" + "\n"
                 # print('Positive found :',reward)
-            elif done & reward.__eq__(0):
-                record = observationStr + " " + str(action) + " " + "0" + "\n"
+            else:
+                record = observationStr + " " + str(int(action)) + " " + "0" + "\n"
 
-            # print(reward,record)
+            # print('reward :',reward)
             # self.logs.append(record)
             if (not hlogs.__contains__(record)):
                 self.recNo = self.recNo + 1
                 hlogs.add(record)
-                if reward > 0:
+                if (not done):
                     self.posq = self.posq + 1
                     print('a SAFE observation added , queries size :',self.posq)
-                elif done & reward.__eq__(0):
+                else :
                     self.negq = self.negq + 1
                     print('a un-safe observation added , queries size :',self.negq)
-
         else:
             with open('/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_'+ str(self.N)+".queries" , 'w') as f:
                 # f.write(''.join(self.logs))
                 f.write(''.join(self.hlogs))
             print("the filename is created :",'minigrid_', self.N)
-            self.N = self.N +1
+            N +=1
             self.recNo = 1
-            self.logs = []
+            hlogs.clear()
 
         # print(data, res)
         self.prev_obs = observation
@@ -156,7 +170,108 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         return observation
 #Morena - Observation file writer
 
+class MyFullyObsWrapper(ObservationWrapper):
+    """
+    Fully observable gridworld using a compact grid encoding
+    """
 
+    def __init__(self, env):
+        super().__init__(env)
+
+        self.observation_space.spaces["image"] = spaces.Box(
+            low=0,
+            high=255,
+            shape=(self.env.width, self.env.height, 3),  # number of cells
+            dtype='uint8'
+        )
+
+    def observation(self, obs):
+        env = self.unwrapped
+        full_grid = env.grid.encode()
+        full_grid[env.agent_pos[0]][env.agent_pos[1]] = np.array([
+            10,
+            0,
+            env.agent_dir
+        ])
+
+        return {
+            'mission': obs['mission'],
+            'image': full_grid
+        }
+
+
+class MyFlatObsWrapper(ObservationWrapper):
+    """
+    Encode mission strings using a one-hot scheme,
+    and combine these with observed images into one flat array
+    """
+
+    def __init__(self, env, maxStrLen=96):
+        super().__init__(env)
+
+        # self.maxStrLen = maxStrLen
+        # self.numCharCodes = 27
+
+        # imgSpace = env.observation_space.spaces['image']
+        # imgSize = reduce(operator.mul, imgSpace.shape, 1)
+
+        self.observation_space = spaces.Box(
+            low=0,
+            high=255,
+            # shape=(imgSize + self.numCharCodes * self.maxStrLen,),
+            shape=(self.env.width * self.env.height* 3,),  # number of cells
+            dtype='uint8'
+        )
+
+
+        self.cachedStr = None
+        self.cachedArray = None
+
+    # def step(self, action):
+    #     return self.env.step(action)
+    def step(self, action):
+        observation, reward, done, info = self.env.step(action)
+        # print('step=%s, reward=%.2f' % (self.env.step_count, reward))
+        return self.observation(observation), reward, done, info
+
+    # def step(self, action):
+    #     obs, reward, done, info = self.env.step(action)
+    #     print('step=%s, reward=%.2f' % (self.env.step_count, reward))
+    #     # print(obs)
+
+    def observation(self, obs):
+        env = self.unwrapped
+        full_grid = env.grid.encode()
+        full_grid[env.agent_pos[0]][env.agent_pos[1]] = np.array([
+            10,
+            0,
+            env.agent_dir
+        ])
+        # image = obs['image']
+        # mission = obs['mission']
+        # print(mission)
+        #
+        # # Cache the last-encoded mission string
+        # if mission != self.cachedStr:
+        #     assert len(mission) <= self.maxStrLen, 'mission string too long ({} chars)'.format(len(mission))
+        #     mission = mission.lower()
+        #
+        #     strArray = np.zeros(shape=(self.maxStrLen, self.numCharCodes), dtype='float32')
+        #
+        #     for idx, ch in enumerate(mission):
+        #         if ch >= 'a' and ch <= 'z':
+        #             chNo = ord(ch) - ord('a')
+        #         elif ch == ' ':
+        #             chNo = ord('z') - ord('a') + 1
+        #         assert chNo < self.numCharCodes, '%s : %d' % (ch, chNo)
+        #         strArray[idx, chNo] = 1
+        #
+        #     self.cachedStr = mission
+        #     self.cachedArray = strArray
+
+        # obs = np.concatenate((image.flatten(), self.cachedArray.flatten()))
+        obs = full_grid.flatten()
+        return obs
 
 class ParallelConstraintWrapper(ObservationWrapper):
     def __init__(self, env):

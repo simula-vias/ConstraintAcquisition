@@ -104,7 +104,7 @@ public class ExpeSUDOKU extends DefaultExperience {
 	}
 
 	public ACQ_Bias createBias() {
-		int NB_VARIABLE = 81;
+		int NB_VARIABLE = 76; // Morena- changed to 76 for minigrid CARL integration
 		// build All variables set
 		BitSet bs = new BitSet();
 		bs.set(0, NB_VARIABLE);

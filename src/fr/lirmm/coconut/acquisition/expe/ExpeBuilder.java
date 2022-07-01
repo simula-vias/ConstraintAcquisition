@@ -289,9 +289,6 @@ public class ExpeBuilder {
 			if(Algo.equals(ACQ_Algorithm.CONACQ2))
 				sudoku.setMaxqueries(maxqueries);
 
-			//Morena: can run suduko webserver here too.
-
-			//Morena: can run suduko webserver here too.
 			return sudoku;
 		case "jsudoku":
 			ExpeJigSawSUDOKU jgsudoku;

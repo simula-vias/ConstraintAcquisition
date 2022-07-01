@@ -1,7 +1,10 @@
-nbVars 2740
-domainSize 1 9
+nbVars 76
+domainSize 1 10
 
 Gamma
 DifferentXY
 GreaterEqualXY
 LessEqualXY
+LessXY
+EqualXY
+GreaterXY

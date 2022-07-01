@@ -26,6 +26,7 @@ import fr.lirmm.coconut.acquisition.core.tools.Chrono;
 import fr.lirmm.coconut.acquisition.core.tools.FileManager;
 import fr.lirmm.coconut.acquisition.core.learner.*;
 import nill.morena.services.BIOSService;
+//import sun.awt.windows.WPrinterJob;
 
 
 public class ACQ_CONACQv1 {
@@ -93,10 +94,13 @@ public class ACQ_CONACQv1 {
 				int label = Integer.parseInt(lineSplited[lineSplited.length - 1]);
 				int i = 0;
 				for (String s : lineSplited) {
+//					System.out.println(s);
 					if (i == lineSplited.length - 1)
 						break;
-					values[i] = Integer.parseInt(s);
-					i++;
+					if( s != null && s !="" & !s.equals("")) {
+						values[i] = Float.floatToIntBits(Float.valueOf(s)); // float
+						i++;
+					}
 				}
 				BitSet bs = new BitSet();
 				bs.set(0, i);
@@ -172,16 +176,19 @@ public class ACQ_CONACQv1 {
 	public static ACQ_Query getQuery(String line){
 		assert (line!=null):"the sample is null";
 
+
 			String[] lineSplited = line.split(" ");
 			int[] values = new int[lineSplited.length - 1];
-
+//			System.out.println(lineSplited.length);
 			int label = Integer.parseInt(lineSplited[lineSplited.length - 1]);
 			int i = 0;
 			for (String s : lineSplited) {
 				if (i == lineSplited.length - 1)
 					break;
-				values[i] = Integer.parseInt(s);
-				i++;
+				if (s!=null & s!="" & !s.equals("")) {
+					values[i] = Integer.parseInt(s);
+					i++;
+				}
 			}
 			BitSet bs = new BitSet();
 			bs.set(0, i);
