@@ -139,7 +139,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
             if (not done ):
                 record = observationStr + " " + str(int(action)) + " " + "1" + "\n"
                 # print('Positive found :',reward)
-            else:
+            elif(done and reward==0):
                 record = observationStr + " " + str(int(action)) + " " + "0" + "\n"
 
             # print('reward :',reward)
@@ -150,7 +150,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 if (not done):
                     self.posq = self.posq + 1
                     print('a SAFE observation added , queries size :',self.posq)
-                else :
+                elif (done and reward == 0) :
                     self.negq = self.negq + 1
                     print('a un-safe observation added , queries size :',self.negq)
         else:

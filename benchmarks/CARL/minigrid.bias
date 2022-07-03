@@ -3,8 +3,4 @@ domainSize 1 10
 
 Gamma
 DifferentXY
-GreaterEqualXY
-LessEqualXY
 LessXY
-EqualXY
-GreaterXY

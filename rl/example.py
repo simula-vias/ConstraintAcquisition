@@ -48,9 +48,9 @@ env = gym.make(args.env)
 # env = FullyObsWrapper(env)
 # env = FlatObsWrapper(env)
 # env = ImgObsWrapper(env) # Get rid of the 'mission' fields
-env = ca.MyFlatObsWrapper(env)
-env = GridworldInteractionFileLoggerWrapper(env)
-env = RestQueryStateWrapper(env)
+env = ca.MyFlatObsWrapper(env)                      # convert environment 5*5*3 grid  from tensor to [1...n] array  and append selected action.
+# env = GridworldInteractionFileLoggerWrapper(env)    # classify state/action to safe/unsafe category based on Done flag & reward=0 and store examples into .queries file
+env = RestQueryStateWrapper(env)                    # query each state/action from CA Network
 # env = RGBImgPartialObsWrapper(env) # Get pixel observations
 # env = ImgObsWrapper(env) # Get rid of the 'mission' field
 # obs = env.reset()

@@ -26,6 +26,7 @@ import fr.lirmm.coconut.acquisition.core.tools.Chrono;
 import fr.lirmm.coconut.acquisition.core.tools.FileManager;
 import fr.lirmm.coconut.acquisition.core.learner.*;
 import nill.morena.services.BIOSService;
+import scala.xml.Null;
 //import sun.awt.windows.WPrinterJob;
 
 
@@ -34,7 +35,7 @@ public class ACQ_CONACQv1 {
 	protected ACQ_Learner learner;
 	protected ACQ_ConstraintSolver constrSolver;
 	protected ACQ_IDomain domain;
-	protected boolean verbose = false;
+	protected boolean verbose = true;
 	protected boolean log_queries = false;
 	public ConstraintMapping mapping;
 	protected SATSolver satSolver;
@@ -275,7 +276,7 @@ public class ACQ_CONACQv1 {
 
 				ArrayList<ACQ_Query> batch_query = new ArrayList<ACQ_Query>();
 
-				for (int qsize = 0; qsize < max_queries; qsize++)
+				for (int qsize = 0; qsize < max_query ; qsize++) // the variable changed to max_query
 					if (iter_queries.hasNext())
 						batch_query.add(iter_queries.next());
 
@@ -386,20 +387,26 @@ public class ACQ_CONACQv1 {
 
 	public static Classification classify(ACQ_Query query) {
 //		updateNetworks();
-		boolean generalAccepts = false;
-		boolean isCompleteQuery = true;
-		boolean specificAccepts = false;
+		Boolean cmn = null;
+//		Boolean isCompleteQuery = Boolean.TRUE;
+		Boolean csn = null;
 
-		assert (minimalNetwork!=null || mostSpecificNetwork!=null ):"the network is not ready, please continue learning";
+		assert (minimalNetwork!=null || mostSpecificNetwork!=null ):"the network is not ready, please continue learning..";
 
 
-		if (isCompleteQuery) {
-			generalAccepts = minimalNetwork.check(query);
-			specificAccepts = mostSpecificNetwork.check(query);
+//		if (isCompleteQuery) {
+		if (minimalNetwork.getArrayConstraints().length > 0){
+			cmn = minimalNetwork.check(query);
+			if (!cmn) return Classification.NEGATIVE;
 		}
-		if (generalAccepts == false && specificAccepts == false) return Classification.UNKNOWN;
 
-		return (generalAccepts ? Classification.NEGATIVE:Classification.POSITIVE);
+		if (mostSpecificNetwork.getArrayConstraints().length > 0){
+			csn = mostSpecificNetwork.check(query);
+			if (csn) return Classification.POSITIVE;
+		}
+
+		return Classification.UNKNOWN;
+//		return (generalAccepts ? Classification.NEGATIVE:Classification.POSITIVE);
 	}
 
 //	protected boolean isUnset(ACQ_IConstraint constr, ACQ_CNF T, ContradictionSet N) {
