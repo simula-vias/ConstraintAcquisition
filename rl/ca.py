@@ -15,7 +15,7 @@ from gym.spaces.space import Space
 from gym_minigrid.minigrid import MiniGridEnv
 from multiprocessing import Pool
 from gym_minigrid.window import Window
-from gym import error, spaces, utils
+from gym import error, spaces, utils, core
 
 hlogs = set()
 N = 1
@@ -293,6 +293,52 @@ class ParallelConstraintWrapper(ObservationWrapper):
     def observation(self, observation):
         return observation
 
+
+class FlatObsImageOnlyWrapper(ObservationWrapper):
+    """
+    Encode mission strings using a one-hot scheme,
+    and combine these with observed images into one flat array
+    """
+
+    def __init__(self, env):
+        super().__init__(env)
+
+        imgSpace = env.observation_space.spaces['image']
+        imgSize = reduce(operator.mul, imgSpace.shape, 1)
+
+        self.observation_space = spaces.Box(
+            low=0,
+            high=255,
+            shape=(imgSize,),
+            dtype='uint8'
+        )
+
+    def observation(self, obs):
+        image = obs['image']
+        return image.flatten()
+
+
+class LavaAvoidanceWrapper(core.Wrapper):
+    def __init__(self, env):
+        super().__init__(env)
+        self.prev_obs = None
+
+    def step(self, action):
+        env = self.unwrapped
+
+        forward_pos = np.array([0,1,2]) + (env.agent_view_size // 2 * env.agent_view_size * 3 + (env.agent_view_size-2) * 3)
+        forward_cell = self.prev_obs[forward_pos]
+
+        if np.all(forward_cell == [9, 0, 0]) and action == 2:
+            action = 1  # turn right instead
+
+        obs, reward, done, info = self.env.step(action)
+
+        return obs, reward, done, info
+
+    def reset(self, **kwargs):
+        self.prev_obs = self.env.reset(**kwargs)
+        return self.prev_obs
 
 # class GridworldInteractionLoggerWrapper(ObservationWrapper):
 #     def __init__(self, env, db_file=":memory:"):

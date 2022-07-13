@@ -1,3 +1,5 @@
 stable-baselines3
 gym-minigrid
 pyzmq
+requests
+sb3-contrib
