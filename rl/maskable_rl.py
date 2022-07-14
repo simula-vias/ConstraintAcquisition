@@ -49,7 +49,8 @@ env = gym.make(args.env)
 # Potential problem: We need to figure out the current observation, because it is not a parameter of the function.
 def mask_fn_lavagrid(env: gym.Env) -> np.ndarray:
     obs = env.unwrapped.gen_obs()
-    forward_cell = obs["image"][7//2, 7-2]
+    # forward_cell = obs["image"][7//2, 7-2]
+    forward_cell =  obs["image"][env.front_pos[0],env.front_pos[1]] #get front position from environment
     action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
 
     if np.all(forward_cell == [9, 0, 0]):

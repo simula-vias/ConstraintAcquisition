@@ -18,16 +18,20 @@ from gym_minigrid.window import Window
 from gym import error, spaces, utils, core
 
 hlogs = set()
+salogs = set()
+cacheObsr = set()
 N = 1
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):
     server_health = None
     GOOD = "1"
     BAD = "0"
+    posCounter = 0
     def __init__(self, env):
         super(RestQueryStateWrapper, self).__init__(env)
         self.server_health = True
         # self.prev_obs = None
+        posCounter = 0
 
 
     def step(self, action):
@@ -44,7 +48,6 @@ class RestQueryStateWrapper(ObservationWrapper):
             for s in last_obser:
                 prev_stat = prev_stat + " " + str(int(s))
             databody = str( prev_stat) + " " + str(int(action))
-
             # databody = str.replace(databody,","," ")
 
 
@@ -57,12 +60,22 @@ class RestQueryStateWrapper(ObservationWrapper):
                 restr = response.content.decode("utf-8")
                 # print(restr)
                 if restr.__contains__('NEGATIVE'):
-                    # print("replace with safe action")
+                    print(databody)
+                    print("un-safe observation is detected,action replaced with <left> action")
                     action = 0
                 elif restr.__contains__('POSITIVE'):
-                    print(databody)
-                    print("action is possitive and allowed")
-            time.sleep(0.1)
+                    time.sleep(0.05)
+                    if (not salogs.__contains__(databody)):
+                        salogs.add(databody)
+                        # print(databody)
+                        # print("positive counter :",self.posCounter)
+                        self.posCounter = self.posCounter +1
+                    # print("action is possitive and allowed")
+                else:
+                    # print(databody)
+                    print("uncertain observation is detected")
+
+
         except requests.exceptions.HTTPError as error:
             self.server_health = False
             print(error)
@@ -120,50 +133,62 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         # self.prev_obs = None
 
     def reset(self, **kwargs):
+        self.env.seed = 20 # to make just on seed
         self.prev_obs = super(GridworldInteractionFileLoggerWrapper, self).reset(**kwargs)
         return self.prev_obs
 
     def step(self, action):
         observation, reward, done, info = self.env.step(action)
+
         # if done:
         #         print('done and reward :',reward)
         # obsImage = observation['image']
         # fobsImage = obsImage.flatten()
         if(self.recNo < self.MaxRecordsNumber):
 
+            if action==0:
+                action = 7 # java carl not consider action=0
 
-            observationStr = ' '.join([str(int(elem)) for elem in observation])
+            observationStr = ' '.join([str(int(elem)) for elem in self.prev_obs])
 
             record =' '
+            if (not cacheObsr.__contains__(observationStr + " " + str(int(action)))):
 
-            if (not done ):
-                record = observationStr + " " + str(int(action)) + " " + "1" + "\n"
-                # print('Positive found :',reward)
-            elif(done and reward==0):
-                record = observationStr + " " + str(int(action)) + " " + "0" + "\n"
+                cacheObsr.add(observationStr + " " + str(int(action)))
 
-            # print('reward :',reward)
-            # self.logs.append(record)
-            if (not hlogs.__contains__(record)):
+                if (not done ):
+                    record = observationStr + " " + str(int(action)) + " " + "1" + "\n"
+                    # print('Positive found :',reward)
+                elif(done and reward==0):
+                    record = observationStr + " " + str(int(action)) + " " + "0" + "\n"
+                elif (done and reward > 0):
+                    record = observationStr + " " + str(int(action)) + " " + "1" + "\n"
+                    print('reaches to goal , reward :',reward)
+                # print('reward :',reward)
+                # self.logs.append(record)
+                # if (not hlogs.__contains__(record)):
                 self.recNo = self.recNo + 1
                 hlogs.add(record)
-                if (not done):
+                if ((not done) or (done and reward >0)):
                     self.posq = self.posq + 1
                     print('a SAFE observation added , queries size :',self.posq)
                 elif (done and reward == 0) :
                     self.negq = self.negq + 1
                     print('a un-safe observation added , queries size :',self.negq)
+                    self.reset()
         else:
             with open('/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_'+ str(self.N)+".queries" , 'w') as f:
                 # f.write(''.join(self.logs))
                 f.write(''.join(self.hlogs))
             print("the filename is created :",'minigrid_', self.N)
-            N +=1
+            # N +=1
             self.recNo = 1
             hlogs.clear()
+            cacheObsr.clear()
 
         # print(data, res)
-        self.prev_obs = observation
+        if (not done):
+            self.prev_obs = observation
         return observation, reward, done, info
 
     def observation(self, observation):
@@ -271,6 +296,97 @@ class MyFlatObsWrapper(ObservationWrapper):
 
         # obs = np.concatenate((image.flatten(), self.cachedArray.flatten()))
         obs = full_grid.flatten()
+        return obs
+class ObjFlatObsWrapper(ObservationWrapper):
+
+    def __init__(self, env, maxStrLen=96):
+        super().__init__(env)
+
+        self.observation_space = spaces.Box(
+            low=0,
+            high=10,
+            # shape=(imgSize + self.numCharCodes * self.maxStrLen,),
+            shape=(self.env.width * self.env.height,),  # number of cells
+            dtype='uint8'
+        )
+
+
+    def step(self, action):
+        observation, reward, done, info = self.env.step(action)
+        return self.observation(observation), reward, done, info
+
+
+    def observation(self, obs):
+        env = self.unwrapped
+        full_grid = env.grid.encode()
+        full_grid[env.agent_pos[0]][env.agent_pos[1]] = np.array([
+            10,
+            0,
+            env.agent_dir
+        ])
+
+        obs = full_grid.flatten()
+        full_grid_obj = obs[::3]
+        return full_grid_obj
+
+class AgentLocObsWrapper(ObservationWrapper):
+
+    def __init__(self, env, maxStrLen=96):
+        super().__init__(env)
+
+        self.observation_space = spaces.Box(
+            low=0,
+            high=10,
+            # shape=(imgSize + self.numCharCodes * self.maxStrLen,),
+            shape=(2,),  # number of cells
+            dtype='uint8'
+        )
+
+
+    def step(self, action):
+        observation, reward, done, info = self.env.step(action)
+        return self.observation(observation), reward, done, info
+
+
+    def observation(self, obs):
+        env = self.unwrapped
+        # agent_loc = np.array(1,1)
+        agent_loc =np.array([env.agent_pos[0], env.agent_pos[1]])
+
+        obs = agent_loc.flatten()
+        # full_grid_obj = obs[::3]
+        return obs
+
+class AgentLocationDirectionObsWrapper(ObservationWrapper):
+
+    def __init__(self, env, maxStrLen=96):
+        super().__init__(env)
+
+        self.observation_space = spaces.Box(
+            low=0,
+            high=10,
+            # shape=(imgSize + self.numCharCodes * self.maxStrLen,),
+            shape=(3,),  # number of cells
+            dtype='uint8'
+        )
+
+
+    def step(self, action):
+        observation, reward, done, info = self.env.step(action)
+        return self.observation(observation), reward, done, info
+
+
+    def observation(self, obs):
+        env = self.unwrapped
+        full_grid = env.grid.encode()
+        # agent_loc = np.array(1,1)
+        direction =  env.agent_dir
+        if direction==0 : #CARL not accept 0 value
+            direction = 4
+        agent_loc =np.array([env.agent_pos[0], env.agent_pos[1],direction])
+
+        obs = agent_loc.flatten()
+        # full_grid_obj = obs[::3]
         return obs
 
 class ParallelConstraintWrapper(ObservationWrapper):
