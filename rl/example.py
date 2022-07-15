@@ -49,25 +49,25 @@ env = gym.make(args.env)
 # env = FlatObsWrapper(env)
 # env = ImgObsWrapper(env) # Get rid of the 'mission' fields
 env = ca.MyFlatObsWrapper(env)                      # convert environment 5*5*3 grid  from tensor to [1...n] array  and append selected action.
-# env = GridworldInteractionFileLoggerWrapper(env)    # classify state/action to safe/unsafe category based on Done flag & reward=0 and store examples into .queries file
+env = GridworldInteractionFileLoggerWrapper(env)    # classify state/action to safe/unsafe category based on Done flag & reward=0 and store examples into .queries file
 env = RestQueryStateWrapper(env)                    # query each state/action from CA Network
 # env = RGBImgPartialObsWrapper(env) # Get pixel observations
 # env = ImgObsWrapper(env) # Get rid of the 'mission' field
 # obs = env.reset()
-model = PPO(MlpPolicy, env, verbose=1)
+model = PPO("MlpPolicy", env, verbose=1)
 # model = A2C(ActorCriticPolicy, env, verbose=1,seed=1)
 
 
 
 # Train the agent for 10000 steps
 model.learn(total_timesteps=10000) # change 1 to 10000 (prod)
-try:
-    with open('/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_' + str(
-        1) + ".queries", 'w') as f:
-        # f.write(''.join(self.logs))
-        f.write(''.join(ca.hlogs))
-except FileNotFoundError:
-        print("File not found, unable to save .queries file")
+# try:
+#     with open('/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_' + str(
+#         1) + ".queries", 'w') as f:
+#         # f.write(''.join(self.logs))
+#         f.write(''.join(ca.hlogs))
+# except FileNotFoundError:
+#         print("File not found, unable to save .queries file")
 # Evaluate the trained agent
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1000) # change 1 to 100 (prod)
 

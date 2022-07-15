@@ -3,6 +3,7 @@ import time
 from typing import List, Dict
 
 import operator
+from collections import Counter
 from functools import reduce
 import numpy
 import numpy as np
@@ -21,38 +22,35 @@ hlogs = set()
 salogs = set()
 cacheObsr = set()
 N = 1
+
+
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):
     server_health = None
     GOOD = "1"
     BAD = "0"
-    posCounter = 0
+
     def __init__(self, env):
         super(RestQueryStateWrapper, self).__init__(env)
         self.server_health = True
         # self.prev_obs = None
-        posCounter = 0
-
+        self.counter = Counter(["positive", "negative", "uncertain"])
 
     def step(self, action):
         safe_actions = []
         # var_dicts = []
         last_obser = self.prev_obs
-        #print(len(last_obser))
+        # print(len(last_obser))
 
         if (self.server_health):
-            #print("last observation is : ", last_obser, "the action was :",action)
-            #print("last observation size is : ", last_obser.size, "the action was :", action)
+            # print("last observation is : ", last_obser, "the action was :",action)
+            # print("last observation size is : ", last_obser.size, "the action was :", action)
             # State_Action  = {'state':last_obser,'action':action}
             prev_stat = ''
             for s in last_obser:
                 prev_stat = prev_stat + " " + str(int(s))
-            databody = str( prev_stat) + " " + str(int(action))
+            databody = str(prev_stat) + " " + str(int(action))
             # databody = str.replace(databody,","," ")
-
-
-
-        response = None
 
         try:
             if (self.server_health):
@@ -63,39 +61,39 @@ class RestQueryStateWrapper(ObservationWrapper):
                     print(databody)
                     print("un-safe observation is detected,action replaced with <left> action")
                     action = 0
+                    self.counter["negative"] += 1
                 elif restr.__contains__('POSITIVE'):
                     time.sleep(0.05)
                     if (not salogs.__contains__(databody)):
                         salogs.add(databody)
                         # print(databody)
                         # print("positive counter :",self.posCounter)
-                        self.posCounter = self.posCounter +1
+                        self.counter["negative"] += 1
                     # print("action is possitive and allowed")
                 else:
                     # print(databody)
                     print("uncertain observation is detected")
+                    self.counter["uncertain"] += 1
 
-
+                print(self.counter)
         except requests.exceptions.HTTPError as error:
             self.server_health = False
             print(error)
-        except requests.exceptions.ConnectionError  as cerror:
+        except requests.exceptions.ConnectionError as cerror:
             self.server_health = False
             print(cerror)
-        except requests.exceptions.Timeout  as terror:
+        except requests.exceptions.Timeout as terror:
             print(terror)
 
         # if (response != None and response.status_code == 200):
         #     print(response.content)
 
-
         observation, reward, done, info = self.env.step(action)
 
         # if done:
         #     self.reset()
-        self.prev_obs =  observation
+        self.prev_obs = observation
         return observation, reward, done, info
-
 
     def reset(self, **kwargs):
         self.prev_obs = super(RestQueryStateWrapper, self).reset(**kwargs)
@@ -103,14 +101,17 @@ class RestQueryStateWrapper(ObservationWrapper):
 
     def observation(self, observation):
         return observation
+
+
 # Morena REST Wrapper
 
-#Morena - Observation file writer
+# Morena - Observation file writer
 class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     # N = 1
     negq = 0
     posq = 0
     MaxRecordsNumber = 1000
+
     # TODO :   add duplicate checker before store observaion
     # TODO :  add random
     # TODO :  lavagrid environment , check if it is there in stablebaseline3 / fronzen lake
@@ -124,16 +125,12 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     #       3.1 if action was unsafe query all action and select which action is safe.
     #       3.2 if action was uncertain/safe  then continue explore
 
-
-    recNo = 1
-    # logs = []
-
     def __init__(self, env):
         super(GridworldInteractionFileLoggerWrapper, self).__init__(env)
-        # self.prev_obs = None
+        self.prev_obs = None
 
     def reset(self, **kwargs):
-        self.env.seed = 20 # to make just on seed
+        self.env.seed = 20  # to make just on seed
         self.prev_obs = super(GridworldInteractionFileLoggerWrapper, self).reset(**kwargs)
         return self.prev_obs
 
@@ -144,56 +141,43 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         #         print('done and reward :',reward)
         # obsImage = observation['image']
         # fobsImage = obsImage.flatten()
-        if(self.recNo < self.MaxRecordsNumber):
 
-            if action==0:
-                action = 7 # java carl not consider action=0
+        # HS: This is lavagap/gridworld specific
+        if action == 0:
+            action = 7  # java carl not consider action=0
 
-            observationStr = ' '.join([str(int(elem)) for elem in self.prev_obs])
+        observation_str = ' '.join([str(int(elem)) for elem in self.prev_obs])
+        obs_action_pair = observation_str + " " + str(int(action))
 
-            record =' '
-            if (not cacheObsr.__contains__(observationStr + " " + str(int(action)))):
+        # Send new observation/action pair to CA, if not already in cache
+        if obs_action_pair not in cacheObsr:
+            cacheObsr.add(obs_action_pair)
 
-                cacheObsr.add(observationStr + " " + str(int(action)))
+            # HS: This is lavagap/gridworld specific
+            is_safe = (not done) or (done and reward > 0)
 
-                if (not done ):
-                    record = observationStr + " " + str(int(action)) + " " + "1" + "\n"
-                    # print('Positive found :',reward)
-                elif(done and reward==0):
-                    record = observationStr + " " + str(int(action)) + " " + "0" + "\n"
-                elif (done and reward > 0):
-                    record = observationStr + " " + str(int(action)) + " " + "1" + "\n"
-                    print('reaches to goal , reward :',reward)
-                # print('reward :',reward)
-                # self.logs.append(record)
-                # if (not hlogs.__contains__(record)):
-                self.recNo = self.recNo + 1
-                hlogs.add(record)
-                if ((not done) or (done and reward >0)):
-                    self.posq = self.posq + 1
-                    print('a SAFE observation added , queries size :',self.posq)
-                elif (done and reward == 0) :
-                    self.negq = self.negq + 1
-                    print('a un-safe observation added , queries size :',self.negq)
-                    self.reset()
-        else:
-            with open('/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_'+ str(self.N)+".queries" , 'w') as f:
-                # f.write(''.join(self.logs))
-                f.write(''.join(self.hlogs))
-            print("the filename is created :",'minigrid_', self.N)
-            # N +=1
-            self.recNo = 1
-            hlogs.clear()
-            cacheObsr.clear()
+            if is_safe:
+                record = obs_action_pair + " 1"
+                self.posq = self.posq + 1
+                print('a SAFE observation added , queries size :', self.posq)
+            else:
+                record = obs_action_pair + " 0"
+                self.negq = self.negq + 1
+                print('a un-safe observation added , queries size :', self.negq)
+                self.reset()
+            LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
+            with open(LOGFILE, "a") as f:
+                f.write(record + "\n")
 
-        # print(data, res)
-        if (not done):
+        if not done:
             self.prev_obs = observation
         return observation, reward, done, info
 
     def observation(self, observation):
         return observation
-#Morena - Observation file writer
+
+
+# Morena - Observation file writer
 
 class MyFullyObsWrapper(ObservationWrapper):
     """
@@ -244,10 +228,9 @@ class MyFlatObsWrapper(ObservationWrapper):
             low=0,
             high=255,
             # shape=(imgSize + self.numCharCodes * self.maxStrLen,),
-            shape=(self.env.width * self.env.height* 3,),  # number of cells
+            shape=(self.env.width * self.env.height * 3,),  # number of cells
             dtype='uint8'
         )
-
 
         self.cachedStr = None
         self.cachedArray = None
@@ -297,6 +280,8 @@ class MyFlatObsWrapper(ObservationWrapper):
         # obs = np.concatenate((image.flatten(), self.cachedArray.flatten()))
         obs = full_grid.flatten()
         return obs
+
+
 class ObjFlatObsWrapper(ObservationWrapper):
 
     def __init__(self, env, maxStrLen=96):
@@ -310,11 +295,9 @@ class ObjFlatObsWrapper(ObservationWrapper):
             dtype='uint8'
         )
 
-
     def step(self, action):
         observation, reward, done, info = self.env.step(action)
         return self.observation(observation), reward, done, info
-
 
     def observation(self, obs):
         env = self.unwrapped
@@ -329,6 +312,7 @@ class ObjFlatObsWrapper(ObservationWrapper):
         full_grid_obj = obs[::3]
         return full_grid_obj
 
+
 class AgentLocObsWrapper(ObservationWrapper):
 
     def __init__(self, env, maxStrLen=96):
@@ -342,20 +326,19 @@ class AgentLocObsWrapper(ObservationWrapper):
             dtype='uint8'
         )
 
-
     def step(self, action):
         observation, reward, done, info = self.env.step(action)
         return self.observation(observation), reward, done, info
 
-
     def observation(self, obs):
         env = self.unwrapped
         # agent_loc = np.array(1,1)
-        agent_loc =np.array([env.agent_pos[0], env.agent_pos[1]])
+        agent_loc = np.array([env.agent_pos[0], env.agent_pos[1]])
 
         obs = agent_loc.flatten()
         # full_grid_obj = obs[::3]
         return obs
+
 
 class AgentLocationDirectionObsWrapper(ObservationWrapper):
 
@@ -370,24 +353,23 @@ class AgentLocationDirectionObsWrapper(ObservationWrapper):
             dtype='uint8'
         )
 
-
     def step(self, action):
         observation, reward, done, info = self.env.step(action)
         return self.observation(observation), reward, done, info
-
 
     def observation(self, obs):
         env = self.unwrapped
         full_grid = env.grid.encode()
         # agent_loc = np.array(1,1)
-        direction =  env.agent_dir
-        if direction==0 : #CARL not accept 0 value
+        direction = env.agent_dir
+        if direction == 0:  # CARL not accept 0 value
             direction = 4
-        agent_loc =np.array([env.agent_pos[0], env.agent_pos[1],direction])
+        agent_loc = np.array([env.agent_pos[0], env.agent_pos[1], direction])
 
         obs = agent_loc.flatten()
         # full_grid_obj = obs[::3]
         return obs
+
 
 class ParallelConstraintWrapper(ObservationWrapper):
     def __init__(self, env):
@@ -442,7 +424,8 @@ class LavaAvoidanceWrapper(core.Wrapper):
     def step(self, action):
         env = self.unwrapped
 
-        forward_pos = np.array([0,1,2]) + (env.agent_view_size // 2 * env.agent_view_size * 3 + (env.agent_view_size-2) * 3)
+        forward_pos = np.array([0, 1, 2]) + (
+                    env.agent_view_size // 2 * env.agent_view_size * 3 + (env.agent_view_size - 2) * 3)
         forward_cell = self.prev_obs[forward_pos]
 
         if np.all(forward_cell == [9, 0, 0]) and action == 2:
@@ -455,6 +438,7 @@ class LavaAvoidanceWrapper(core.Wrapper):
     def reset(self, **kwargs):
         self.prev_obs = self.env.reset(**kwargs)
         return self.prev_obs
+
 
 # class GridworldInteractionLoggerWrapper(ObservationWrapper):
 #     def __init__(self, env, db_file=":memory:"):
