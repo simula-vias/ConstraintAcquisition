@@ -82,8 +82,8 @@ public class AcqApp {
 		gui = Boolean.getBoolean(BIOSService.getBIOS().getString("gui"));
 		nb_threads = Integer.valueOf(BIOSService.getBIOS().getString("nb_threads")); // five seconds
 		instance = BIOSService.getBIOS().getString("instance");
-		examplesfile="";
-		file="";
+		examplesfile=BIOSService.getBIOS().getString("examplesfile");
+		file=BIOSService.getBIOS().getString("file");
 		maxqueries=Integer.valueOf(BIOSService.getBIOS().getString("maxqueries")); // five seconds;
 		///////////////////////
 
