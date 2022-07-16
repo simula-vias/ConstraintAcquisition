@@ -1,21 +1,20 @@
 import json
 import time
-from typing import List, Dict
+
 
 import operator
 from collections import Counter
 from functools import reduce
-import numpy
+
 import numpy as np
-import sqlite3
+
 import requests
 
-import zmq
+
 from gym import ObservationWrapper
-from gym.spaces.space import Space
-from gym_minigrid.minigrid import MiniGridEnv
+
 from multiprocessing import Pool
-from gym_minigrid.window import Window
+import gym_minigrid.minigrid as mg
 from gym import error, spaces, utils, core
 
 hlogs = set()
@@ -127,10 +126,22 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
     def __init__(self, env):
         super(GridworldInteractionFileLoggerWrapper, self).__init__(env)
+        LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
+        try:
+            with open(LOGFILE, "r") as f:
+                records = f.readlines()
+                for record in records:
+                    obs_action_pair = record[:len(record)-3]
+                    if obs_action_pair not in cacheObsr:
+                        cacheObsr.add(obs_action_pair)
+            print("The existing observation records cached :", len(cacheObsr))
+        except FileNotFoundError:
+            print("no initial observation records detected")
+
         self.prev_obs = None
 
     def reset(self, **kwargs):
-        self.env.seed = 20  # to make just on seed
+        # self.env.seed = 20  # to make just on seed
         self.prev_obs = super(GridworldInteractionFileLoggerWrapper, self).reset(**kwargs)
         return self.prev_obs
 
@@ -251,33 +262,11 @@ class MyFlatObsWrapper(ObservationWrapper):
         env = self.unwrapped
         full_grid = env.grid.encode()
         full_grid[env.agent_pos[0]][env.agent_pos[1]] = np.array([
-            10,
-            0,
+            mg.OBJECT_TO_IDX['agent'],
+            mg.COLOR_TO_IDX['red'],
             env.agent_dir
         ])
-        # image = obs['image']
-        # mission = obs['mission']
-        # print(mission)
-        #
-        # # Cache the last-encoded mission string
-        # if mission != self.cachedStr:
-        #     assert len(mission) <= self.maxStrLen, 'mission string too long ({} chars)'.format(len(mission))
-        #     mission = mission.lower()
-        #
-        #     strArray = np.zeros(shape=(self.maxStrLen, self.numCharCodes), dtype='float32')
-        #
-        #     for idx, ch in enumerate(mission):
-        #         if ch >= 'a' and ch <= 'z':
-        #             chNo = ord(ch) - ord('a')
-        #         elif ch == ' ':
-        #             chNo = ord('z') - ord('a') + 1
-        #         assert chNo < self.numCharCodes, '%s : %d' % (ch, chNo)
-        #         strArray[idx, chNo] = 1
-        #
-        #     self.cachedStr = mission
-        #     self.cachedArray = strArray
 
-        # obs = np.concatenate((image.flatten(), self.cachedArray.flatten()))
         obs = full_grid.flatten()
         return obs
 

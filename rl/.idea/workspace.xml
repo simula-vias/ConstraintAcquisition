@@ -7,6 +7,7 @@
     <list default="true" id="239204cd-0997-4953-89e2-a0e6e0a6cb8e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../AUTHORS.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../AUTHORS.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../CAT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../CAT.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../LICENSE.txt" afterDir="false" />
@@ -31,7 +32,7 @@
       <change beforePath="$PROJECT_DIR$/../benchmarks/queens/queens_8.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queens/queens_8.bias" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../benchmarks/queens/queens_8.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queens/queens_8.target" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../benchmarks/queries/exm8/exm8.queries" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queries/exm8/exm8.queries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/queries/minigrid/minigrid_1.queries" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queries/minigrid/minigrid_1.queries" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../benchmarks/queries/minigrid/minigrid_1.queries" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../benchmarks/queries/scheduling00.queries" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queries/scheduling00.queries" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../benchmarks/queries/sudoku9.queries" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queries/sudoku9.queries" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../benchmarks/queries/toy1.queries" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queries/toy1.queries" afterDir="false" />
@@ -56,7 +57,7 @@
       <change beforePath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_81.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_81.target" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../benchmarks/toy/alldiff.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/toy/alldiff.bias" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../benchmarks/toy/alldiff.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/toy/alldiff.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../logFiles/CL.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logFiles/CL.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logFiles/CL.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../results/exm8_0_2022_06_03_16_20_344.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/exm8_0_2022_06_03_16_20_344.results" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../results/exm8_2022_06_03_16_20_344.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/exm8_2022_06_03_16_20_344.LearnedNetwork" afterDir="false" />
@@ -87,6 +88,12 @@
       <change beforePath="$PROJECT_DIR$/../results/sudoku_81_2021_10_14_11_17_1426.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_81_2021_10_14_11_17_1426.LearnedNetwork" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../results/zebra0_2021_10_08_12_44_08.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/zebra0_2021_10_08_12_44_08.results" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../results/zebra2021_10_08_12_44_08.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/zebra2021_10_08_12_44_08.LearnedNetwork" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/rl.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rl.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ca.py" beforeDir="false" afterPath="$PROJECT_DIR$/ca.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/envs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/envs/minigrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/minigrid.py" afterDir="false" />
@@ -302,7 +309,7 @@
       <recent name="D:\BigData\MyWork\GitHub\ConstraintAcquisition\rl" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.maskable_rl">
+  <component name="RunManager" selected="Python.example">
     <configuration name="ca" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -366,6 +373,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="minigrid" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="rl" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv/Lib/site-packages/gym_minigrid" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/Lib/site-packages/gym_minigrid/minigrid.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="testObs" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -389,8 +417,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.maskable_rl" />
         <item itemvalue="Python.example" />
+        <item itemvalue="Python.minigrid" />
+        <item itemvalue="Python.maskable_rl" />
         <item itemvalue="Python.ca" />
         <item itemvalue="Python.testObs" />
       </list>
@@ -422,64 +451,34 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>59</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>61</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>247</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>242</line>
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>257</line>
-          <option name="timeStamp" value="29" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>267</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>419</line>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>177</line>
-          <option name="timeStamp" value="38" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>165</line>
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/venv/Lib/site-packages/gym_minigrid/minigrid.py</url>
-          <line>1133</line>
-          <option name="timeStamp" value="43" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/maskable_rl.py</url>
           <line>53</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>269</line>
-          <option name="timeStamp" value="46" />
+          <line>390</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ca.py</url>
+          <line>403</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ca.py</url>
+          <line>163</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ca.py</url>
+          <line>148</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ca.py</url>
+          <line>139</line>
+          <option name="timeStamp" value="68" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -494,7 +493,10 @@
       <configuration name="PythonConfigurationType">
         <watch expression="self.env.agent_pos" language="Python" />
         <watch expression="self.env.agent_dir" language="Python" />
-        <watch expression="self.seed()" language="Python" />
+        <watch expression="self.seed" language="Python" />
+        <watch expression="self.prev_obs" language="Python" />
+        <watch expression="self.grid[j * self.width + i] " language="Python" />
+        <watch expression="j * self.width + i" language="Python" />
       </configuration>
     </watches-manager>
   </component>

@@ -7,8 +7,9 @@
     <list default="true" id="9f78315d-38f8-492b-8aea-2e5ee86232c0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AUTHORS.txt" beforeDir="false" afterPath="$PROJECT_DIR$/AUTHORS.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CAT.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CAT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CAT.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/CARL/exm8.bias" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/CARL/exm8.bias" afterDir="false" />
@@ -31,7 +32,7 @@
       <change beforePath="$PROJECT_DIR$/benchmarks/queens/queens_8.bias" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queens/queens_8.bias" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queens/queens_8.target" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queens/queens_8.target" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/exm8/exm8.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/exm8/exm8.queries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/queries/minigrid/minigrid_1.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/minigrid/minigrid_1.queries" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/queries/minigrid/minigrid_1.queries" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/scheduling00.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/scheduling00.queries" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/sudoku9.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/sudoku9.queries" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/toy1.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/toy1.queries" afterDir="false" />
@@ -87,10 +88,17 @@
       <change beforePath="$PROJECT_DIR$/results/sudoku_81_2021_10_14_11_17_1426.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/results/sudoku_81_2021_10_14_11_17_1426.LearnedNetwork" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/results/zebra0_2021_10_08_12_44_08.results" beforeDir="false" afterPath="$PROJECT_DIR$/results/zebra0_2021_10_08_12_44_08.results" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/results/zebra2021_10_08_12_44_08.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/results/zebra2021_10_08_12_44_08.LearnedNetwork" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/.idea/aws.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/aws.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/.idea/rl.iml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/rl.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/ca.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/ca.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/envs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/envs/minigrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/minigrid.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/maskable_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/maskable_rl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/rl/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BIOS.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/BIOS.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" afterDir="false" />
@@ -223,7 +231,6 @@
       <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeQueens.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeQueens.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeRLFAP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeRLFAP.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeRandom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeRandom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeSUDOKU.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeSUDOKU.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeSUDOKU4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeSUDOKU4.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeTOY2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeTOY2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeTOY3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeTOY3.java" afterDir="false" />
@@ -276,6 +283,13 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="2AnX7KtsJ3DhVboPhtPyaJbXbTy" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -283,9 +297,10 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/CARL&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/BigData/MyWork/GitHub/ConstraintAcquisition/pom.xml&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
@@ -343,21 +358,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>130</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>70</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>389</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeSUDOKU.java</url>
           <line>108</line>
           <option name="timeStamp" value="14" />
@@ -366,31 +366,6 @@
           <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeSUDOKU.java</url>
           <line>149</line>
           <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>251</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>207</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>282</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>335</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>295</line>
-          <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeSUDOKU.java</url>
@@ -418,19 +393,9 @@
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>278</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>310</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java</url>
-          <line>321</line>
-          <option name="timeStamp" value="28" />
+          <url>file://$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/expe/ExpeBuilder.java</url>
+          <line>141</line>
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
