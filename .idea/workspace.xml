@@ -32,7 +32,6 @@
       <change beforePath="$PROJECT_DIR$/benchmarks/queens/queens_8.bias" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queens/queens_8.bias" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queens/queens_8.target" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queens/queens_8.target" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/exm8/exm8.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/exm8/exm8.queries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/queries/minigrid/minigrid_1.queries" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/scheduling00.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/scheduling00.queries" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/sudoku9.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/sudoku9.queries" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/toy1.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/toy1.queries" afterDir="false" />
@@ -57,7 +56,6 @@
       <change beforePath="$PROJECT_DIR$/benchmarks/sudoku/sudoku_81.target" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/sudoku/sudoku_81.target" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/toy/alldiff.bias" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/toy/alldiff.bias" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/toy/alldiff.target" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/toy/alldiff.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logFiles/CL.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/results/exm8_0_2022_06_03_16_20_344.results" beforeDir="false" afterPath="$PROJECT_DIR$/results/exm8_0_2022_06_03_16_20_344.results" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/results/exm8_2022_06_03_16_20_344.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/results/exm8_2022_06_03_16_20_344.LearnedNetwork" afterDir="false" />

@@ -28,16 +28,17 @@ parser.add_argument(
     help="gym environment to load",
     default='MiniGrid-LavaGapS5-v0'
 )
-# parser.add_argument(
-#     "--seed",
-#     type=int,
-#     help="random seed to generate the environment with",
-#     default=20
-# )
+parser.add_argument(
+    "--seed",
+    type=int,
+    help="random seed to generate the environment with",
+    default=20
+)
 
 args = parser.parse_args()
 
 env = gym.make(args.env)
+env.seed( args.seed )
 
 # MiniGrid-LavaGapS5-v0
 
@@ -48,7 +49,7 @@ env = gym.make(args.env)
 # env = FullyObsWrapper(env)
 # env = FlatObsWrapper(env)
 # env = ImgObsWrapper(env) # Get rid of the 'mission' fields
-env = ca.MyFlatObsWrapper(env)                      # convert environment 5*5*3 grid  from tensor to [1...n] array  and append selected action.
+env = ca.FlatObsImageOnlyWrapper(env)                      # convert environment 5*5*3 grid  from tensor to [1...n] array  and append selected action.
 env = GridworldInteractionFileLoggerWrapper(env)    # classify state/action to safe/unsafe category based on Done flag & reward=0 and store examples into .queries file
 env = RestQueryStateWrapper(env)                    # query each state/action from CA Network
 # env = RGBImgPartialObsWrapper(env) # Get pixel observations
@@ -60,7 +61,7 @@ model = PPO("MlpPolicy", env, verbose=1)
 
 
 # Train the agent for 10000 steps
-model.learn(total_timesteps=90000) # change 1 to 10000 (prod)
+model.learn(total_timesteps=30000) # change 1 to 10000 (prod)
 # try:
 #     with open('/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_' + str(
 #         1) + ".queries", 'w') as f:
