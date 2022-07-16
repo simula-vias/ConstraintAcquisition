@@ -51,10 +51,11 @@ def mask_fn_lavagrid(env: gym.Env) -> np.ndarray:
     obs = env.unwrapped.gen_obs()
     # forward_cell = obs["image"][7//2, 7-2]
     forward_cell =  obs["image"][env.front_pos[0],env.front_pos[1]] #get front position from environment
-    action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
-
-    if np.all(forward_cell == [9, 0, 0]):
-        action_mask[2] = False
+    # action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
+    observation = obs['image']
+    action_mask = ca.gen_safe_actions(observation.flatten(),env)
+    # if np.all(forward_cell == [9, 0, 0]):
+    #     action_mask[2] = False
 
     return action_mask
 

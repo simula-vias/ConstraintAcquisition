@@ -1,6 +1,6 @@
 import json
 import time
-
+import gym
 
 import operator
 from collections import Counter
@@ -21,8 +21,8 @@ hlogs = set()
 salogs = set()
 cacheObsr = set()
 N = 1
-
-
+cacheCAserver = dict()
+server_health = None
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):
     server_health = None
@@ -50,16 +50,22 @@ class RestQueryStateWrapper(ObservationWrapper):
                 prev_stat = prev_stat + " " + str(int(s))
             databody = str(prev_stat) + " " + str(int(action))
             # databody = str.replace(databody,","," ")
+            newdata = True if ( databody in cacheCAserver) else False
 
-        try:
-            if (self.server_health):
-                response = requests.post("http://192.168.1.107:7044/check/line",data=databody)
-                restr = response.content.decode("utf-8")
+            if (self.server_health and newdata):
+                # response = requests.post("http://192.168.1.107:7044/check/line",data=databody)
+                restr = queryCAServer(self,databody)
+                if (restr == ""):
+                    self.server_health=False
+
+                    # response.content.decode("utf-8")
                 # print(restr)
                 if restr.__contains__('NEGATIVE'):
                     print(databody)
                     print("un-safe observation is detected,action replaced with <left> action")
                     action = 0
+                    if newdata:
+                        cacheCAserver.add(databody,False)
                     self.counter["negative"] += 1
                 elif restr.__contains__('POSITIVE'):
                     time.sleep(0.05)
@@ -67,22 +73,19 @@ class RestQueryStateWrapper(ObservationWrapper):
                         salogs.add(databody)
                         # print(databody)
                         # print("positive counter :",self.posCounter)
-                        self.counter["negative"] += 1
+                        if newdata:
+                            cacheCAserver.add(databody, True)
+                        self.counter["positive"] += 1
                     # print("action is possitive and allowed")
+                elif restr == "":
+                    pass
                 else:
                     # print(databody)
                     print("uncertain observation is detected")
+                    if newdata:
+                        cacheCAserver.add(databody, True)
                     self.counter["uncertain"] += 1
-
                 print(self.counter)
-        except requests.exceptions.HTTPError as error:
-            self.server_health = False
-            print(error)
-        except requests.exceptions.ConnectionError as cerror:
-            self.server_health = False
-            print(cerror)
-        except requests.exceptions.Timeout as terror:
-            print(terror)
 
         # if (response != None and response.status_code == 200):
         #     print(response.content)
@@ -429,66 +432,6 @@ class LavaAvoidanceWrapper(core.Wrapper):
         return self.prev_obs
 
 
-# class GridworldInteractionLoggerWrapper(ObservationWrapper):
-#     def __init__(self, env, db_file=":memory:"):
-#         super(GridworldInteractionLoggerWrapper, self).__init__(env)
-#         self.prev_obs = None
-#
-#         self.cell_mapping = {}
-#         self.env_name = type(env.envs[0]).__name__
-#         self.db = sqlite3.connect(db_file)
-#         self.setup_db()
-#
-#     def setup_db(self):
-#         cur = self.db.cursor()
-#         cur.execute("CREATE TABLE IF NOT EXISTS logs (data json);")
-#         cur.execute("""PRAGMA synchronous = EXTRA""")
-#         cur.execute("""PRAGMA journal_mode = WAL""")
-#         # cur.execute("BEGIN TRANSACTION")
-#
-#     def reset(self, **kwargs):
-#         self.prev_obs = super(GridworldInteractionLoggerWrapper, self).reset(**kwargs)
-#         return self.prev_obs
-#
-#     def step(self, action):
-#         observation, reward, done, info = self.env.step(action)
-#
-#         logs = []
-#         for obs, a, r, next_obs, d, i in zip(
-#                 self.prev_obs, action, reward, observation, done, info
-#         ):
-#             obs_vars = self._build_var_vector(None, obs)
-#             next_obs_vars = self._build_var_vector(None, next_obs)
-#             logs.append(
-#                 (
-#                     json.dumps(
-#                         {
-#                             "variables": obs_vars,
-#                             "next_variables": next_obs_vars,
-#                             "observation": obs,
-#                             "next_observation": next_obs,
-#                             "action": int(a),
-#                             "reward": r,
-#                             "done": d,
-#                             "info": i,
-#                             "env": self.env_name,
-#                         },
-#                         cls=NumpyEncoder,
-#                     ),
-#                 )
-#             )
-#
-#         self.db.executemany("INSERT INTO logs VALUES (?);", logs)
-#         # print(data, res)
-#         self.db.commit()
-#         self.prev_obs = observation
-#         return observation, reward, done, info
-#
-#     def _build_var_vector(self, action, obs):
-#         return _build_var_vector(action, obs, self.cell_mapping)
-#
-#     def observation(self, observation):
-#         return observation
 
 
 # class ActionReplacementWrapper(ParallelConstraintWrapper):
@@ -547,45 +490,6 @@ class LavaAvoidanceWrapper(core.Wrapper):
 #         pass
 
 
-# class ActionReplacementWrapperMQ(ActionReplacementWrapper):
-#     def __init__(self, env, solver="native"):
-#         super(ActionReplacementWrapperMQ, self).__init__(env, solver)
-#         # ZeroMQ
-#         self.mq_context = zmq.Context()
-#         self.socket = self.mq_context.socket(zmq.REQ)
-#         self.socket.connect("tcp://localhost:33154")
-#         self.queried_set = set()
-#         self.queried_total = 0
-#         self.safe_states = set()
-#
-#     def _send_training_example(self, var_dict):
-#         msg_string = json.dumps(var_dict)
-#         msg_string_hash = hash(msg_string)
-#
-#         if msg_string_hash not in self.state_set:
-#             self.socket.send_string(msg_string)
-#             self.socket.recv()  # Receive response, but ignore result
-#             self.state_set.add(msg_string_hash)
-#
-#     def _query_state(self, var_dict) -> bool:
-#         msg_string = json.dumps(var_dict)
-#         # if msg_string_hash in self.safe_states:
-#
-#         self.socket.send_string(msg_string)
-#
-#         msg_string_hash = hash(msg_string)
-#         self.queried_set.add(msg_string_hash)
-#         self.queried_total += 1
-#
-#         if self.queried_total % 500 == 0:
-#             print(
-#                 f"{self.queried_total} queries / {len(self.queried_set) / self.queried_total} unique"
-#             )
-#
-#         # Wait for response
-#         resp = self.socket.recv()
-#         is_safe = not json.loads(resp)["result"]
-#         return is_safe
 
 
 # class ActionReplacementWrapperDb(ActionReplacementWrapper):
@@ -638,6 +542,41 @@ class LavaAvoidanceWrapper(core.Wrapper):
 #
 #     return variables
 
+def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
+    action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
+    for i in range(env.unwrapped.action_space.n):
+        observation_str = ' '.join([str(int(elem)) for elem in obs])
+        obs_action_pair = observation_str + " " + str(int(7 if i==0 else i))
+
+        # Send new observation/action pair to CA, if not already in cache
+        if obs_action_pair  in cacheCAserver:
+            action_mask[i]= cacheCAserver.get(obs_action_pair)
+        else:
+            result = False if queryCAServer(obs_action_pair).__contains__("NEGATIVE") else True
+            action_mask[i] = result
+
+            cacheCAserver.update({obs_action_pair:result})
+    return action_mask
+
+
+
+def queryCAServer(data_body)-> str:
+
+        try:
+                response = requests.post("http://localhost:7044/check/line",data=data_body)
+                restr = response.content.decode("utf-8")
+                # print(restr)
+                return restr
+
+        except requests.exceptions.HTTPError as error:
+            print(error)
+        except requests.exceptions.ConnectionError as cerror:
+
+            print(cerror)
+        except requests.exceptions.Timeout as terror:
+            print(terror)
+
+        return ""
 
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
