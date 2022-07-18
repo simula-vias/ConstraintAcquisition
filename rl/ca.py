@@ -112,6 +112,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     # N = 1
     negq = 0
     posq = 0
+    steps = 0
     MaxRecordsNumber = 1000
 
     # TODO :   add duplicate checker before store observaion
@@ -163,20 +164,25 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         observation_str = ' '.join([str(int(elem)) for elem in self.prev_obs])
         obs_action_pair = observation_str + " " + str(int(action))
 
+        # HS: This is lavagap/gridworld specific
+        is_safe = (not done) or (done and reward > 0)
+
+        self.steps += 1
+
+        if is_safe:
+            self.posq = self.posq + 1
+        else:
+            self.negq = self.negq + 1
+
         # Send new observation/action pair to CA, if not already in cache
         if obs_action_pair not in cacheObsr:
             cacheObsr.add(obs_action_pair)
 
-            # HS: This is lavagap/gridworld specific
-            is_safe = (not done) or (done and reward > 0)
-
             if is_safe:
                 record = obs_action_pair + " 1"
-                self.posq = self.posq + 1
                 print('a SAFE observation added , queries size :', self.posq)
             else:
                 record = obs_action_pair + " 0"
-                self.negq = self.negq + 1
                 print('a un-safe observation added , queries size :', self.negq)
                 self.reset()
             LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
