@@ -63,7 +63,7 @@ def mask_fn_lavagrid(env: gym.Env) -> np.ndarray:
 
 # Flattens the image observation and removes the mission field (we don't care about it)
 env = ca.FlatObsImageOnlyWrapper(env)
-
+env = ca.GridworldInteractionFileLoggerWrapper(env)
 # This is the new wrapper for action masking
 env = ActionMasker(env, mask_fn_lavagrid)
 
@@ -79,7 +79,7 @@ obs = env.reset()
 model = MaskablePPO("MlpPolicy", env, verbose=1)
 
 # Train the agent for 10000 steps
-model.learn(total_timesteps=30000)  # change 1 to 10000 (prod)
+model.learn(total_timesteps=10000)  # change 1 to 10000 (prod)
 # Evaluate the trained agent
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1000) # change 1 to 100 (prod)
 
