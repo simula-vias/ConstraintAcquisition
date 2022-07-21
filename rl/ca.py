@@ -1,4 +1,5 @@
 import json
+import os
 import time
 import gym
 
@@ -19,10 +20,13 @@ from gym import error, spaces, utils, core
 
 hlogs = set()
 salogs = set()
-cacheObsr = set()
+cacheObsr = dict()
 N = 1
 cacheCAserver = dict()
 server_health = None
+CACalls = 0
+CACache = 0
+CASkipAction = 0
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):
     server_health = None
@@ -82,10 +86,14 @@ class RestQueryStateWrapper(ObservationWrapper):
                 else:
                     # print(databody)
                     print("uncertain observation is detected")
-                    if newdata:
-                        cacheCAserver.add(databody, True)
+                    # if newdata:
+                    #     cacheCAserver.add(databody, True)
                     self.counter["uncertain"] += 1
-                print(self.counter)
+
+            # else:
+                # add get data from cache.
+                # count the cache counters
+
 
         # if (response != None and response.status_code == 200):
         #     print(response.content)
@@ -112,6 +120,8 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     # N = 1
     negq = 0
     posq = 0
+    negq_dup = 0
+    posq_dup = 0
     MaxRecordsNumber = 1000
 
     # TODO :   add duplicate checker before store observaion
@@ -131,16 +141,25 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         super(GridworldInteractionFileLoggerWrapper, self).__init__(env)
         LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
         try:
-            with open(LOGFILE, "r") as f:
-                records = f.readlines()
-                for record in records:
-                    obs_action_pair = record[:len(record)-3]
-                    if obs_action_pair not in cacheObsr:
-                        cacheObsr.add(obs_action_pair)
-            print("The existing observation records cached :", len(cacheObsr))
+            if os.path.exists(LOGFILE):
+                os.remove(LOGFILE)
         except FileNotFoundError:
-            print("no initial observation records detected")
+            print("not able to delete old log .queries file")
+        except PermissionError:
+            print("not have permission to delete the old .queries file")
 
+        # for reading existing file
+        # try: # TODO : delete query file....
+        #     with open(LOGFILE, "r") as f:
+        #         records = f.readlines()
+        #         for record in records:
+        #             obs_action_pair = record[:len(record)-3]
+        #             if obs_action_pair not in cacheObsr:
+        #                 cacheObsr.add(obs_action_pair)
+        #     print("The existing observation records cached :", len(cacheObsr))
+        # except FileNotFoundError:
+        #     print("no initial observation records detected")
+        # for reading existing file
         self.prev_obs = None
 
     def reset(self, **kwargs):
@@ -163,9 +182,12 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         observation_str = ' '.join([str(int(elem)) for elem in self.prev_obs])
         obs_action_pair = observation_str + " " + str(int(action))
 
+        # HS: This is lavagap/gridworld specific
+        is_safe = (not done) or (done and reward > 0)
+
         # Send new observation/action pair to CA, if not already in cache
-        if obs_action_pair not in cacheObsr:
-            cacheObsr.add(obs_action_pair)
+        if not obs_action_pair in cacheObsr:
+
 
             # HS: This is lavagap/gridworld specific
             is_safe = (not done) or (done and reward > 0)
@@ -173,15 +195,26 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
             if is_safe:
                 record = obs_action_pair + " 1"
                 self.posq = self.posq + 1
+                cacheObsr.update({obs_action_pair:True})
                 print('a SAFE observation added , queries size :', self.posq)
             else:
                 record = obs_action_pair + " 0"
                 self.negq = self.negq + 1
+                cacheObsr.update({obs_action_pair: False})
                 print('a un-safe observation added , queries size :', self.negq)
                 self.reset()
             LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
             with open(LOGFILE, "a") as f:
                 f.write(record + "\n")
+        else:
+            if is_safe:
+                self.posq_dup +=1
+                print('a SAFE duplicate observation visited , queries size :', self.posq_dup)
+            else:
+                record = obs_action_pair + " 0"
+                self.negq_dup += 1
+                print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
+                self.reset()
 
         if not done:
             self.prev_obs = observation
@@ -433,129 +466,40 @@ class LavaAvoidanceWrapper(core.Wrapper):
 
 
 
-
-# class ActionReplacementWrapper(ParallelConstraintWrapper):
-#     def __init__(self, env, solver="native"):
-#         super(ActionReplacementWrapper, self).__init__(env)
-#
-#         self.solver = solver
-#
-#         if solver != "native":
-#             self.pool.close()
-#             self.pool = None
-#
-#         self.default_action = MiniGridEnv.Actions.right
-#         self.cell_mapping = {(-1, -1): 0}
-#
-#         self.state_set = set([])
-#
-#         # TODO Cache queries that cannot change; only CA positive case?
-#         self.query_cache = {}
-#
-#     def step(self, action):
-#         try:
-#             safe_actions = []
-#             var_dicts = []
-#             for a, o in zip(action, self.prev_obs):
-#                 new_action, var_dict = self._replace_action(a, o)
-#                 safe_actions.append(new_action)
-#                 var_dicts.append(var_dict)
-#         except TypeError as e:
-#             safe_actions, var_dicts = self._replace_action(action, self.prev_obs)
-#
-#         self.prev_obs, reward, done, info = self.env.step(safe_actions)
-#
-#         for var_dict, r in zip(var_dicts, reward):
-#             var_dict["label"] = r < 0  # TODO Define safety definition function
-#             self._send_training_example(var_dict)
-#
-#         return self.prev_obs, reward, done, info
-#
-#     def _replace_action(self, action, prev_obs):
-#         var_dict = {"variables": self._build_var_vector(action, prev_obs)}
-#         is_safe = self._query_state(var_dict)
-#
-#         if not is_safe:
-#             return self.default_action, var_dict
-#         else:
-#             return action, var_dict
-#
-#     def _build_var_vector(self, action, obs):
-#         return _build_var_vector(action, obs, self.cell_mapping)
-#
-#     def _send_training_example(self, var_dict):
-#         pass
-#
-#     def _query_state(self, var_dict) -> bool:
-#         pass
-
-
-
-
-# class ActionReplacementWrapperDb(ActionReplacementWrapper):
-#     def __init__(self, env, solver="native"):
-#         super(ActionReplacementWrapperDb, self).__init__(env, solver)
-#
-#         # TODO Connect to database
-#         raise NotImplementedError()
-#
-#     def _send_training_example(self, var_dict):
-#         raise NotImplementedError()
-#
-#     def _replace_action(self, action, prev_obs):
-#         example = {"variables": self._build_var_vector(action, prev_obs)}
-#         self.socket.send_string(json.dumps(example))
-#
-#         # Wait for response
-#         resp = self.socket.recv()
-#         is_safe = json.loads(resp)["result"]
-#
-#         if not is_safe:
-#             return self.default_action, example
-#         else:
-#             return action, example
-
-
-# def _build_var_vector(action: int, obs: Dict, mapping_dict: Dict) -> List[int]:
-#     variables = []
-#
-#     for c in obs["image"].reshape((-1, obs["image"].shape[-1])):
-#         cell = tuple(c[0:2])
-#
-#         if cell not in mapping_dict:
-#             mapping_dict[cell] = len(mapping_dict)
-#
-#         variables.append(mapping_dict[cell])
-#
-#     for it in obs["inventory"]:
-#         item = tuple(it)
-#
-#         if item not in mapping_dict:
-#             mapping_dict[item] = len(mapping_dict)
-#
-#         variables.append(mapping_dict[item])
-#
-#     variables.append(int(obs["direction"]))
-#
-#     if action is not None:
-#         variables.append(int(action))
-#
-#     return variables
-
 def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
     action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
+    observation_str = ' '.join([str(int(elem)) for elem in obs])
+
     for i in range(env.unwrapped.action_space.n):
-        observation_str = ' '.join([str(int(elem)) for elem in obs])
         obs_action_pair = observation_str + " " + str(int(7 if i==0 else i))
+        result = True
+        # observation/action pair exists cache,
+        if obs_action_pair in cacheObsr:
+            action_mask[i] = cacheCAserver.get(obs_action_pair)
+            global CACache
+            CACache +=1
 
-        # Send new observation/action pair to CA, if not already in cache
-        if obs_action_pair  in cacheCAserver:
-            action_mask[i]= cacheCAserver.get(obs_action_pair)
+            print("existing Q-observation/action get from CA Server cache:", CACache)
         else:
-            result = False if queryCAServer(obs_action_pair).__contains__("NEGATIVE") else True
-            action_mask[i] = result
+            # Send new observation/action pair to CA, if not already in cache
+            QResultStr = queryCAServer(obs_action_pair);
+            global CACalls
+            CACalls +=1
+            print("new Q-observation/action called to CA Server:",CACalls)
 
-            cacheCAserver.update({obs_action_pair:result})
+
+            if QResultStr.__contains__("NEGATIVE"):
+                result=False
+
+            if (not result):
+                global CASkipAction
+                CASkipAction += 1
+                print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
+            #grant action per result
+            action_mask[i] = result
+            # insert new observation into cache
+            if not QResultStr.__contains__("UNKNOWN"):
+                cacheObsr.update({obs_action_pair:result})
     return action_mask
 
 
@@ -565,18 +509,18 @@ def queryCAServer(data_body)-> str:
         try:
                 response = requests.post("http://localhost:7044/check/line",data=data_body)
                 restr = response.content.decode("utf-8")
+                time.sleep(0.05)
                 # print(restr)
                 return restr
 
         except requests.exceptions.HTTPError as error:
             print(error)
         except requests.exceptions.ConnectionError as cerror:
-
             print(cerror)
         except requests.exceptions.Timeout as terror:
             print(terror)
 
-        return ""
+        return "UNKNOWN"
 
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
