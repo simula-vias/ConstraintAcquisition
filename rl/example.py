@@ -55,7 +55,7 @@ env = RestQueryStateWrapper(env)                    # query each state/action fr
 # env = RGBImgPartialObsWrapper(env) # Get pixel observations
 # env = ImgObsWrapper(env) # Get rid of the 'mission' field
 # obs = env.reset()
-model = PPO("MlpPolicy", env, verbose=1)
+model = PPO("MlpPolicy", env, verbose=1, seed=args.seed)
 # model = A2C(ActorCriticPolicy, env, verbose=1,seed=1)
 
 
