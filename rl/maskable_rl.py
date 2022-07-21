@@ -50,7 +50,7 @@ env = gym.make(args.env)
 def mask_fn_lavagrid(env: gym.Env) -> np.ndarray:
     obs = env.unwrapped.gen_obs()
     # forward_cell = obs["image"][7//2, 7-2]
-    forward_cell = obs["image"][env.front_pos[0],env.front_pos[1]] #get front position from environment
+    forward_cell =  obs["image"][env.front_pos[0],env.front_pos[1]] #get front position from environment
     # action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
     observation = obs['image']
     action_mask = ca.gen_safe_actions(observation.flatten(),env)
@@ -63,11 +63,11 @@ def mask_fn_lavagrid(env: gym.Env) -> np.ndarray:
 
 # Flattens the image observation and removes the mission field (we don't care about it)
 env = ca.FlatObsImageOnlyWrapper(env)
-env = ca.GridworldInteractionFileLoggerWrapper(env)
+
 # This is the new wrapper for action masking
 env = ActionMasker(env, mask_fn_lavagrid)
 
-env = Monitor(env,filename="../benchmarks/queries/minigrid/monitor.log")  # from sb3 for logging
+env = Monitor(env)  # from sb3 for logging
 
 # front_pos = [0,1,2] + env.unwrapped.gr
 # 78,79,80
@@ -79,8 +79,8 @@ obs = env.reset()
 model = MaskablePPO("MlpPolicy", env, verbose=1)
 
 # Train the agent for 10000 steps
-model.learn(total_timesteps=10000)  # change 1 to 10000 (prod)
+model.learn(total_timesteps=30000)  # change 1 to 10000 (prod)
 # Evaluate the trained agent
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1000) # change 1 to 100 (prod)
-print("CA Call new Q: ",ca.CACalls,"CA Call existing Q :",ca.CACache,"CA skips Actions: ",ca.CASkipAction,)
+
 print(f"mean_reward:{mean_reward:.2f} +/- {std_reward:.2f}")
