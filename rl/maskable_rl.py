@@ -67,7 +67,7 @@ env = ca.GridworldInteractionFileLoggerWrapper(env)
 # This is the new wrapper for action masking
 env = ActionMasker(env, mask_fn_lavagrid)
 
-env = Monitor(env)  # from sb3 for logging
+env = Monitor(env,filename="../benchmarks/queries/minigrid/minigrid.monitor.csv")  # from sb3 for logging
 
 # front_pos = [0,1,2] + env.unwrapped.gr
 # 78,79,80
