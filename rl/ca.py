@@ -27,6 +27,7 @@ server_health = None
 CACalls = 0
 CACache = 0
 CASkipAction = 0
+dup_diff_results =0
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):
     server_health = None
@@ -211,6 +212,9 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
             with open(LOGFILE, "a") as f:
                 f.write(record + "\n")
         else:
+            if (cacheObsr.get(obs_action_pair)!= is_safe):
+                global dup_diff_results
+                dup_diff_results = dup_diff_results +1
             if is_safe:
                 self.posq_dup +=1
                 print('a SAFE duplicate observation visited , queries size :', self.posq_dup)
@@ -479,7 +483,13 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
         result = True
         # observation/action pair exists cache,
         if obs_action_pair in cacheObsr:
-            action_mask[i] = cacheCAserver.get(obs_action_pair)
+            result = cacheObsr.get(obs_action_pair)
+            action_mask[i] = result
+            if (not result):
+                global CASkipAction
+                CASkipAction += 1
+                print("un-safe Q-observation/action prevented by make action illegal from cache:",CASkipAction)
+
             global CACache
             CACache +=1
 
@@ -496,7 +506,7 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
                 result=False
 
             if (not result):
-                global CASkipAction
+                # global CASkipAction
                 CASkipAction += 1
                 print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
             #grant action per result

@@ -61,7 +61,7 @@ model = PPO("MlpPolicy", env, verbose=1, seed=args.seed)
 
 
 # Train the agent for 10000 steps
-model.learn(total_timesteps=30000) # change 1 to 10000 (prod)
+model.learn(total_timesteps=10000) # change 1 to 10000 (prod)
 # try:
 #     with open('/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid_' + str(
 #         1) + ".queries", 'w') as f:

@@ -76,3 +76,4 @@ logFiles/CL.log
 rl/.idea/workspace.xml
 benchmarks/queries/minigrid/monitor.log.monitor.csv
 benchmarks/queries/minigrid/minigrid.monitor.csv
+benchmarks/queries/minigrid/minigrid.monitor_CA.csv

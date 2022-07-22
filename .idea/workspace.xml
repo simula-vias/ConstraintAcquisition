@@ -32,7 +32,6 @@
       <change beforePath="$PROJECT_DIR$/benchmarks/queens/queens_8.bias" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queens/queens_8.bias" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queens/queens_8.target" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queens/queens_8.target" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/exm8/exm8.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/exm8/exm8.queries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/queries/minigrid/monitor.log.monitor.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/scheduling00.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/scheduling00.queries" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/sudoku9.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/sudoku9.queries" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/queries/toy1.queries" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/queries/toy1.queries" afterDir="false" />
@@ -94,6 +93,7 @@
       <change beforePath="$PROJECT_DIR$/rl/.idea/rl.iml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/rl.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/ca.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/ca.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/envs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/envs/minigrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/minigrid.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/example.py" afterDir="false" />
