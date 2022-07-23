@@ -18,6 +18,8 @@ from multiprocessing import Pool
 import gym_minigrid.minigrid as mg
 from gym import error, spaces, utils, core
 
+import ca
+
 hlogs = set()
 salogs = set()
 cacheObsr = dict()
@@ -141,6 +143,11 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
     def __init__(self, env):
         super(GridworldInteractionFileLoggerWrapper, self).__init__(env)
+        LOGFILE = "../benchmarks/queries/minigrid.logs"
+        with open(LOGFILE, "a") as g:
+                logger = "episode_len,"+"rewards,"+"steps,"+"Refer to Obs/Action Cache,"+"refer to CA Result Cache,"+"CA Server Calls,"+"Obs/Action Cache Size,"+"obs/action class differ from CA Result,"+"Skip unsafe Actions,"+"positive queries,"+"negative queries,"+"dup. positive queries,"+"dup. negative queries"
+                g.write(logger + "\n")
+
         LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
         try:
             if os.path.exists(LOGFILE):
@@ -207,6 +214,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 self.negq = self.negq + 1
                 cacheObsr.update({obs_action_pair: False})
                 print('a SAFE observation added , queries size :', self.posq)
+
                 self.reset()
             LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
             with open(LOGFILE, "a") as f:
@@ -224,6 +232,11 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
                 self.reset()
 
+        LOGFILE = "../benchmarks/queries/minigrid.logs"
+        with open(LOGFILE, "a") as g:
+            if done:
+                logger =str(self.env.step_count)+","+str(reward)+","+ str(self.steps)+","+str(ca.CACache)+","+str(len(ca.cacheCAserver))+","+str(ca.CACalls)+","+str(len(ca.cacheObsr))+","+str(ca.dup_diff_results)+","+str(ca.CASkipAction)+","+str(self.posq)+","+str(self.negq)+","+ str(self.posq_dup)+","+str(self.negq_dup)+","
+                g.write(logger + "\n")
         if not done:
             self.prev_obs = observation
         return observation, reward, done, info

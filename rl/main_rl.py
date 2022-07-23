@@ -15,12 +15,13 @@ from stable_baselines3.common.env_checker import check_env
 import argparse
 from gym_minigrid.window import Window
 
-from sb3_contrib import MaskablePPO
-from sb3_contrib.common.maskable.evaluation import evaluate_policy
-# from stable_baselines3.common.evaluation import evaluate_policy
+# from sb3_contrib import MaskablePPO
+# from sb3_contrib.common.maskable.evaluation import evaluate_policy
+from stable_baselines3.common.evaluation import evaluate_policy
 from sb3_contrib.common.wrappers import ActionMasker
 
 import numpy as np
+from stable_baselines3.common.logger import configure
 
 # Set the environment; minigrid names are registered in envs/__init__.py
 # env = gym.make('MiniGrid-Combination-Picker-8x8-v0')
@@ -64,7 +65,7 @@ env = ca.FlatObsImageOnlyWrapper(env)
 env = ca.GridworldInteractionFileLoggerWrapper(env)
 
 # This is the new wrapper for action masking
-env = ActionMasker(env, mask_fn_lavagrid)
+# env = ActionMasker(env, mask_fn_lavagrid)
 
 env = Monitor(env,filename="../benchmarks/queries/minigrid/minigrid.monitor.csv")  # from sb3 for logging
 
@@ -75,14 +76,17 @@ env = Monitor(env,filename="../benchmarks/queries/minigrid/minigrid.monitor.csv"
 
 obs = env.reset()
 # This is the PPO version that allows action masks; without ActionMasker it behaves the same as the normal PPO
-model = MaskablePPO("MlpPolicy", env, verbose=1)
+# model = MaskablePPO("MlpPolicy", env, verbose=1)
 #
-# model = PPO("MlpPolicy", env, verbose=1)
+model = PPO("MlpPolicy", env, verbose=1)
 # Train the agent for 10000 steps
+new_logger = configure("../benchmarks/queries/minigrid/minigrid_main.logger",["stdout", "csv"])
+model.set_logger(new_logger)
+
 model.learn(total_timesteps=30000)  # change 1 to 10000 (prod)
 # Evaluate the trained agent
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1000) # change 1 to 100 (prod)
 
 print(f"mean_reward:{mean_reward:.2f} +/- {std_reward:.2f}")
 
-print("call to CA Server : ",ca.CACalls, "obtain from  .queries Cache : ", ca.CACache,"Skip false actions ", ca.CASkipAction,".queries cache size: ", len(ca.cacheObsr),"CA Server cache size: ", len(ca.cacheCAserver),"Result mismatch bet CA server & cache .queries : ",ca.dup_diff_results,sep="\n")
+# print("positive size",ca.posq,"\nnegative size",ca.negq,"\ncall to CA Server : ",ca.CACalls, "\nobtain from  .queries Cache : ", ca.CACache,"\nSkip false actions ", ca.CASkipAction,"\n.queries cache size: ", len(ca.cacheObsr),"\nCA Server cache size: ", len(ca.cacheCAserver),"\nResult mismatch bet CA server & cache .queries : ",ca.dup_diff_results)

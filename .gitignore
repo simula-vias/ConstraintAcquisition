@@ -77,3 +77,10 @@ rl/.idea/workspace.xml
 benchmarks/queries/minigrid/monitor.log.monitor.csv
 benchmarks/queries/minigrid/minigrid.monitor.csv
 benchmarks/queries/minigrid/minigrid.monitor_CA.csv
+benchmarks/queries/minigrid.logs.csv
+benchmarks/queries/minigrid/minigrid.logger/progress.csv
+benchmarks/queries/minigrid.logs
+benchmarks/queries/minigrid/minigrid_main.logger/progress.csv
+benchmarks/queries/minigrid/main_ppo_rl_20220723.rar
+benchmarks/queries/minigrid/minigrid.logs
+rl/.idea/workspace.xml
