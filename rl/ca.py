@@ -28,6 +28,7 @@ cacheCAserver = dict()
 server_health = None
 CACalls = 0
 CACache = 0
+RLCache = 0
 CASkipAction = 0
 dup_diff_results =0
 # Morena REST Wrapper
@@ -143,9 +144,9 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
     def __init__(self, env):
         super(GridworldInteractionFileLoggerWrapper, self).__init__(env)
-        LOGFILE = "../benchmarks/queries/minigrid.logs"
-        with open(LOGFILE, "a") as g:
-                logger = "episode_len,"+"rewards,"+"steps,"+"Refer to Obs/Action Cache,"+"refer to CA Result Cache,"+"CA Server Calls,"+"Obs/Action Cache Size,"+"obs/action class differ from CA Result,"+"Skip unsafe Actions,"+"positive queries,"+"negative queries,"+"dup. positive queries,"+"dup. negative queries"
+        LOGS = "../benchmarks/queries/minigrid.logs"
+        with open(LOGS, "a") as g:
+                logger = "episode_len,"+"rewards,"+"steps,"+"Refer to Obs/Action Cache,"+"refer to CA Result Cache,"+"CA Server Calls,"+"Obs/Action Cache Size,"+"obs/action class differ from CA Result,"+"Skip unsafe Actions,"+"positive queries,"+"negative queries,"+"dup. positive queries,"+"dup. negative queries,"+"RLCachse"
                 g.write(logger + "\n")
 
         LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
@@ -223,6 +224,11 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
             if (cacheObsr.get(obs_action_pair)!= is_safe):
                 global dup_diff_results
                 dup_diff_results = dup_diff_results +1
+                if is_safe:
+                        print("the state/Action cache was :"+str(cacheObsr.get(obs_action_pair)), "and now become SAFE")
+                else:
+                        print("the state/Action cache was :" + str(cacheObsr.get(obs_action_pair)), "and now become UN-SAFE")
+
             if is_safe:
                 self.posq_dup +=1
                 print('a SAFE duplicate observation visited , queries size :', self.posq_dup)
@@ -232,10 +238,10 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
                 self.reset()
 
-        LOGFILE = "../benchmarks/queries/minigrid.logs"
-        with open(LOGFILE, "a") as g:
+        LOGS = "../benchmarks/queries/minigrid.logs"
+        with open(LOGS, "a") as g:
             if done:
-                logger =str(self.env.step_count)+","+str(reward)+","+ str(self.steps)+","+str(ca.CACache)+","+str(len(ca.cacheCAserver))+","+str(ca.CACalls)+","+str(len(ca.cacheObsr))+","+str(ca.dup_diff_results)+","+str(ca.CASkipAction)+","+str(self.posq)+","+str(self.negq)+","+ str(self.posq_dup)+","+str(self.negq_dup)+","
+                logger =str(self.env.step_count)+","+str(reward)+","+ str(self.steps)+","+str(ca.CACache)+","+str(len(ca.cacheCAserver))+","+str(ca.CACalls)+","+str(len(ca.cacheObsr))+","+str(ca.dup_diff_results)+","+str(ca.CASkipAction)+","+str(self.posq)+","+str(self.negq)+","+ str(self.posq_dup)+","+str(self.negq_dup)+","+str(ca.RLCache)
                 g.write(logger + "\n")
         if not done:
             self.prev_obs = observation
@@ -503,30 +509,38 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
                 CASkipAction += 1
                 print("un-safe Q-observation/action prevented by make action illegal from cache:",CASkipAction)
 
-            global CACache
-            CACache +=1
+            global RLCache
+            RLCache +=1
 
-            print("existing Q-observation/action get from CA Server cache:", CACache)
+            print("existing Q-observation/action get from RL cache:", RLCache)
         else:
-            # Send new observation/action pair to CA, if not already in cache
-            QResultStr = queryCAServer(obs_action_pair);
-            global CACalls
-            CACalls +=1
-            print("new Q-observation/action called to CA Server:",CACalls)
+            if obs_action_pair in cacheCAserver:
+                result = cacheCAserver.get(obs_action_pair)
+                action_mask[i] = result
+                global CACache
+                CACache += 1
+
+                print("existing Q-observation/action get from CA Server cache:", CACache)
+            else:
+                # Send new observation/action pair to CA, if not already in cache
+                QResultStr = queryCAServer(obs_action_pair);
+                global CACalls
+                CACalls +=1
+                print("new Q-observation/action called to CA Server:",CACalls)
 
 
-            if QResultStr.__contains__("NEGATIVE"):
-                result=False
+                if QResultStr.__contains__("NEGATIVE"):
+                    result=False
 
-            if (not result):
-                # global CASkipAction
-                CASkipAction += 1
-                print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
-            #grant action per result
-            action_mask[i] = result
-            # insert new observation into cache
-            if not QResultStr.__contains__("UNKNOWN"):
-                cacheObsr.update({obs_action_pair:result})
+                if (not result):
+                    # global CASkipAction
+                    CASkipAction += 1
+                    print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
+                #grant action per result
+                action_mask[i] = result
+                # insert new observation into cache
+                if not QResultStr.__contains__("UNKNOWN"):
+                    cacheCAserver.update({obs_action_pair:result})
     return action_mask
 
 

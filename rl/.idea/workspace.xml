@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="239204cd-0997-4953-89e2-a0e6e0a6cb8e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/maskable_carl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
@@ -98,7 +97,8 @@
       <change beforePath="$PROJECT_DIR$/envs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/envs/minigrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/minigrid.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/example.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maskable_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_rl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_rl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maskable_carl.py" beforeDir="false" afterPath="$PROJECT_DIR$/maskable_carl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/BIOS.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../src/BIOS.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" afterDir="false" />
@@ -309,7 +309,7 @@
       <recent name="D:\BigData\MyWork\GitHub\ConstraintAcquisition\rl" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main_rl">
+  <component name="RunManager" selected="Python.maskable_carl (1)">
     <configuration name="ca" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -373,6 +373,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="maskable_carl (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="rl" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/maskable_carl.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="maskable_carl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -394,7 +415,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="minigrid" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="maskable_carl" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -402,11 +423,16 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv/Lib/site-packages/gym_minigrid" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/Lib/site-packages/gym_minigrid/minigrid.py" />
+      <EXTENSION ID="software.aws.toolkits.jetbrains.core.execution.PythonAwsConnectionExtension">
+        <option name="credential" />
+        <option name="region" />
+        <option name="useCurrentConnection" value="false" />
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/maskable_carl.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -417,11 +443,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.maskable_carl (1)" />
+        <item itemvalue="Python.maskable_carl" />
         <item itemvalue="Python.main_rl" />
         <item itemvalue="Python.maskable_carl" />
         <item itemvalue="Python.ca" />
-        <item itemvalue="Python.example" />
-        <item itemvalue="Python.minigrid" />
       </list>
     </recent_temporary>
   </component>
@@ -452,28 +478,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>174</line>
+          <line>175</line>
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>159</line>
-          <option name="timeStamp" value="65" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>150</line>
-          <option name="timeStamp" value="68" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/maskable_carl.py</url>
-          <line>53</line>
+          <line>50</line>
           <option name="timeStamp" value="72" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>121</line>
-          <option name="timeStamp" value="73" />
+          <url>file://$PROJECT_DIR$/maskable_carl.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="74" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -492,6 +508,7 @@
         <watch expression="self.prev_obs" language="Python" />
         <watch expression="self.grid[j * self.width + i] " language="Python" />
         <watch expression="j * self.width + i" language="Python" />
+        <watch expression="env.front_pos" language="Python" />
       </configuration>
     </watches-manager>
   </component>

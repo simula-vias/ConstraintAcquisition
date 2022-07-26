@@ -84,3 +84,4 @@ benchmarks/queries/minigrid/minigrid_main.logger/progress.csv
 benchmarks/queries/minigrid/main_ppo_rl_20220723.rar
 benchmarks/queries/minigrid/minigrid.logs
 rl/.idea/workspace.xml
+benchmarks/queries/minigrid_lavaCross.rar

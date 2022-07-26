@@ -97,7 +97,8 @@
       <change beforePath="$PROJECT_DIR$/rl/envs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/envs/minigrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/minigrid.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/example.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rl/maskable_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/maskable_rl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/main_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/main_rl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/maskable_carl.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/maskable_carl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/rl/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BIOS.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/BIOS.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" afterDir="false" />
