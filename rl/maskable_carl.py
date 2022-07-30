@@ -18,7 +18,7 @@ from sb3_contrib.common.wrappers import ActionMasker
 
 import numpy as np
 from stable_baselines3.common.logger import configure
-
+import bios as BIOS
 # Set the environment; minigrid names are registered in envs/__init__.py
 # env = gym.make('MiniGrid-Combination-Picker-8x8-v0')
 # env = gym.make("MiniGrid-Empty-5x5-v0")
@@ -28,7 +28,7 @@ parser.add_argument(
     "--env",
     help="gym environment to load",
     # default='MiniGrid-LavaGapS5-v0'
-    default='MiniGrid-LavaCrossingS9N1-v0'
+    default=BIOS.GYM_ENVIRONMENT
 )
 parser.add_argument(
     "--seed",
@@ -64,7 +64,7 @@ env = ca.GridworldInteractionFileLoggerWrapper(env)
 # This is the new wrapper for action masking
 env = ActionMasker(env, mask_fn_lavagrid)
 
-env = Monitor(env,filename="../benchmarks/queries/minigrid/minigrid.monitor.csv")  # from sb3 for logging
+env = Monitor(env,filename=BIOS.GYM_MONITOR_PATH)  # from sb3 for logging
 
 # front_pos = [0,1,2] + env.unwrapped.gr
 # 78,79,80
@@ -77,10 +77,10 @@ model = MaskablePPO("MlpPolicy", env, verbose=1)
 #
 # model = PPO("MlpPolicy", env, verbose=1)
 # Train the agent for 10000 steps
-new_logger = configure("../benchmarks/queries/minigrid/minigrid.logger",["stdout", "csv"])
+new_logger = configure(BIOS.GYM_LOGGER_PATH,["stdout", "csv"])
 model.set_logger(new_logger)
 
-model.learn(total_timesteps=30000) # change 1 to 10000 (prod)
+model.learn(total_timesteps=int(BIOS.TIMESTAMP)) # change 1 to 10000 (prod)
 # Evaluate the trained agent
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1000) # change 1 to 100 (prod)
 

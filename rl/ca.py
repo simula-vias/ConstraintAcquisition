@@ -17,7 +17,7 @@ from gym import ObservationWrapper
 from multiprocessing import Pool
 import gym_minigrid.minigrid as mg
 from gym import error, spaces, utils, core
-
+import bios as BIOS
 import ca
 
 hlogs = set()
@@ -31,6 +31,9 @@ CACache = 0
 RLCache = 0
 CASkipAction = 0
 dup_diff_results =0
+
+
+
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):
     server_health = None
@@ -144,12 +147,12 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
     def __init__(self, env):
         super(GridworldInteractionFileLoggerWrapper, self).__init__(env)
-        LOGS = "../benchmarks/queries/minigrid.logs"
+        LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
                 logger = "episode_len,"+"rewards,"+"steps,"+"Refer to Obs/Action Cache,"+"refer to CA Result Cache,"+"CA Server Calls,"+"Obs/Action Cache Size,"+"obs/action class differ from CA Result,"+"Skip unsafe Actions,"+"positive queries,"+"negative queries,"+"dup. positive queries,"+"dup. negative queries,"+"RLCachse"
                 g.write(logger + "\n")
 
-        LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
+        LOGFILE = BIOS.EXAMPLE_PATH
         try:
             if os.path.exists(LOGFILE):
                 os.remove(LOGFILE)
@@ -217,17 +220,22 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 print('a SAFE observation added , queries size :', self.posq)
 
                 self.reset()
-            LOGFILE = "../benchmarks/queries/minigrid/minigrid.queries"
+            LOGFILE = BIOS.EXAMPLE_PATH
             with open(LOGFILE, "a") as f:
                 f.write(record + "\n")
         else:
             if (cacheObsr.get(obs_action_pair)!= is_safe):
                 global dup_diff_results
-                dup_diff_results = dup_diff_results +1
+                dup_diff_results = dup_diff_results + 1
+
                 if is_safe:
                         print("the state/Action cache was :"+str(cacheObsr.get(obs_action_pair)), "and now become SAFE")
+                        # cacheObsr.update({obs_action_pair: True})
+                        # print(str(self.prev_obs)+" "+str(action))
                 else:
                         print("the state/Action cache was :" + str(cacheObsr.get(obs_action_pair)), "and now become UN-SAFE")
+                        # cacheObsr.update({obs_action_pair: False})
+                        # print(str(self.prev_obs)+" "+str(action))
 
             if is_safe:
                 self.posq_dup +=1
@@ -238,7 +246,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
                 self.reset()
 
-        LOGS = "../benchmarks/queries/minigrid.logs"
+        LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
             if done:
                 logger =str(self.env.step_count)+","+str(reward)+","+ str(self.steps)+","+str(ca.CACache)+","+str(len(ca.cacheCAserver))+","+str(ca.CACalls)+","+str(len(ca.cacheObsr))+","+str(ca.dup_diff_results)+","+str(ca.CASkipAction)+","+str(self.posq)+","+str(self.negq)+","+ str(self.posq_dup)+","+str(self.negq_dup)+","+str(ca.RLCache)
@@ -548,9 +556,10 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
 def queryCAServer(data_body)-> str:
 
         try:
-                response = requests.post("http://localhost:7044/check/line",data=data_body)
+
+                response = requests.post("http://"+BIOS.CAServerAddress+":"+BIOS.CAServerPort+"/check/line",data=data_body)
                 restr = response.content.decode("utf-8")
-                time.sleep(0.05)
+                time.sleep(float(BIOS.CAServerInterval))
                 # print(restr)
                 return restr
 

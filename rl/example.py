@@ -15,6 +15,7 @@ from stable_baselines3 import A2C
 from stable_baselines3.ppo.policies import ActorCriticPolicy
 from stable_baselines3.common.evaluation import evaluate_policy
 import argparse
+import bios as BIOS
 from gym_minigrid.window import Window
 
 # Set the environment; minigrid names are registered in envs/__init__.py
@@ -26,7 +27,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--env",
     help="gym environment to load",
-    default='MiniGrid-LavaGapS5-v0'
+    default=BIOS.GYM_ENVIRONMENT
 )
 parser.add_argument(
     "--seed",
