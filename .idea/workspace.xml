@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f78315d-38f8-492b-8aea-2e5ee86232c0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/rl/bios.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -94,6 +93,7 @@
       <change beforePath="$PROJECT_DIR$/rl/.idea/rl.iml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/rl.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rl/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rl/bios.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/bios.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/ca.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/ca.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/envs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/envs/minigrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/minigrid.py" afterDir="false" />

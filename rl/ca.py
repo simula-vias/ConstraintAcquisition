@@ -557,7 +557,7 @@ def queryCAServer(data_body)-> str:
 
         try:
 
-                response = requests.post("http://"+BIOS.CAServerAddress+":"+BIOS.CAServerPort+"/check/line",data=data_body)
+                response = requests.post("http://"+str(BIOS.CAServerIPAddress)+":"+str(BIOS.CAServerPort)+"/check/line",data=data_body)
                 restr = response.content.decode("utf-8")
                 time.sleep(float(BIOS.CAServerInterval))
                 # print(restr)
