@@ -147,6 +147,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
     def __init__(self, env):
         super(GridworldInteractionFileLoggerWrapper, self).__init__(env)
+
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
                 logger = "episode_len,"+"rewards,"+"steps,"+"Refer to Obs/Action Cache,"+"refer to CA Result Cache,"+"CA Server Calls,"+"Obs/Action Cache Size,"+"obs/action class differ from CA Result,"+"Skip unsafe Actions,"+"positive queries,"+"negative queries,"+"dup. positive queries,"+"dup. negative queries,"+"RLCachse"
@@ -195,20 +196,29 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         observation_str = ' '.join([str(int(elem)) for elem in self.prev_obs])
         obs_action_pair = observation_str + " " + str(int(action))
 
+
+
         # HS: This is lavagap/gridworld specific
-        is_safe = (not done) or (done and reward > 0)
+        is_safe = (not done) or (done and reward > 0 )
+        if (self.step_count == int(BIOS.MAX_EPISODE_STEPS)) :
+            is_safe = None
+            done = True
 
         self.steps += 1
 
-        if is_safe:
+        if is_safe is None:
+            pass
+        elif is_safe:
             self.posq = self.posq + 1
         else:
             self.negq = self.negq + 1
+
         # Send new observation/action pair to CA, if not already in cache
         if not obs_action_pair in cacheObsr:
 
-
-            if is_safe:
+            if is_safe is None:
+                pass
+            elif is_safe:
                 record = obs_action_pair + " 1"
                 self.posq = self.posq + 1
                 cacheObsr.update({obs_action_pair:True})
@@ -219,16 +229,19 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 cacheObsr.update({obs_action_pair: False})
                 print('a SAFE observation added , queries size :', self.posq)
 
-                self.reset()
+
             LOGFILE = BIOS.EXAMPLE_PATH
-            with open(LOGFILE, "a") as f:
+            if is_safe is not None:
+             with open(LOGFILE, "a") as f:
                 f.write(record + "\n")
         else:
             if (cacheObsr.get(obs_action_pair)!= is_safe):
                 global dup_diff_results
                 dup_diff_results = dup_diff_results + 1
 
-                if is_safe:
+                if is_safe is None:
+                    pass
+                elif is_safe:
                         print("the state/Action cache was :"+str(cacheObsr.get(obs_action_pair)), "and now become SAFE")
                         # cacheObsr.update({obs_action_pair: True})
                         # print(str(self.prev_obs)+" "+str(action))
@@ -237,20 +250,23 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                         # cacheObsr.update({obs_action_pair: False})
                         # print(str(self.prev_obs)+" "+str(action))
 
-            if is_safe:
+            if is_safe is None:
+                pass
+            elif is_safe:
                 self.posq_dup +=1
                 print('a SAFE duplicate observation visited , queries size :', self.posq_dup)
             else:
                 record = obs_action_pair + " 0"
                 self.negq_dup += 1
                 print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
-                self.reset()
+
 
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
             if done:
-                logger =str(self.env.step_count)+","+str(reward)+","+ str(self.steps)+","+str(ca.CACache)+","+str(len(ca.cacheCAserver))+","+str(ca.CACalls)+","+str(len(ca.cacheObsr))+","+str(ca.dup_diff_results)+","+str(ca.CASkipAction)+","+str(self.posq)+","+str(self.negq)+","+ str(self.posq_dup)+","+str(self.negq_dup)+","+str(ca.RLCache)
+                logger =str(self.step_count)+","+str(reward)+","+ str(self.steps)+","+str(ca.CACache)+","+str(len(ca.cacheCAserver))+","+str(ca.CACalls)+","+str(len(ca.cacheObsr))+","+str(ca.dup_diff_results)+","+str(ca.CASkipAction)+","+str(self.posq)+","+str(self.negq)+","+ str(self.posq_dup)+","+str(self.negq_dup)+","+str(ca.RLCache)
                 g.write(logger + "\n")
+                self.reset()
         if not done:
             self.prev_obs = observation
         return observation, reward, done, info
