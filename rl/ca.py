@@ -150,7 +150,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
-                logger = "episode_len,"+"rewards,"+"steps,"+"Refer to Obs/Action Cache,"+"refer to CA Result Cache,"+"CA Server Calls,"+"Obs/Action Cache Size,"+"obs/action class differ from CA Result,"+"Skip unsafe Actions,"+"positive queries,"+"negative queries,"+"dup. positive queries,"+"dup. negative queries,"+"RLCachse"
+                logger = "rewards,"+"episode_len,"+"steps,"+"Refer to Obs/Action Cache,"+"refer to CA Result Cache,"+"CA Server Calls,"+"Obs/Action Cache Size,"+"obs/action class differ from CA Result,"+"Skip unsafe Actions,"+"positive queries,"+"negative queries,"+"dup. positive queries,"+"dup. negative queries,"+"RLCachse"
                 g.write(logger + "\n")
 
         LOGFILE = BIOS.EXAMPLE_PATH
@@ -200,18 +200,19 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         # HS: This is lavagap/gridworld specific
         is_safe = (not done) or (done and reward > 0 )
-        if (self.step_count == int(BIOS.MAX_EPISODE_STEPS)) :
+        # if (self.step_count == int(BIOS.MAX_EPISODE_STEPS) and reward==0) :
+        if (self.steps_remaining == 0):
             is_safe = None
             done = True
 
         self.steps += 1
 
-        if is_safe is None:
-            pass
-        elif is_safe:
-            self.posq = self.posq + 1
-        else:
-            self.negq = self.negq + 1
+        # if is_safe is None:
+        #     pass
+        # elif is_safe:
+        #     self.posq = self.posq + 1
+        # else:
+        #     self.negq = self.negq + 1
 
         # Send new observation/action pair to CA, if not already in cache
         if not obs_action_pair in cacheObsr:
@@ -222,12 +223,12 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 record = obs_action_pair + " 1"
                 self.posq = self.posq + 1
                 cacheObsr.update({obs_action_pair:True})
-                print('a SAFE observation added , queries size :', self.posq)
+                # print('a SAFE observation added , queries size :', self.posq)
             else:
                 record = obs_action_pair + " 0"
                 self.negq = self.negq + 1
                 cacheObsr.update({obs_action_pair: False})
-                print('a SAFE observation added , queries size :', self.posq)
+                # print('a SAFE observation added , queries size :', self.posq)
 
 
             LOGFILE = BIOS.EXAMPLE_PATH
@@ -235,36 +236,36 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
              with open(LOGFILE, "a") as f:
                 f.write(record + "\n")
         else:
-            if (cacheObsr.get(obs_action_pair)!= is_safe):
-                global dup_diff_results
-                dup_diff_results = dup_diff_results + 1
-
-                if is_safe is None:
-                    pass
-                elif is_safe:
-                        print("the state/Action cache was :"+str(cacheObsr.get(obs_action_pair)), "and now become SAFE")
-                        # cacheObsr.update({obs_action_pair: True})
-                        # print(str(self.prev_obs)+" "+str(action))
-                else:
-                        print("the state/Action cache was :" + str(cacheObsr.get(obs_action_pair)), "and now become UN-SAFE")
-                        # cacheObsr.update({obs_action_pair: False})
-                        # print(str(self.prev_obs)+" "+str(action))
+            # if (cacheObsr.get(obs_action_pair)!= is_safe):
+            #     global dup_diff_results
+            #     dup_diff_results = dup_diff_results + 1
+            #
+            #     if is_safe is None:
+            #         pass
+            #     elif is_safe:
+            #             print("the state/Action cache was :"+str(cacheObsr.get(obs_action_pair)), "and now become SAFE")
+            #             # cacheObsr.update({obs_action_pair: True})
+            #             # print(str(self.prev_obs)+" "+str(action))
+            #     else:
+            #             print("the state/Action cache was :" + str(cacheObsr.get(obs_action_pair)), "and now become UN-SAFE")
+            #             # cacheObsr.update({obs_action_pair: False})
+            #             # print(str(self.prev_obs)+" "+str(action))
 
             if is_safe is None:
                 pass
             elif is_safe:
                 self.posq_dup +=1
-                print('a SAFE duplicate observation visited , queries size :', self.posq_dup)
+                # print('a SAFE duplicate observation visited , queries size :', self.posq_dup)
             else:
                 record = obs_action_pair + " 0"
                 self.negq_dup += 1
-                print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
+                # print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
 
 
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
             if done:
-                logger =str(self.step_count)+","+str(reward)+","+ str(self.steps)+","+str(ca.CACache)+","+str(len(ca.cacheCAserver))+","+str(ca.CACalls)+","+str(len(ca.cacheObsr))+","+str(ca.dup_diff_results)+","+str(ca.CASkipAction)+","+str(self.posq)+","+str(self.negq)+","+ str(self.posq_dup)+","+str(self.negq_dup)+","+str(ca.RLCache)
+                logger =str(reward)+","+str(self.step_count)+","+ str(self.steps)+","+str(ca.CACache)+","+str(len(ca.cacheCAserver))+","+str(ca.CACalls)+","+str(len(ca.cacheObsr))+","+str(ca.dup_diff_results)+","+str(ca.CASkipAction)+","+str(self.posq)+","+str(self.negq)+","+ str(self.posq_dup)+","+str(self.negq_dup)+","+str(ca.RLCache)
                 g.write(logger + "\n")
                 self.reset()
         if not done:
@@ -522,6 +523,7 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
     observation_str = ' '.join([str(int(elem)) for elem in obs])
 
     for i in range(env.unwrapped.action_space.n):
+        # CA dont accept 0 value, GYM action 0 replace with 7
         obs_action_pair = observation_str + " " + str(int(7 if i==0 else i))
         result = True
         # observation/action pair exists cache,
@@ -531,12 +533,12 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
             if (not result):
                 global CASkipAction
                 CASkipAction += 1
-                print("un-safe Q-observation/action prevented by make action illegal from cache:",CASkipAction)
+                # print("un-safe Q-observation/action prevented by make action illegal from RL Observerd cache:",CASkipAction)
 
             global RLCache
             RLCache +=1
 
-            print("existing Q-observation/action get from RL cache:", RLCache)
+            # print("existing Q-observation/action get from RL cache:", RLCache)
         else:
             if obs_action_pair in cacheCAserver:
                 result = cacheCAserver.get(obs_action_pair)
@@ -544,13 +546,13 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
                 global CACache
                 CACache += 1
 
-                print("existing Q-observation/action get from CA Server cache:", CACache)
+                # print("existing Q-observation/action get from CA Server cache:", CACache)
             else:
                 # Send new observation/action pair to CA, if not already in cache
                 QResultStr = queryCAServer(obs_action_pair);
                 global CACalls
                 CACalls +=1
-                print("new Q-observation/action called to CA Server:",CACalls)
+                # print("new Q-observation/action called to CA Server:",CACalls)
 
 
                 if QResultStr.__contains__("NEGATIVE"):
@@ -559,7 +561,7 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
                 if (not result):
                     # global CASkipAction
                     CASkipAction += 1
-                    print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
+                    # print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
                 #grant action per result
                 action_mask[i] = result
                 # insert new observation into cache

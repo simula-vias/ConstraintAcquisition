@@ -484,8 +484,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>266</line>
-          <option name="timeStamp" value="91" />
+          <line>202</line>
+          <option name="timeStamp" value="93" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -509,6 +509,7 @@
         <watch expression="self.step_count" language="Python" />
         <watch expression="done" language="Python" />
         <watch expression="self.step_count" language="Python" />
+        <watch expression="self.env.steps_remaining" language="Python" />
       </configuration>
     </watches-manager>
   </component>

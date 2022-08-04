@@ -80,8 +80,8 @@ obs = env.reset()
 # This is the PPO version that allows action masks; without ActionMasker it behaves the same as the normal PPO
 # model = MaskablePPO("MlpPolicy", env, verbose=1)
 #
-# model = PPO("MlpPolicy", env, verbose=1)
-model = A2C(ActorCriticPolicy, env, verbose=1)
+model = PPO("MlpPolicy", env, verbose=1)
+#model = A2C(ActorCriticPolicy, env, verbose=1)
 
 # Train the agent for 10000 steps
 new_logger = configure(BIOS.GYM_LOGGER_PATH,["stdout", "csv"])

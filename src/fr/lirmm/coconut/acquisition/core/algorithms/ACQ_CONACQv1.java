@@ -218,6 +218,8 @@ public class ACQ_CONACQv1 {
         boolean collapse = false;
         ACQ_CNF T = new ACQ_CNF();
         ContradictionSet N;
+        File fileLog = null;
+        PrintWriter pwLog = null;
         if (this.backgroundKnowledge == null) {
             N = new ContradictionSet(constraintFactory, bias.network.getVariables(), mapping);
         } else {
@@ -262,7 +264,7 @@ public class ACQ_CONACQv1 {
 
             // Start tailing
             RandomAccessFile file = new RandomAccessFile(queryFile, "r");
-
+            pwLog = new PrintWriter(new FileWriter(BIOSService.getBIOS().getString("CALogFile")));
             while (true) {
                 // HS: One query file should be enough
                 // We can read it continuously
@@ -288,6 +290,7 @@ public class ACQ_CONACQv1 {
                         filePointer = file.getFilePointer();
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 boolean hasNewData = false;
@@ -396,7 +399,10 @@ public class ACQ_CONACQv1 {
                     String logmsg = "#queries: " + n_asked;
                     logmsg += " (pos: " + n_asked_positive + ", neg: " + n_asked_negative + ")";
                     logmsg += " |bias|: " + bias.getSize();
+                    logmsg += " |CM size|: " + minimalNetwork.size()+ " ";
+                    logmsg += " |CS size|: " + mostSpecificNetwork.size()+ "\n";
                     System.out.println(logmsg);
+                    pwLog.write(logmsg);
                 }
 
                 Thread.sleep(10000);
@@ -406,6 +412,9 @@ public class ACQ_CONACQv1 {
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            if(pwLog!=null)
+                pwLog.close();
         }
 
         chrono.stop("total_acq_time");

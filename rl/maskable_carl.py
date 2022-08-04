@@ -71,7 +71,7 @@ env = Monitor(env,filename=BIOS.GYM_MONITOR_PATH)  # from sb3 for logging
 # agent_pos = 81,82,83
 # Lava: 9,0,0
 
-obs = env.reset()
+# obs = env.reset()
 # This is the PPO version that allows action masks; without ActionMasker it behaves the same as the normal PPO
 model = MaskablePPO("MlpPolicy", env, verbose=1)
 #
