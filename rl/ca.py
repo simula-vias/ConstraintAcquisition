@@ -55,7 +55,6 @@ class RestQueryStateWrapper(ObservationWrapper):
     def __init__(self, env):
         super(RestQueryStateWrapper, self).__init__(env)
         self.server_health = True
-        # self.prev_obs = None
         self.counter = Counter(["positive", "negative", "uncertain"])
 
     def step(self, action):
@@ -64,35 +63,33 @@ class RestQueryStateWrapper(ObservationWrapper):
         last_obser = self.prev_obs
         # print(len(last_obser))
 
-        if (self.server_health):
+        if self.server_health:
             # print("last observation is : ", last_obser, "the action was :",action)
             # print("last observation size is : ", last_obser.size, "the action was :", action)
             # State_Action  = {'state':last_obser,'action':action}
-            prev_stat = ''
-            for s in last_obser:
-                prev_stat = prev_stat + " " + str(int(s))
+            prev_stat = " ".join([str(int(s)) for s in last_obser])
             databody = str(prev_stat) + " " + str(int(action))
             # databody = str.replace(databody,","," ")
-            newdata = True if (databody in cacheCAserver) else False
+            newdata = databody not in cacheCAserver
 
-            if (self.server_health and newdata):
+            if newdata:
                 # response = requests.post("http://192.168.1.107:7044/check/line",data=databody)
                 restr = queryCAServer(self, databody)
-                if (restr == ""):
+                if restr == "":
                     self.server_health = False
 
                     # response.content.decode("utf-8")
                 # print(restr)
                 if restr.__contains__('NEGATIVE'):
                     print(databody)
-                    print("un-safe observation is detected,action replaced with <left> action")
+                    print("un-safe observation is detected")
                     action = 0
                     if newdata:
                         cacheCAserver.add(databody, False)
                     self.counter["negative"] += 1
                 elif restr.__contains__('POSITIVE'):
                     time.sleep(0.05)
-                    if (not salogs.__contains__(databody)):
+                    if databody not in salogs:
                         salogs.add(databody)
                         # print(databody)
                         # print("positive counter :",self.posCounter)
@@ -210,7 +207,8 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         # HS: This is lavagap/gridworld specific
         is_safe = (not done) or (done and reward > 0)
         # if (self.step_count == int(BIOS.MAX_EPISODE_STEPS) and reward==0) :
-        if (self.steps_remaining == 0):
+
+        if self.env.steps_remaining == 0:
             is_safe = None
             done = True
 
@@ -224,7 +222,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         #     self.negq = self.negq + 1
 
         # Send new observation/action pair to CA, if not already in cache
-        if not obs_action_pair in cacheObsr:
+        if obs_action_pair not in cacheObsr:
 
             if is_safe is None:
                 pass
