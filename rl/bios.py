@@ -8,7 +8,7 @@ LOG_BASE_DIRECTORY = "../benchmarks/queries/"
 RUN_NAME = "minigrid"
 LOGS_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "logs.txt")
 EXAMPLE_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "queries.txt")
-GYM_LOGGER_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "logger.txt")
+GYM_LOGGER_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "sb_logger")
 GYM_MONITOR_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "monitor.csv")
 
 # Production
