@@ -11,14 +11,12 @@ import numpy as np
 
 import requests
 
-
 from gym import ObservationWrapper
 
 from multiprocessing import Pool
 import gym_minigrid.minigrid as mg
 from gym import error, spaces, utils, core
 import bios as BIOS
-import ca
 
 hlogs = set()
 salogs = set()
@@ -30,7 +28,7 @@ CACalls = 0
 CACache = 0
 RLCache = 0
 CASkipAction = 0
-dup_diff_results =0
+dup_diff_results = 0
 
 
 # This is the action masking function; it needs to query CA on which actions are safe/unsafe
@@ -41,7 +39,7 @@ def mask_fn_minigrid(env: gym.Env) -> np.ndarray:
     # forward_cell = obs["image"][env.front_pos[0], env.front_pos[1]]  # get front position from environment
     # action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
     observation = obs['image']
-    action_mask = ca.gen_safe_actions(observation.flatten(), env)
+    action_mask = gen_safe_actions(observation.flatten(), env)
     # if np.all(forward_cell == [9, 0, 0]):
     #     action_mask[2] = False
 
@@ -75,13 +73,13 @@ class RestQueryStateWrapper(ObservationWrapper):
                 prev_stat = prev_stat + " " + str(int(s))
             databody = str(prev_stat) + " " + str(int(action))
             # databody = str.replace(databody,","," ")
-            newdata = True if ( databody in cacheCAserver) else False
+            newdata = True if (databody in cacheCAserver) else False
 
             if (self.server_health and newdata):
                 # response = requests.post("http://192.168.1.107:7044/check/line",data=databody)
-                restr = queryCAServer(self,databody)
+                restr = queryCAServer(self, databody)
                 if (restr == ""):
-                    self.server_health=False
+                    self.server_health = False
 
                     # response.content.decode("utf-8")
                 # print(restr)
@@ -90,7 +88,7 @@ class RestQueryStateWrapper(ObservationWrapper):
                     print("un-safe observation is detected,action replaced with <left> action")
                     action = 0
                     if newdata:
-                        cacheCAserver.add(databody,False)
+                        cacheCAserver.add(databody, False)
                     self.counter["negative"] += 1
                 elif restr.__contains__('POSITIVE'):
                     time.sleep(0.05)
@@ -112,9 +110,8 @@ class RestQueryStateWrapper(ObservationWrapper):
                     self.counter["uncertain"] += 1
 
             # else:
-                # add get data from cache.
-                # count the cache counters
-
+            # add get data from cache.
+            # count the cache counters
 
         # if (response != None and response.status_code == 200):
         #     print(response.content)
@@ -146,9 +143,9 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     steps = 0
     MaxRecordsNumber = 1000
 
-    # TODO :   add duplicate checker before store observaion
-    # TODO :  add random
-    # TODO :  lavagrid environment , check if it is there in stablebaseline3 / fronzen lake
+    # TODO : add duplicate checker before store observaion
+    # TODO : add random
+    # TODO : lavagrid environment , check if it is there in stablebaseline3 / fronzen lake
     # TODO : done & negative
     # TODO : how to decide which action is better for negative response .Query from action for each state and select those safe action ( not terminated after action(not die) : safe)
     # TODO : check the future conference (Next week)
@@ -164,8 +161,8 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
-                logger = "rewards,"+"episode_len,"+"steps,"+"Refer to Obs/Action Cache,"+"refer to CA Result Cache,"+"CA Server Calls,"+"Obs/Action Cache Size,"+"obs/action class differ from CA Result,"+"Skip unsafe Actions,"+"positive queries,"+"negative queries,"+"dup. positive queries,"+"dup. negative queries,"+"RLCachse"
-                g.write(logger + "\n")
+            logger = "rewards," + "episode_len," + "steps," + "Refer to Obs/Action Cache," + "refer to CA Result Cache," + "CA Server Calls," + "Obs/Action Cache Size," + "obs/action class differ from CA Result," + "Skip unsafe Actions," + "positive queries," + "negative queries," + "dup. positive queries," + "dup. negative queries," + "RLCachse"
+            g.write(logger + "\n")
 
         LOGFILE = BIOS.EXAMPLE_PATH
         try:
@@ -210,10 +207,8 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         observation_str = ' '.join([str(int(elem)) for elem in self.prev_obs])
         obs_action_pair = observation_str + " " + str(int(action))
 
-
-
         # HS: This is lavagap/gridworld specific
-        is_safe = (not done) or (done and reward > 0 )
+        is_safe = (not done) or (done and reward > 0)
         # if (self.step_count == int(BIOS.MAX_EPISODE_STEPS) and reward==0) :
         if (self.steps_remaining == 0):
             is_safe = None
@@ -236,7 +231,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
             elif is_safe:
                 record = obs_action_pair + " 1"
                 self.posq = self.posq + 1
-                cacheObsr.update({obs_action_pair:True})
+                cacheObsr.update({obs_action_pair: True})
                 # print('a SAFE observation added , queries size :', self.posq)
             else:
                 record = obs_action_pair + " 0"
@@ -244,11 +239,10 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 cacheObsr.update({obs_action_pair: False})
                 # print('a SAFE observation added , queries size :', self.posq)
 
-
             LOGFILE = BIOS.EXAMPLE_PATH
             if is_safe is not None:
-             with open(LOGFILE, "a") as f:
-                f.write(record + "\n")
+                with open(LOGFILE, "a") as f:
+                    f.write(record + "\n")
         else:
             # if (cacheObsr.get(obs_action_pair)!= is_safe):
             #     global dup_diff_results
@@ -268,18 +262,21 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
             if is_safe is None:
                 pass
             elif is_safe:
-                self.posq_dup +=1
+                self.posq_dup += 1
                 # print('a SAFE duplicate observation visited , queries size :', self.posq_dup)
             else:
                 record = obs_action_pair + " 0"
                 self.negq_dup += 1
                 # print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
 
-
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
             if done:
-                logger =str(reward)+","+str(self.step_count)+","+ str(self.steps)+","+str(ca.CACache)+","+str(len(ca.cacheCAserver))+","+str(ca.CACalls)+","+str(len(ca.cacheObsr))+","+str(ca.dup_diff_results)+","+str(ca.CASkipAction)+","+str(self.posq)+","+str(self.negq)+","+ str(self.posq_dup)+","+str(self.negq_dup)+","+str(ca.RLCache)
+                logger = str(reward) + "," + str(self.step_count) + "," + str(self.steps) + "," + str(
+                    CACache) + "," + str(len(cacheCAserver)) + "," + str(CACalls) + "," + str(
+                    len(cacheObsr)) + "," + str(dup_diff_results) + "," + str(CASkipAction) + "," + str(
+                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup) + "," + str(
+                    RLCache)
                 g.write(logger + "\n")
                 self.reset()
         if not done:
@@ -291,7 +288,6 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
 
 # Morena - Observation file writer
-
 class MyFullyObsWrapper(ObservationWrapper):
     """
     Fully observable gridworld using a compact grid encoding
@@ -516,7 +512,7 @@ class LavaAvoidanceWrapper(core.Wrapper):
         env = self.unwrapped
 
         forward_pos = np.array([0, 1, 2]) + (
-                    env.agent_view_size // 2 * env.agent_view_size * 3 + (env.agent_view_size - 2) * 3)
+                env.agent_view_size // 2 * env.agent_view_size * 3 + (env.agent_view_size - 2) * 3)
         forward_cell = self.prev_obs[forward_pos]
 
         if np.all(forward_cell == [9, 0, 0]) and action == 2:
@@ -531,14 +527,13 @@ class LavaAvoidanceWrapper(core.Wrapper):
         return self.prev_obs
 
 
-
 def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
     action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
     observation_str = ' '.join([str(int(elem)) for elem in obs])
 
     for i in range(env.unwrapped.action_space.n):
         # CA dont accept 0 value, GYM action 0 replace with 7
-        obs_action_pair = observation_str + " " + str(int(7 if i==0 else i))
+        obs_action_pair = observation_str + " " + str(int(7 if i == 0 else i))
         result = True
         # observation/action pair exists cache,
         if obs_action_pair in cacheObsr:
@@ -550,7 +545,7 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
                 # print("un-safe Q-observation/action prevented by make action illegal from RL Observerd cache:",CASkipAction)
 
             global RLCache
-            RLCache +=1
+            RLCache += 1
 
             # print("existing Q-observation/action get from RL cache:", RLCache)
         else:
@@ -565,44 +560,43 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
                 # Send new observation/action pair to CA, if not already in cache
                 QResultStr = queryCAServer(obs_action_pair);
                 global CACalls
-                CACalls +=1
+                CACalls += 1
                 # print("new Q-observation/action called to CA Server:",CACalls)
 
-
                 if QResultStr.__contains__("NEGATIVE"):
-                    result=False
+                    result = False
 
                 if (not result):
                     # global CASkipAction
                     CASkipAction += 1
                     # print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
-                #grant action per result
+                # grant action per result
                 action_mask[i] = result
                 # insert new observation into cache
                 if not QResultStr.__contains__("UNKNOWN"):
-                    cacheCAserver.update({obs_action_pair:result})
+                    cacheCAserver.update({obs_action_pair: result})
     return action_mask
 
 
+def queryCAServer(data_body) -> str:
+    try:
 
-def queryCAServer(data_body)-> str:
+        response = requests.post("http://" + str(BIOS.CAServerIPAddress) + ":" + str(BIOS.CAServerPort) + "/check/line",
+                                 data=data_body)
+        restr = response.content.decode("utf-8")
+        time.sleep(float(BIOS.CAServerInterval))
+        # print(restr)
+        return restr
 
-        try:
+    except requests.exceptions.HTTPError as error:
+        print(error)
+    except requests.exceptions.ConnectionError as cerror:
+        print(cerror)
+    except requests.exceptions.Timeout as terror:
+        print(terror)
 
-                response = requests.post("http://"+str(BIOS.CAServerIPAddress)+":"+str(BIOS.CAServerPort)+"/check/line",data=data_body)
-                restr = response.content.decode("utf-8")
-                time.sleep(float(BIOS.CAServerInterval))
-                # print(restr)
-                return restr
+    return "UNKNOWN"
 
-        except requests.exceptions.HTTPError as error:
-            print(error)
-        except requests.exceptions.ConnectionError as cerror:
-            print(cerror)
-        except requests.exceptions.Timeout as terror:
-            print(terror)
-
-        return "UNKNOWN"
 
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):

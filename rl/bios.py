@@ -1,11 +1,16 @@
+import os.path as osp
+
 # IOT testing environment
 CAServerIPAddress = 'localhost'
 CAServerPort = 7044
 CAServerInterval = 0.05
-LOGS_PATH = "../benchmarks/queries/minigrid.logs"
-EXAMPLE_PATH = "../benchmarks/queries/minigrid/minigrid.queries"
-GYM_LOGGER_PATH = "../benchmarks/queries/minigrid/minigrid.logger"
-GYM_MONITOR_PATH = "../benchmarks/queries/minigrid/minigrid.monitor.csv"
+LOG_BASE_DIRECTORY = "../benchmarks/queries/"
+RUN_NAME = "minigrid"
+LOGS_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "logs.txt")
+EXAMPLE_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "queries.txt")
+GYM_LOGGER_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "logger.txt")
+GYM_MONITOR_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "monitor.csv")
+
 # Production
 # CAServerIPAddress = '192.168.1.107'
 # CAServerPort = 7044
@@ -19,3 +24,5 @@ GYM_MONITOR_PATH = "../benchmarks/queries/minigrid/minigrid.monitor.csv"
 GYM_ENVIRONMENT = "MiniGrid-LavaCrossingS9N1-v0"
 # GYM_ENVIRONMENT = "MiniGrid-LavaGapS5-v0"
 STEPS = 30000
+SEED = 20
+CARL = "none"  # none/mask/replace

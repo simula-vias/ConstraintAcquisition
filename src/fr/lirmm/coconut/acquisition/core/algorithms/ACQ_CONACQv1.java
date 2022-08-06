@@ -253,8 +253,11 @@ public class ACQ_CONACQv1 {
 
         long filePointer = 0;
 
-        File queryFile = Paths.get(BIOSService.getBIOS().getString("examplePath") + BIOSService.getBIOS().getString("file") + "/" + BIOSService.getBIOS().getString("file") + ".queries").toFile();
+        String runDirectory = BIOSService.getBIOS().getString("examplePath") + BIOSService.getBIOS().getString("file");
+
+        File queryFile = Paths.get(runDirectory + "/queries.txt").toFile();
         System.out.println("Query file: " + queryFile.getAbsolutePath());
+
         try {
 
             while (!queryFile.exists()) {
@@ -399,8 +402,8 @@ public class ACQ_CONACQv1 {
                     String logmsg = "#queries: " + n_asked;
                     logmsg += " (pos: " + n_asked_positive + ", neg: " + n_asked_negative + ")";
                     logmsg += " |bias|: " + bias.getSize();
-                    logmsg += " |CM size|: " + minimalNetwork.size()+ " ";
-                    logmsg += " |CS size|: " + mostSpecificNetwork.size()+ "\n";
+                    logmsg += " |CM size|: " + minimalNetwork.size() + " ";
+                    logmsg += " |CS size|: " + mostSpecificNetwork.size() + "\n";
                     System.out.println(logmsg);
                     pwLog.write(logmsg);
                 }
@@ -412,8 +415,8 @@ public class ACQ_CONACQv1 {
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(pwLog!=null)
+        } finally {
+            if (pwLog != null)
                 pwLog.close();
         }
 
