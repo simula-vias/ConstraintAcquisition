@@ -371,7 +371,8 @@ public class ACQ_CONACQv1 {
                             minimalNetwork.add(c.get_Constraint(0), true);
                     }
                     System.out.println("############## CM (Minimal Network)##############");
-                    System.out.println(minimalNetwork.getConstraints().toString2());
+                    System.out.println("network var=" + minimalNetwork.getConstraints().getVariables().length + " cst=" + minimalNetwork.getConstraints().size());
+//                    System.out.println(minimalNetwork.getConstraints().toString2());
 
                     //Compute the most specific Network (= all constraints in the bias)
                     for (ACQ_IConstraint constr : bias.getConstraints()) {
@@ -379,7 +380,8 @@ public class ACQ_CONACQv1 {
                     }
 
                     System.out.println("############## CS (Most Specific Network)##############");
-                    System.out.println(mostSpecificNetwork.getConstraints().toString2());
+                    System.out.println("network var=" + mostSpecificNetwork.getConstraints().getVariables().length + " cst=" + mostSpecificNetwork.getConstraints().size());
+//                    System.out.println(mostSpecificNetwork.getConstraints().toString2());
 
                     //learned_network.clean();
 
