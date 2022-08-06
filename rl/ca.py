@@ -33,6 +33,20 @@ CASkipAction = 0
 dup_diff_results =0
 
 
+# This is the action masking function; it needs to query CA on which actions are safe/unsafe
+# Potential problem: We need to figure out the current observation, because it is not a parameter of the function.
+def mask_fn_minigrid(env: gym.Env) -> np.ndarray:
+    obs = env.unwrapped.gen_obs()
+    # forward_cell = obs["image"][7//2, 7-2]
+    # forward_cell = obs["image"][env.front_pos[0], env.front_pos[1]]  # get front position from environment
+    # action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
+    observation = obs['image']
+    action_mask = ca.gen_safe_actions(observation.flatten(), env)
+    # if np.all(forward_cell == [9, 0, 0]):
+    #     action_mask[2] = False
+
+    return action_mask
+
 
 # Morena REST Wrapper
 class RestQueryStateWrapper(ObservationWrapper):

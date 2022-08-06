@@ -2,21 +2,20 @@
 CAServerIPAddress = 'localhost'
 CAServerPort = 7044
 CAServerInterval = 0.05
-LOGS_PATH= "../benchmarks/queries/minigrid.logs"
+LOGS_PATH = "../benchmarks/queries/minigrid.logs"
 EXAMPLE_PATH = "../benchmarks/queries/minigrid/minigrid.queries"
 GYM_LOGGER_PATH = "../benchmarks/queries/minigrid/minigrid.logger"
-GYM_MONITOR_PATH= "../benchmarks/queries/minigrid/minigrid.monitor.csv"
-
+GYM_MONITOR_PATH = "../benchmarks/queries/minigrid/minigrid.monitor.csv"
 # Production
 # CAServerIPAddress = '192.168.1.107'
 # CAServerPort = 7044
 # CAServerInterval = 0.05
-#LOGS_PATH= "/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid.logs"
-#EXAMPLE_PATH = "/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid.queries"
-#iGYM_LOGGER_PATH = "/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid.logger"
-#GYM_MONITOR_PATH= "/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid.monitor.csv"
+# LOGS_PATH= "/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid.logs"
+# EXAMPLE_PATH = "/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid.queries"
+# iGYM_LOGGER_PATH = "/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid.logger"
+# GYM_MONITOR_PATH= "/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries/minigrid/minigrid.monitor.csv"
 
 #GYM ENVIRONMENT SETUP
 GYM_ENVIRONMENT = "MiniGrid-LavaCrossingS9N1-v0"
 # GYM_ENVIRONMENT = "MiniGrid-LavaGapS5-v0"
-TIMESTAMP= 30000
+STEPS = 30000
