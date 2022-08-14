@@ -2,6 +2,7 @@ import json
 import os
 import time
 import gym
+import random
 
 import operator
 from collections import Counter
@@ -158,7 +159,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
-            logger = "rewards," + "episode_len," + "steps," + "Refer to Obs/Action Cache," + "refer to CA Result Cache," + "CA Server Calls," + "Obs/Action Cache Size," + "obs/action class differ from CA Result," + "Skip unsafe Actions," + "positive queries," + "negative queries," + "dup. positive queries," + "dup. negative queries," + "RLCachse"
+            logger = "rewards," + "episode_len," + "steps," + "Refer to Obs/Action Cache," + "refer to CA Result Cache," + "CA Server Calls," + "Obs/Action Cache Size," + "obs/action Cache CA Size," + "Skip unsafe Actions," + "positive queries," + "negative queries," + "dup. positive queries," + "dup. negative queries"
             g.write(logger + "\n")
 
         LOGFILE = BIOS.EXAMPLE_PATH
@@ -242,6 +243,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 with open(LOGFILE, "a") as f:
                     f.write(record + "\n")
         else:
+
             # if (cacheObsr.get(obs_action_pair)!= is_safe):
             #     global dup_diff_results
             #     dup_diff_results = dup_diff_results + 1
@@ -271,10 +273,9 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         with open(LOGS, "a") as g:
             if done:
                 logger = str(reward) + "," + str(self.step_count) + "," + str(self.steps) + "," + str(
-                    CACache) + "," + str(len(cacheCAserver)) + "," + str(CACalls) + "," + str(
-                    len(cacheObsr)) + "," + str(dup_diff_results) + "," + str(CASkipAction) + "," + str(
-                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup) + "," + str(
-                    RLCache)
+                    RLCache) + "," + str(CACache) + "," + str(CACalls) + "," + str(
+                    len(cacheObsr)) + "," + str(len(cacheCAserver)) + "," + str(CASkipAction) + "," + str(
+                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup)
                 g.write(logger + "\n")
                 self.reset()
         if not done:
@@ -316,144 +317,7 @@ class MyFullyObsWrapper(ObservationWrapper):
         }
 
 
-class MyFlatObsWrapper(ObservationWrapper):
-    """
-    Encode mission strings using a one-hot scheme,
-    and combine these with observed images into one flat array
-    """
 
-    def __init__(self, env, maxStrLen=96):
-        super().__init__(env)
-
-        # self.maxStrLen = maxStrLen
-        # self.numCharCodes = 27
-
-        # imgSpace = env.observation_space.spaces['image']
-        # imgSize = reduce(operator.mul, imgSpace.shape, 1)
-
-        self.observation_space = spaces.Box(
-            low=0,
-            high=255,
-            # shape=(imgSize + self.numCharCodes * self.maxStrLen,),
-            shape=(self.env.width * self.env.height * 3,),  # number of cells
-            dtype='uint8'
-        )
-
-        self.cachedStr = None
-        self.cachedArray = None
-
-    # def step(self, action):
-    #     return self.env.step(action)
-    def step(self, action):
-        observation, reward, done, info = self.env.step(action)
-        # print('step=%s, reward=%.2f' % (self.env.step_count, reward))
-        return self.observation(observation), reward, done, info
-
-    # def step(self, action):
-    #     obs, reward, done, info = self.env.step(action)
-    #     print('step=%s, reward=%.2f' % (self.env.step_count, reward))
-    #     # print(obs)
-
-    def observation(self, obs):
-        env = self.unwrapped
-        full_grid = env.grid.encode()
-        full_grid[env.agent_pos[0]][env.agent_pos[1]] = np.array([
-            mg.OBJECT_TO_IDX['agent'],
-            mg.COLOR_TO_IDX['red'],
-            env.agent_dir
-        ])
-
-        obs = full_grid.flatten()
-        return obs
-
-
-class ObjFlatObsWrapper(ObservationWrapper):
-
-    def __init__(self, env, maxStrLen=96):
-        super().__init__(env)
-
-        self.observation_space = spaces.Box(
-            low=0,
-            high=10,
-            # shape=(imgSize + self.numCharCodes * self.maxStrLen,),
-            shape=(self.env.width * self.env.height,),  # number of cells
-            dtype='uint8'
-        )
-
-    def step(self, action):
-        observation, reward, done, info = self.env.step(action)
-        return self.observation(observation), reward, done, info
-
-    def observation(self, obs):
-        env = self.unwrapped
-        full_grid = env.grid.encode()
-        full_grid[env.agent_pos[0]][env.agent_pos[1]] = np.array([
-            10,
-            0,
-            env.agent_dir
-        ])
-
-        obs = full_grid.flatten()
-        full_grid_obj = obs[::3]
-        return full_grid_obj
-
-
-class AgentLocObsWrapper(ObservationWrapper):
-
-    def __init__(self, env, maxStrLen=96):
-        super().__init__(env)
-
-        self.observation_space = spaces.Box(
-            low=0,
-            high=10,
-            # shape=(imgSize + self.numCharCodes * self.maxStrLen,),
-            shape=(2,),  # number of cells
-            dtype='uint8'
-        )
-
-    def step(self, action):
-        observation, reward, done, info = self.env.step(action)
-        return self.observation(observation), reward, done, info
-
-    def observation(self, obs):
-        env = self.unwrapped
-        # agent_loc = np.array(1,1)
-        agent_loc = np.array([env.agent_pos[0], env.agent_pos[1]])
-
-        obs = agent_loc.flatten()
-        # full_grid_obj = obs[::3]
-        return obs
-
-
-class AgentLocationDirectionObsWrapper(ObservationWrapper):
-
-    def __init__(self, env, maxStrLen=96):
-        super().__init__(env)
-
-        self.observation_space = spaces.Box(
-            low=0,
-            high=10,
-            # shape=(imgSize + self.numCharCodes * self.maxStrLen,),
-            shape=(3,),  # number of cells
-            dtype='uint8'
-        )
-
-    def step(self, action):
-        observation, reward, done, info = self.env.step(action)
-        return self.observation(observation), reward, done, info
-
-    def observation(self, obs):
-        env = self.unwrapped
-        full_grid = env.grid.encode()
-        # agent_loc = np.array(1,1)
-        direction = env.agent_dir
-        if direction == 0:  # CARL not accept 0 value
-            direction = 4
-        agent_loc = np.array([env.agent_pos[0], env.agent_pos[1], direction])
-
-        obs = agent_loc.flatten()
-        # full_grid_obj = obs[::3]
-        return obs
 
 
 class ParallelConstraintWrapper(ObservationWrapper):
@@ -547,7 +411,11 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
 
             # print("existing Q-observation/action get from RL cache:", RLCache)
         else:
-            if obs_action_pair in cacheCAserver:
+
+
+            num = random.random()
+            # UseCAServerCacheFlag = False
+            if ((num >= 1 - (float(BIOS.CA_SERVER_CACHE))) and (obs_action_pair in cacheCAserver)) :
                 result = cacheCAserver.get(obs_action_pair)
                 action_mask[i] = result
                 global CACache
