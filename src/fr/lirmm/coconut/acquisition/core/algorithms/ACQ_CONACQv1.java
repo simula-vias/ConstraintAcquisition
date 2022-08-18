@@ -370,9 +370,10 @@ public class ACQ_CONACQv1 {
                         if (c.size() == 1)
                             minimalNetwork.add(c.get_Constraint(0), true);
                     }
+                    System.out.println("time: " + System.currentTimeMillis());
                     System.out.println("############## CM (Minimal Network)##############");
                     System.out.println("network var=" + minimalNetwork.getConstraints().getVariables().length + " cst=" + minimalNetwork.getConstraints().size());
-//                    System.out.println(minimalNetwork.getConstraints().toString2());
+                    System.out.println(minimalNetwork.getConstraints().toString2());
 
                     //Compute the most specific Network (= all constraints in the bias)
                     for (ACQ_IConstraint constr : bias.getConstraints()) {

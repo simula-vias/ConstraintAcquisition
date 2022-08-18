@@ -159,7 +159,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
-            logger = "rewards," + "episode_len," + "steps," + "Refer to Obs/Action Cache," + "refer to CA Result Cache," + "CA Server Calls," + "Obs/Action Cache Size," + "obs/action Cache CA Size," + "Skip unsafe Actions," + "positive queries," + "negative queries," + "dup. positive queries," + "dup. negative queries"
+            logger = "rewards," + "episode_len," + "steps," + "Refer to Obs/Action Cache," + "refer to CA Result Cache," + "CA Server Calls," + "Obs/Action Cache Size," + "obs/action Cache CA Size," + "Skip unsafe Actions," + "positive queries," + "negative queries," + "dup. positive queries," + "dup. negative queries," +"timestamp"
             g.write(logger + "\n")
 
         LOGFILE = BIOS.EXAMPLE_PATH
@@ -275,7 +275,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 logger = str(reward) + "," + str(self.step_count) + "," + str(self.steps) + "," + str(
                     RLCache) + "," + str(CACache) + "," + str(CACalls) + "," + str(
                     len(cacheObsr)) + "," + str(len(cacheCAserver)) + "," + str(CASkipAction) + "," + str(
-                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup)
+                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup) + str(time.time())
                 g.write(logger + "\n")
                 self.reset()
         if not done:

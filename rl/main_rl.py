@@ -3,12 +3,15 @@ import os.path as osp
 
 import gym
 import gym_minigrid
+from stable_baselines3 import PPO
+
 import envs
 
 import ca
 
 from stable_baselines3.common.monitor import Monitor
 import argparse
+import sb3_contrib as sb3
 
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
@@ -91,8 +94,10 @@ if use_carl:
         pass
 
 env = Monitor(env, filename=bios.GYM_MONITOR_PATH)  # from sb3 for logging
-
-model = MaskablePPO("MlpPolicy", env, verbose=1)
+if use_carl:
+    model = MaskablePPO("MlpPolicy", env, verbose=1)
+else:
+    model = PPO("MlpPolicy", env, verbose=1)
 
 # Train the agent for `num_steps` steps
 new_logger = configure(bios.GYM_LOGGER_PATH, ["stdout", "csv"])
@@ -101,7 +106,11 @@ model.set_logger(new_logger)
 model.learn(total_timesteps=args.num_steps)  # change 1 to 10000 (prod)
 
 # Evaluate the trained agent
-mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1000)  # change 1 to 100 (prod)
+if use_carl:
+    mean_reward, std_reward = sb3.common.maskable.evaluation.evaluate_policy(model, env, n_eval_episodes=1000)  # change 1 to 100 (prod)
+else:
+    mean_reward, std_reward = sb3.common.evaluation.evaluate_policy(model, env,
+                                                                                             n_eval_episodes=1000)  # change 1 to 100 (prod)
 
 print(f"mean_reward:{mean_reward:.2f} +/- {std_reward:.2f}")
 

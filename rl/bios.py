@@ -4,7 +4,7 @@ import os.path as osp
 CAServerIPAddress = 'localhost'
 CAServerPort = 7044
 CAServerInterval = 0.001
-LOG_BASE_DIRECTORY = "../benchmarks/queries/"
+# LOG_BASE_DIRECTORY = "../benchmarks/queries/"
 RUN_NAME = "minigrid"
 # LOGS_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "logs.csv")
 # EXAMPLE_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "queries.txt")
@@ -15,7 +15,7 @@ RUN_NAME = "minigrid"
 # CAServerIPAddress = '192.168.1.107'
 # CAServerPort = 7044
 # CAServerInterval = 0.05
-# LOG_BASE_DIRECTORY = "/mnt/d/BigData/MyWork/GitHub/ConstraintAcquisition/benchmarks/queries"
+LOG_BASE_DIRECTORY = "/home/morena/benchmarks/queries/"
 LOGS_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "logs.csv")
 EXAMPLE_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "queries.txt")
 GYM_LOGGER_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "sb_logger")
