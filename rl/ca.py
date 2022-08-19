@@ -275,7 +275,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 logger = str(reward) + "," + str(self.step_count) + "," + str(self.steps) + "," + str(
                     RLCache) + "," + str(CACache) + "," + str(CACalls) + "," + str(
                     len(cacheObsr)) + "," + str(len(cacheCAserver)) + "," + str(CASkipAction) + "," + str(
-                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup) + str(time.time())
+                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup) + "," +str(time.time())
                 g.write(logger + "\n")
                 self.reset()
         if not done:
