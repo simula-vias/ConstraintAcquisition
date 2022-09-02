@@ -3,6 +3,7 @@ import os.path as osp
 
 import gym
 import gym_minigrid
+import stable_baselines3
 from stable_baselines3 import PPO
 
 import envs
@@ -79,10 +80,9 @@ is_minigrid_env = args.env.lower().startswith("minigrid-")
 
 env = gym.make(args.env)
 env = ca.FlatObsImageOnlyWrapper(env)
+env = ca.GridworldInteractionFileLoggerWrapper(env)
 
 if use_carl:
-    env = ca.GridworldInteractionFileLoggerWrapper(env)
-
     if args.carl == "mask":
         if is_minigrid_env:
             mask_fn = ca.mask_fn_minigrid
@@ -109,8 +109,7 @@ model.learn(total_timesteps=args.num_steps)  # change 1 to 10000 (prod)
 if use_carl:
     mean_reward, std_reward = sb3.common.maskable.evaluation.evaluate_policy(model, env, n_eval_episodes=1000)  # change 1 to 100 (prod)
 else:
-    mean_reward, std_reward = sb3.common.evaluation.evaluate_policy(model, env,
-                                                                                             n_eval_episodes=1000)  # change 1 to 100 (prod)
+    mean_reward, std_reward = stable_baselines3.common.evaluation.evaluate_policy(model, env,n_eval_episodes=1000)  # change 1 to 100 (prod)
 
 print(f"mean_reward:{mean_reward:.2f} +/- {std_reward:.2f}")
 

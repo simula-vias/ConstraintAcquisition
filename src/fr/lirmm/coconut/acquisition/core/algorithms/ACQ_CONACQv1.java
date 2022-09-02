@@ -406,7 +406,8 @@ public class ACQ_CONACQv1 {
                     logmsg += " (pos: " + n_asked_positive + ", neg: " + n_asked_negative + ")";
                     logmsg += " |bias|: " + bias.getSize();
                     logmsg += " |CM size|: " + minimalNetwork.size() + " ";
-                    logmsg += " |CS size|: " + mostSpecificNetwork.size() + "\n";
+                    logmsg += " |CS size|: " + mostSpecificNetwork.size() + " ";
+                    logmsg += " |time|: " + System.currentTimeMillis()+ "\n";
                     System.out.println(logmsg);
                     pwLog.write(logmsg);
                 }

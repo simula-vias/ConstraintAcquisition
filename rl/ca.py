@@ -7,7 +7,7 @@ import random
 import operator
 from collections import Counter
 from functools import reduce
-
+from datetime import datetime
 import numpy as np
 
 import requests
@@ -28,6 +28,7 @@ server_health = None
 CACalls = 0
 CACache = 0
 RLCache = 0
+OASkipAction = 0
 CASkipAction = 0
 dup_diff_results = 0
 
@@ -36,14 +37,19 @@ dup_diff_results = 0
 # Potential problem: We need to figure out the current observation, because it is not a parameter of the function.
 def mask_fn_minigrid(env: gym.Env) -> np.ndarray:
     obs = env.unwrapped.gen_obs()
-    # forward_cell = obs["image"][7//2, 7-2]
+    forward_cell = obs["image"][7//2, 7-2]
     # forward_cell = obs["image"][env.front_pos[0], env.front_pos[1]]  # get front position from environment
     # action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
     observation = obs['image']
     action_mask = gen_safe_actions(observation.flatten(), env)
-    # if np.all(forward_cell == [9, 0, 0]):
+    if np.all(forward_cell == [9, 0, 0]):
     #     action_mask[2] = False
-
+        SKIPLOGS = BIOS.SKIP_LOGS_PATH
+        action_mask_str = ','.join([str(int(elem)) for elem in action_mask])
+        with open(SKIPLOGS, "a") as g:
+                dt = datetime.now()
+                logger = "9," + action_mask_str +"," +str(int(datetime.timestamp(dt)*1000))
+                g.write(logger + "\n")
     return action_mask
 
 
@@ -159,7 +165,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
-            logger = "rewards," + "episode_len," + "steps," + "Refer to Obs/Action Cache," + "refer to CA Result Cache," + "CA Server Calls," + "Obs/Action Cache Size," + "obs/action Cache CA Size," + "Skip unsafe Actions," + "positive queries," + "negative queries," + "dup. positive queries," + "dup. negative queries," +"timestamp"
+            logger = "rewards," + "episode_len," + "steps," + "Refer to Obs/Action Cache," + "refer to CA Result Cache," + "CA Server Calls," + "Obs/Action Cache Size," + "obs/action Cache CA Size," + "Skip by CA," + "positive queries," + "negative queries," + "dup. positive queries," + "dup. negative queries," + "Skip By ObsA," + "timestamp"
             g.write(logger + "\n")
 
         LOGFILE = BIOS.EXAMPLE_PATH
@@ -272,10 +278,11 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
             if done:
+                dt = datetime.now()
                 logger = str(reward) + "," + str(self.step_count) + "," + str(self.steps) + "," + str(
                     RLCache) + "," + str(CACache) + "," + str(CACalls) + "," + str(
                     len(cacheObsr)) + "," + str(len(cacheCAserver)) + "," + str(CASkipAction) + "," + str(
-                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup) + "," +str(time.time())
+                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup) + "," + str(OASkipAction) + ","+str(int(datetime.timestamp(dt)*1000))
                 g.write(logger + "\n")
                 self.reset()
         if not done:
@@ -402,8 +409,8 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
             result = cacheObsr.get(obs_action_pair)
             action_mask[i] = result
             if (not result):
-                global CASkipAction
-                CASkipAction += 1
+                global OASkipAction
+                OASkipAction += 1
                 # print("un-safe Q-observation/action prevented by make action illegal from RL Observerd cache:",CASkipAction)
 
             global RLCache
@@ -411,7 +418,6 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
 
             # print("existing Q-observation/action get from RL cache:", RLCache)
         else:
-
 
             num = random.random()
             # UseCAServerCacheFlag = False
@@ -430,10 +436,11 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
                 # print("new Q-observation/action called to CA Server:",CACalls)
 
                 if QResultStr.__contains__("NEGATIVE"):
+                    env.front_pos
                     result = False
 
                 if (not result):
-                    # global CASkipAction
+                    global CASkipAction
                     CASkipAction += 1
                     # print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
                 # grant action per result

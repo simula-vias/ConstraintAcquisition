@@ -107,7 +107,7 @@ public class AcqApp {
 
 	protected static void runServer(){
 
-		app = Javalin.create().start(7044);
+		app = Javalin.create().start(Integer.valueOf(BIOSService.getBIOS().getString("serverPort")));
 		app.post("/check/*", ctx -> {
 
 			String line = ctx.body();
