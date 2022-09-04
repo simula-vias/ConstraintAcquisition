@@ -96,7 +96,7 @@ if use_carl:
 env = Monitor(env, filename=bios.GYM_MONITOR_PATH)  # from sb3 for logging
 
 if use_carl:
-    model = MaskablePPO("MlpPolicy", env, verbose=1)
+    model = MaskablePPO("MlpPolicy", env, n_steps=512, verbose=1)
 else:
     model = PPO("MlpPolicy", env, verbose=1)
 
