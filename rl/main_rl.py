@@ -94,13 +94,14 @@ if use_carl:
         pass
 
 env = Monitor(env, filename=bios.GYM_MONITOR_PATH)  # from sb3 for logging
+
 if use_carl:
     model = MaskablePPO("MlpPolicy", env, verbose=1)
 else:
     model = PPO("MlpPolicy", env, verbose=1)
 
 # Train the agent for `num_steps` steps
-new_logger = configure(bios.GYM_LOGGER_PATH, ["stdout", "csv"])
+new_logger = configure(bios.GYM_LOGGER_PATH, ["stdout", "csv", "tensorboard"])
 model.set_logger(new_logger)
 
 model.learn(total_timesteps=args.num_steps)  # change 1 to 10000 (prod)
