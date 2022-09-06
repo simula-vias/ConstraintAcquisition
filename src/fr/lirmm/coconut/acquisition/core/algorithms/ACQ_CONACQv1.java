@@ -88,7 +88,7 @@ public class ACQ_CONACQv1 {
             String line;
 //			String str;
             while (((line = reader.readLine()) != null)) {
-                ACQ_Query q = this.lineToQuery(line);
+                ACQ_Query q = getQuery(line);
                 queries.add(q);
             }
             reader.close();
@@ -105,18 +105,19 @@ public class ACQ_CONACQv1 {
         return queries;
     }
 
-    private ACQ_Query lineToQuery(String line) {
+    public static ACQ_Query getQuery(String line) {
+        assert (line != null) : "the sample is null";
+
         String[] lineSplited = line.split(" ");
         int[] values = new int[lineSplited.length - 1];
 
         int label = Integer.parseInt(lineSplited[lineSplited.length - 1]);
         int i = 0;
         for (String s : lineSplited) {
-//					System.out.println(s);
             if (i == lineSplited.length - 1)
                 break;
-            if (s != null && s != "" & !s.equals("")) {
-                values[i] = Float.floatToIntBits(Float.valueOf(s)); // float
+            if (s != null && !s.trim().isEmpty()) {
+                values[i] = Integer.parseInt(s);
                 i++;
             }
         }
@@ -175,37 +176,6 @@ public class ACQ_CONACQv1 {
 
         this.log_queries = logqueries;
     }
-
-
-    public static ACQ_Query getQuery(String line) {
-        assert (line != null) : "the sample is null";
-
-
-        String[] lineSplited = line.split(" ");
-        int[] values = new int[lineSplited.length - 1];
-//			System.out.println(lineSplited.length);
-        int label = Integer.parseInt(lineSplited[lineSplited.length - 1]);
-        int i = 0;
-        for (String s : lineSplited) {
-            if (i == lineSplited.length - 1)
-                break;
-            if (s != null & s != "" & !s.equals("")) {
-                values[i] = Integer.parseInt(s);
-                i++;
-            }
-        }
-        BitSet bs = new BitSet();
-        bs.set(0, i);
-        ACQ_Scope scope = new ACQ_Scope(bs);
-        ACQ_Query q = new ACQ_Query(scope, values);
-        if (label == 1)
-            q.classify(true);
-        else
-            q.classify(false);
-
-        return q;
-    }
-
 
     public boolean process(Chrono chronom, int max_queries) throws Exception {
         chrono = chronom;
@@ -286,7 +256,7 @@ public class ACQ_CONACQv1 {
                         file.seek(filePointer);
                         String line = file.readLine();
                         while (line != null) {
-                            openQueries.add(lineToQuery(line)); // add to query queue
+                            openQueries.add(getQuery(line)); // add to query queue
 
                             line = file.readLine();
                         }
@@ -299,13 +269,15 @@ public class ACQ_CONACQv1 {
                 boolean hasNewData = false;
 
                 while (!openQueries.isEmpty()) {
-                    hasNewData = true;
                     ACQ_Query membership_query = openQueries.remove(0);
+                    assert membership_query != null : "membership query can't be null";
+
+                    if (membership_query.values[membership_query.values.length-1] != 2) {
+                        continue;
+                    }
 
                     if (bias.getConstraints().isEmpty())
                         break;
-
-                    assert membership_query != null : "membership query can't be null";
 
                     assert !asked.contains(membership_query.toString());
                     asked.add(membership_query.toString());
@@ -362,6 +334,8 @@ public class ACQ_CONACQv1 {
                             // T.unitPropagate(chrono);
                         }
                     }
+
+                    hasNewData = true;
                 }
 
                 if (hasNewData) {
@@ -431,21 +405,23 @@ public class ACQ_CONACQv1 {
 
     public static Classification classify(ACQ_Query query) {
 //		updateNetworks();
-        Boolean cmn = null;
 //		Boolean isCompleteQuery = Boolean.TRUE;
-        Boolean csn = null;
+
+        if (query.values[query.values.length-1] != 2) {
+            return Classification.POSITIVE;
+        }
 
         assert (minimalNetwork != null || mostSpecificNetwork != null) : "the network is not ready, please continue learning..";
 
 
 //		if (isCompleteQuery) {
         if (minimalNetwork.getArrayConstraints().length > 0) {
-            cmn = minimalNetwork.check(query);
+            boolean cmn = minimalNetwork.check(query);
             if (!cmn) return Classification.NEGATIVE;
         }
 
         if (mostSpecificNetwork.getArrayConstraints().length > 0) {
-            csn = mostSpecificNetwork.check(query);
+            boolean csn = mostSpecificNetwork.check(query);
             if (csn) return Classification.POSITIVE;
         }
 
