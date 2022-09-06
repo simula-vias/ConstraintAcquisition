@@ -269,13 +269,15 @@ public class ACQ_CONACQv1 {
                 boolean hasNewData = false;
 
                 while (!openQueries.isEmpty()) {
-                    hasNewData = true;
                     ACQ_Query membership_query = openQueries.remove(0);
+                    assert membership_query != null : "membership query can't be null";
+
+                    if (membership_query.values[membership_query.values.length-1] != 2) {
+                        continue;
+                    }
 
                     if (bias.getConstraints().isEmpty())
                         break;
-
-                    assert membership_query != null : "membership query can't be null";
 
                     assert !asked.contains(membership_query.toString());
                     asked.add(membership_query.toString());
@@ -332,6 +334,8 @@ public class ACQ_CONACQv1 {
                             // T.unitPropagate(chrono);
                         }
                     }
+
+                    hasNewData = true;
                 }
 
                 if (hasNewData) {
@@ -400,21 +404,23 @@ public class ACQ_CONACQv1 {
 
     public static Classification classify(ACQ_Query query) {
 //		updateNetworks();
-        Boolean cmn = null;
 //		Boolean isCompleteQuery = Boolean.TRUE;
-        Boolean csn = null;
+
+        if (query.values[query.values.length-1] != 2) {
+            return Classification.POSITIVE;
+        }
 
         assert (minimalNetwork != null || mostSpecificNetwork != null) : "the network is not ready, please continue learning..";
 
 
 //		if (isCompleteQuery) {
         if (minimalNetwork.getArrayConstraints().length > 0) {
-            cmn = minimalNetwork.check(query);
+            boolean cmn = minimalNetwork.check(query);
             if (!cmn) return Classification.NEGATIVE;
         }
 
         if (mostSpecificNetwork.getArrayConstraints().length > 0) {
-            csn = mostSpecificNetwork.check(query);
+            boolean csn = mostSpecificNetwork.check(query);
             if (csn) return Classification.POSITIVE;
         }
 
