@@ -148,6 +148,12 @@ public class ExpeFromParser extends DefaultExperience {
 				int[] vars = iterator.next();
 				AllPermutationIterator pIterator = new AllPermutationIterator(rel.getArity());
 
+				if (rel.getArity() == 1) {
+					for (int domainVal = experiment.getMinDom(); domainVal <= experiment.getMaxDom(); domainVal++) {
+						constraints.add(new UnaryArithmetic(rel.name() + domainVal, vars[0], rel.getOperator(), domainVal));
+					}
+				}
+
 				// Binary constraints
 				if (rel.getArity() == 2 && !rel.IsPrecedence()) {
 					while (pIterator.hasNext()) {
