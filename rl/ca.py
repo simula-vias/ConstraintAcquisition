@@ -2,7 +2,6 @@ import json
 import os
 import time
 import gym
-import random
 
 import operator
 from collections import Counter
@@ -16,12 +15,12 @@ from gym import ObservationWrapper
 
 from multiprocessing import Pool
 import gym_minigrid.minigrid as mg
-from gym import error, spaces, utils, core
+from gym import spaces, core
 import bios as BIOS
 
 hlogs = set()
 salogs = set()
-cacheObsr = dict()
+cacheObsr = set()
 N = 1
 cacheCAserver = dict()
 server_health = None
@@ -55,14 +54,12 @@ class RestQueryStateWrapper(ObservationWrapper):
 
     def __init__(self, env):
         super(RestQueryStateWrapper, self).__init__(env)
+        self.prev_obs = None
         self.server_health = True
         self.counter = Counter(["positive", "negative", "uncertain"])
 
     def step(self, action):
-        safe_actions = []
-        # var_dicts = []
         last_obser = self.prev_obs
-        # print(len(last_obser))
 
         if self.server_health:
             # print("last observation is : ", last_obser, "the action was :",action)
@@ -75,7 +72,7 @@ class RestQueryStateWrapper(ObservationWrapper):
 
             if newdata:
                 # response = requests.post("http://192.168.1.107:7044/check/line",data=databody)
-                restr = queryCAServer(self, databody)
+                restr = self.queryCAServer(databody)
                 if restr == "":
                     self.server_health = False
 
@@ -86,7 +83,7 @@ class RestQueryStateWrapper(ObservationWrapper):
                     print("un-safe observation is detected")
                     action = 0
                     if newdata:
-                        cacheCAserver.add(databody, False)
+                        cacheCAserver[databody] = False
                     self.counter["negative"] += 1
                 elif restr.__contains__('POSITIVE'):
                     time.sleep(0.05)
@@ -95,7 +92,7 @@ class RestQueryStateWrapper(ObservationWrapper):
                         # print(databody)
                         # print("positive counter :",self.posCounter)
                         if newdata:
-                            cacheCAserver.add(databody, True)
+                            cacheCAserver[databody] = True
                         self.counter["positive"] += 1
                     # print("action is possitive and allowed")
                 elif restr == "":
@@ -106,10 +103,6 @@ class RestQueryStateWrapper(ObservationWrapper):
                     # if newdata:
                     #     cacheCAserver.add(databody, True)
                     self.counter["uncertain"] += 1
-
-            # else:
-            # add get data from cache.
-            # count the cache counters
 
         # if (response != None and response.status_code == 200):
         #     print(response.content)
@@ -159,7 +152,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
-            logger = "rewards," + "episode_len," + "steps," + "Refer to Obs/Action Cache," + "refer to CA Result Cache," + "CA Server Calls," + "Obs/Action Cache Size," + "obs/action Cache CA Size," + "Skip unsafe Actions," + "positive queries," + "negative queries," + "dup. positive queries," + "dup. negative queries," +"timestamp"
+            logger = "rewards," + "episode_len," + "steps," + "Refer to Obs/Action Cache," + "refer to CA Result Cache," + "CA Server Calls," + "Obs/Action Cache Size," + "obs/action Cache CA Size," + "Skip unsafe Actions," + "positive queries," + "negative queries," + "dup. positive queries," + "dup. negative queries," + "timestamp"
             g.write(logger + "\n")
 
         LOGFILE = BIOS.EXAMPLE_PATH
@@ -223,51 +216,45 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         #     self.negq = self.negq + 1
 
         # Send new observation/action pair to CA, if not already in cache
-        if obs_action_pair not in cacheObsr:
+        if is_safe is not None:
+            if obs_action_pair not in cacheObsr:
+                cacheObsr.add(obs_action_pair)
 
-            if is_safe is None:
-                pass
-            elif is_safe:
-                record = obs_action_pair + " 1"
-                self.posq = self.posq + 1
-                cacheObsr.update({obs_action_pair: True})
-                # print('a SAFE observation added , queries size :', self.posq)
-            else:
-                record = obs_action_pair + " 0"
-                self.negq = self.negq + 1
-                cacheObsr.update({obs_action_pair: False})
-                # print('a SAFE observation added , queries size :', self.posq)
+                if is_safe:
+                    record = obs_action_pair + " 1"
+                    self.posq = self.posq + 1
+                    # print('a SAFE observation added , queries size :', self.posq)
+                else:
+                    record = obs_action_pair + " 0"
+                    self.negq = self.negq + 1
+                    # print('a SAFE observation added , queries size :', self.posq)
 
-            LOGFILE = BIOS.EXAMPLE_PATH
-            if is_safe is not None:
+                LOGFILE = BIOS.EXAMPLE_PATH
                 with open(LOGFILE, "a") as f:
                     f.write(record + "\n")
-        else:
-
-            # if (cacheObsr.get(obs_action_pair)!= is_safe):
-            #     global dup_diff_results
-            #     dup_diff_results = dup_diff_results + 1
-            #
-            #     if is_safe is None:
-            #         pass
-            #     elif is_safe:
-            #             print("the state/Action cache was :"+str(cacheObsr.get(obs_action_pair)), "and now become SAFE")
-            #             # cacheObsr.update({obs_action_pair: True})
-            #             # print(str(self.prev_obs)+" "+str(action))
-            #     else:
-            #             print("the state/Action cache was :" + str(cacheObsr.get(obs_action_pair)), "and now become UN-SAFE")
-            #             # cacheObsr.update({obs_action_pair: False})
-            #             # print(str(self.prev_obs)+" "+str(action))
-
-            if is_safe is None:
-                pass
-            elif is_safe:
-                self.posq_dup += 1
-                # print('a SAFE duplicate observation visited , queries size :', self.posq_dup)
             else:
-                record = obs_action_pair + " 0"
-                self.negq_dup += 1
-                # print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
+                # if (cacheObsr.get(obs_action_pair)!= is_safe):
+                #     global dup_diff_results
+                #     dup_diff_results = dup_diff_results + 1
+                #
+                #     if is_safe is None:
+                #         pass
+                #     elif is_safe:
+                #             print("the state/Action cache was :"+str(cacheObsr.get(obs_action_pair)), "and now become SAFE")
+                #             # cacheObsr.update({obs_action_pair: True})
+                #             # print(str(self.prev_obs)+" "+str(action))
+                #     else:
+                #             print("the state/Action cache was :" + str(cacheObsr.get(obs_action_pair)), "and now become UN-SAFE")
+                #             # cacheObsr.update({obs_action_pair: False})
+                #             # print(str(self.prev_obs)+" "+str(action))
+
+                if is_safe:
+                    self.posq_dup += 1
+                    # print('a SAFE duplicate observation visited , queries size :', self.posq_dup)
+                else:
+                    record = obs_action_pair + " 0"
+                    self.negq_dup += 1
+                    # print('a un-safe duplicate observation visited , queries size :', self.negq_dup)
 
         LOGS = BIOS.LOGS_PATH
         with open(LOGS, "a") as g:
@@ -275,7 +262,8 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 logger = str(reward) + "," + str(self.step_count) + "," + str(self.steps) + "," + str(
                     RLCache) + "," + str(CACache) + "," + str(CACalls) + "," + str(
                     len(cacheObsr)) + "," + str(len(cacheCAserver)) + "," + str(CASkipAction) + "," + str(
-                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup) + str(time.time())
+                    self.posq) + "," + str(self.negq) + "," + str(self.posq_dup) + "," + str(self.negq_dup) + str(
+                    time.time())
                 g.write(logger + "\n")
                 self.reset()
         if not done:
@@ -315,9 +303,6 @@ class MyFullyObsWrapper(ObservationWrapper):
             'mission': obs['mission'],
             'image': full_grid
         }
-
-
-
 
 
 class ParallelConstraintWrapper(ObservationWrapper):
@@ -396,51 +381,33 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
     for i in range(env.unwrapped.action_space.n):
         # CA dont accept 0 value, GYM action 0 replace with 7
         obs_action_pair = observation_str + " " + str(int(7 if i == 0 else i))
-        result = True
-        # observation/action pair exists cache,
-        if obs_action_pair in cacheObsr:
-            result = cacheObsr.get(obs_action_pair)
-            action_mask[i] = result
-            if (not result):
+
+        # UseCAServerCacheFlag = False
+        if obs_action_pair in cacheCAserver:
+            action_mask[i] = cacheCAserver.get(obs_action_pair)
+            global CACache
+            CACache += 1
+            # print("existing Q-observation/action get from CA Server cache:", CACache)
+        else:
+            # Send new observation/action pair to CA, if not already in cache
+            QResultStr = queryCAServer(obs_action_pair)
+            global CACalls
+            CACalls += 1
+            # print("new Q-observation/action called to CA Server:",CACalls)
+
+            result = "NEGATIVE" not in QResultStr
+
+            if not result:
                 global CASkipAction
                 CASkipAction += 1
-                # print("un-safe Q-observation/action prevented by make action illegal from RL Observerd cache:",CASkipAction)
+                # print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
 
-            global RLCache
-            RLCache += 1
+            # grant action per result
+            action_mask[i] = result
+            # insert new observation into cache
+            if "UNKNOWN" not in QResultStr:
+                cacheCAserver[obs_action_pair] = result
 
-            # print("existing Q-observation/action get from RL cache:", RLCache)
-        else:
-
-
-            num = random.random()
-            # UseCAServerCacheFlag = False
-            if ((num >= 1 - (float(BIOS.CA_SERVER_CACHE))) and (obs_action_pair in cacheCAserver)) :
-                result = cacheCAserver.get(obs_action_pair)
-                action_mask[i] = result
-                global CACache
-                CACache += 1
-
-                # print("existing Q-observation/action get from CA Server cache:", CACache)
-            else:
-                # Send new observation/action pair to CA, if not already in cache
-                QResultStr = queryCAServer(obs_action_pair);
-                global CACalls
-                CACalls += 1
-                # print("new Q-observation/action called to CA Server:",CACalls)
-
-                if QResultStr.__contains__("NEGATIVE"):
-                    result = False
-
-                if (not result):
-                    # global CASkipAction
-                    CASkipAction += 1
-                    # print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
-                # grant action per result
-                action_mask[i] = result
-                # insert new observation into cache
-                if not QResultStr.__contains__("UNKNOWN"):
-                    cacheCAserver.update({obs_action_pair: result})
     return action_mask
 
 
@@ -454,8 +421,8 @@ def queryCAServer(data_body) -> str:
         # print(restr)
         return restr
 
-    except requests.exceptions.HTTPError as error:
-        print(error)
+    except requests.exceptions.HTTPError as herror:
+        print(herror)
     except requests.exceptions.ConnectionError as cerror:
         print(cerror)
     except requests.exceptions.Timeout as terror:
