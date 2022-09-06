@@ -1,23 +1,21 @@
+import argparse
 import os
 import os.path as osp
 
 import gym
 import gym_minigrid
+
+import stable_baselines3 as sb3
 from stable_baselines3 import PPO
-
-import envs
-
-import ca
-
+from stable_baselines3.common.logger import configure
 from stable_baselines3.common.monitor import Monitor
-import argparse
-import sb3_contrib as sb3
 
 from sb3_contrib import MaskablePPO
-from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.wrappers import ActionMasker
+import sb3_contrib.common.maskable.evaluation
 
-from stable_baselines3.common.logger import configure
+import envs
+import ca
 import bios
 
 # Set the environment; minigrid names are registered in envs/__init__.py
@@ -78,11 +76,11 @@ use_carl = args.carl in ("mask", "replace")
 is_minigrid_env = args.env.lower().startswith("minigrid-")
 
 env = gym.make(args.env)
+env.seed(args.seed)
+env = Monitor(env, filename=bios.GYM_MONITOR_PATH)  # from sb3 for logging
 env = ca.FlatObsImageOnlyWrapper(env)
 
 if use_carl:
-    env = ca.GridworldInteractionFileLoggerWrapper(env)
-
     if args.carl == "mask":
         if is_minigrid_env:
             mask_fn = ca.mask_fn_minigrid
@@ -93,25 +91,30 @@ if use_carl:
     elif args.carl == "replace":
         pass
 
-env = Monitor(env, filename=bios.GYM_MONITOR_PATH)  # from sb3 for logging
+    # Separate variable to avoid logging during evaluation
+    env_train = ca.GridworldInteractionFileLoggerWrapper(env)
+else:
+    env_train = env
 
 if use_carl:
-    model = MaskablePPO("MlpPolicy", env, n_steps=512, verbose=1)
+    model = MaskablePPO("MlpPolicy", env_train, n_steps=512, verbose=1, seed=args.seed)
 else:
-    model = PPO("MlpPolicy", env, n_steps=512, verbose=1)
+    model = PPO("MlpPolicy", env_train, n_steps=512, verbose=1, seed=args.seed)
 
 # Train the agent for `num_steps` steps
 new_logger = configure(bios.GYM_LOGGER_PATH, ["stdout", "csv", "tensorboard"])
 model.set_logger(new_logger)
+model.learn(total_timesteps=args.num_steps, eval_env=env, eval_freq=100_000)  # change 1 to 10000 (prod)
 
-model.learn(total_timesteps=args.num_steps)  # change 1 to 10000 (prod)
+print("Learning complete")
 
 # Evaluate the trained agent
 if use_carl:
-    mean_reward, std_reward = sb3.common.maskable.evaluation.evaluate_policy(model, env, n_eval_episodes=1000)  # change 1 to 100 (prod)
+    mean_reward, std_reward = sb3_contrib.common.maskable.evaluation.evaluate_policy(model, env,
+                                                                                     n_eval_episodes=20)  # change 1 to 100 (prod)
 else:
     mean_reward, std_reward = sb3.common.evaluation.evaluate_policy(model, env,
-                                                                                             n_eval_episodes=1000)  # change 1 to 100 (prod)
+                                                                    n_eval_episodes=20)  # change 1 to 100 (prod)
 
 print(f"mean_reward:{mean_reward:.2f} +/- {std_reward:.2f}")
 
