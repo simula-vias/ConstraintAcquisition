@@ -70,4 +70,6 @@ public String getDataFile();
 	
 	public String getName();
 
+	public int getNb_contexts();
+
 }

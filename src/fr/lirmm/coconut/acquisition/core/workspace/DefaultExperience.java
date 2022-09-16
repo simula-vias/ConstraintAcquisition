@@ -73,6 +73,7 @@ public abstract class DefaultExperience implements IExperience {
 	protected int nb_sensors;
 	protected int domain;
 
+	protected int nb_contexts;
 
 	protected int[][] visibility;
 	protected int[][] compatibility;
@@ -618,5 +619,11 @@ public abstract class DefaultExperience implements IExperience {
 	public void setMaxqueries(int maxqueries) {
 		this.maxqueries = maxqueries;
 	}
-	
+
+	public int getNb_contexts() { return this.nb_contexts; }
+
+	public void setNb_contexts(int nbContexts) {
+		this.nb_contexts = nbContexts;
+	}
+
 }

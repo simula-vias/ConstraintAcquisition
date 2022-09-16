@@ -37,20 +37,17 @@ public class ACQ_ConCONACQv1_Model {
     private String logfile = null;
 
 
-    public ACQ_ConCONACQv1_Model(ACQ_Bias main_bias, SATSolver sat, boolean verbose, Chrono chrono) {
+    public ACQ_ConCONACQv1_Model(ACQ_Bias bias, SATSolver sat, boolean verbose, Chrono chrono) {
         this.verbose = verbose;
         this.chrono = chrono;
-
-        // TODO Check if this is an actual copy (it should be, according to the function description)
-        ACQ_Network network = new ACQ_Network(main_bias.getNetwork().getFactory(), main_bias.getNetwork(), main_bias.getVars());
-//        ACQ_Network network = new ACQ_Network(main_bias.getNetwork().getFactory(), main_bias.getVars(), main_bias.getConstraints());
-        this.bias = new ACQ_Bias(network);
+        this.bias = bias;
         this.constraintFactory = bias.network.getFactory();
         this.satSolver = sat;
 
-
         this.init_network = new ACQ_Network(constraintFactory, bias.getVars());
 
+        // TODO This loop takes the most time during initialization
+        // If all biases are the same, we could do it only once and save time.
         for (ACQ_IConstraint c : bias.getConstraints()) {
             String newvarname = c.getName() + c.getVariables();
             Unit unit = this.satSolver.addVar(c, newvarname);
@@ -85,7 +82,7 @@ public class ACQ_ConCONACQv1_Model {
         assert !asked.contains(membership_query.toString());
         asked.add(membership_query.toString());
         if (verbose)
-            System.out.print(membership_query.getScope() + "::" + Arrays.toString(membership_query.values));
+            System.out.println(membership_query.getScope() + "::" + Arrays.toString(membership_query.values));
         boolean answer = membership_query.isPositive();
         n_asked++;
 
@@ -225,25 +222,25 @@ public class ACQ_ConCONACQv1_Model {
         return bias;
     }
 
-//    public ACQ_Network getMinimalNetwork() {
-//        return minimalNetwork;
-//    }
-//
-//    public void setMinimalNetwork(ACQ_Network minimalNetwork) {
-//        this.minimalNetwork = minimalNetwork;
-//    }
-//
-//    public ACQ_Network getMostSpecificNetwork() {
-//        return mostSpecificNetwork;
-//    }
-//
-//    public void setMostSpecificNetwork(ACQ_Network mostSpecificNetwork) {
-//        this.mostSpecificNetwork = mostSpecificNetwork;
-//    }
-
-    public void setBackgroundKnowledge(ContradictionSet backgroundKnowledge) {
-        N = backgroundKnowledge;
+    public ACQ_Network getMinimalNetwork() {
+        return minimalNetwork;
     }
+
+    public void setMinimalNetwork(ACQ_Network minimalNetwork) {
+        this.minimalNetwork = minimalNetwork;
+    }
+
+    public ACQ_Network getMostSpecificNetwork() {
+        return mostSpecificNetwork;
+    }
+
+    public void setMostSpecificNetwork(ACQ_Network mostSpecificNetwork) {
+        this.mostSpecificNetwork = mostSpecificNetwork;
+    }
+
+//    public void setBackgroundKnowledge(ContradictionSet backgroundKnowledge) {
+//        N = backgroundKnowledge;
+//    }
 
     public void setLogfile(String logfile) {
         this.logfile = logfile;

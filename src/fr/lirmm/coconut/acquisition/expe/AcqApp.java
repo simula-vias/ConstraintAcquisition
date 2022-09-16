@@ -4,7 +4,8 @@ package fr.lirmm.coconut.acquisition.expe;
 import java.io.File;
 import java.io.IOException;
 
-import fr.lirmm.coconut.acquisition.core.algorithms.ACQ_CONACQv1;
+import fr.lirmm.coconut.acquisition.core.algorithms.ACQ_ConCONACQv1;
+import fr.lirmm.coconut.acquisition.core.learner.ACQ_Query;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -111,8 +112,9 @@ public class AcqApp {
 		app.post("/check/*", ctx -> {
 
 			String line = ctx.body();
-//			ACQ_CONACQv1.classify(ACQ_CONACQv1.getQuery(line));
-			ctx.result(ACQ_CONACQv1.classify(ACQ_CONACQv1.getQuery(line)).toString());
+			ACQ_ConCONACQv1 ca = ACQ_ConCONACQv1.getInstance();
+			ACQ_Query query = ACQ_ConCONACQv1.getQuery(line);
+			ctx.result(ca.classify(query).toString());
 		});
 
 	}

@@ -26,6 +26,7 @@ public class ExpeParser extends DefaultExperience {
 	private int nbVars;
 	private int minDom;
 	private int maxDom;
+	private int nbContexts;
 	private ArrayList<ArrayList<String>> language;
 	private ArrayList<ArrayList<String>> biasConstraints;
 	private ArrayList<ArrayList<String>> targetConstraints;
@@ -109,6 +110,10 @@ public class ExpeParser extends DefaultExperience {
 					gamma = false;
 					continue;
 				}
+				if (line.startsWith("nbContexts")) {
+					nbContexts = Integer.parseInt(lineSplited[1]);
+					continue;
+				}
 			}
 
 			if (gamma) {
@@ -178,6 +183,8 @@ public class ExpeParser extends DefaultExperience {
 	public int getMaxDom() {
 		return maxDom;
 	}
+
+	public int getNbContexts() { return nbContexts; }
 
 	public ArrayList<ArrayList<String>> getTN() {
 		return targetConstraints;

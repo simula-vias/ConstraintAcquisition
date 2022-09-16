@@ -13,11 +13,11 @@ import java.util.*;
 
 
 public class ACQ_ConCONACQv1 {
-    private static ACQ_ConCONACQv1 singleton;
+    private static ACQ_ConCONACQv1 singleton = null;
 
     protected ACQ_ConCONACQv1_Model[] models;
 
-    protected boolean verbose = true;
+    protected boolean verbose = false;
     protected boolean log_queries = false;
 
     protected ConstraintFactory constraintFactory;
@@ -30,25 +30,27 @@ public class ACQ_ConCONACQv1 {
     protected int n_asked_negative = 0;
     protected ArrayList<ACQ_Query> queries;
 
-    public static void initiate(ACQ_Bias[] bias, SATSolver[] sat) {
-        if (singleton != null) return;
+    public static ACQ_ConCONACQv1 initiate(ACQ_Bias[] bias, SATSolver[] sat, Chrono chrono) {
+        if (singleton != null) return null;
         // TODO We could copy the bias, but if we pass a sat solver array, then we can also put a bias array...
-        singleton = new ACQ_ConCONACQv1(bias, sat);
+        singleton = new ACQ_ConCONACQv1(bias, sat, chrono);
+        return singleton;
     }
 
     public static ACQ_ConCONACQv1 getInstance() {
         return singleton;
     }
 
-    private ACQ_ConCONACQv1(ACQ_Bias[] bias, SATSolver[] sat) {
+    private ACQ_ConCONACQv1(ACQ_Bias[] bias, SATSolver[] sat, Chrono chrono) {
         assert sat.length == bias.length : "need one SATSolver per context";
 
         int numContexts = bias.length;
 
+        this.chrono = chrono;
         this.models = new ACQ_ConCONACQv1_Model[numContexts];
 
         for (int i = 0; i < numContexts; i++) {
-            String logfile = BIOSService.getBIOS().getString("CALogFile") + ".action" + i;
+            String logfile = BIOSService.getBIOS().getString("CALogFile") + ".context" + i;
             this.models[i] = new ACQ_ConCONACQv1_Model(bias[i], sat[i], verbose, chrono);
             this.models[i].setLogfile(logfile);
         }
@@ -109,7 +111,7 @@ public class ACQ_ConCONACQv1 {
     }
 
     public ACQ_Bias getBias(int context) {
-        if (context < 0 || models.length <= context) return null;
+        if (!isValidContext(context)) return null;
         return models[context].getBias();
     }
 
@@ -176,6 +178,8 @@ public class ACQ_ConCONACQv1 {
                     assert membership_query != null : "membership query can't be null";
 
                     int context = getContext(membership_query);
+
+                    System.out.println("Send query to context " + context);
                     this.models[context].learn(membership_query);
 
                     n_asked++;
