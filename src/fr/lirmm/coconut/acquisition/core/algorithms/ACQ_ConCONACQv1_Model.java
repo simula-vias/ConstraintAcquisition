@@ -1,13 +1,15 @@
 package fr.lirmm.coconut.acquisition.core.algorithms;
 
 import fr.lirmm.coconut.acquisition.core.acqconstraint.*;
-import fr.lirmm.coconut.acquisition.core.acqsolver.ACQ_ConstraintSolver;
 import fr.lirmm.coconut.acquisition.core.acqsolver.SATSolver;
 import fr.lirmm.coconut.acquisition.core.learner.ACQ_Bias;
 import fr.lirmm.coconut.acquisition.core.learner.ACQ_Query;
 import fr.lirmm.coconut.acquisition.core.learner.Classification;
 import fr.lirmm.coconut.acquisition.core.tools.Chrono;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class ACQ_ConCONACQv1_Model {
@@ -27,24 +29,26 @@ public class ACQ_ConCONACQv1_Model {
     protected int n_asked = 0;
     protected int n_asked_negative = 0;
     protected int n_asked_positive = 0;
-    protected int bias_size_before_preprocess;
-    protected int bias_size_after_preprocess;
 
     protected ACQ_Network init_network;
     protected ACQ_Network minimalNetwork;
     protected ACQ_Network mostSpecificNetwork;
 
+    private String logfile = null;
+
+
     public ACQ_ConCONACQv1_Model(ACQ_Bias main_bias, SATSolver sat, boolean verbose, Chrono chrono) {
         this.verbose = verbose;
         this.chrono = chrono;
 
-        // TODO Create an actual deep copy of main_bias
-        ACQ_Network network = new ACQ_Network(main_bias.getNetwork().getFactory(), main_bias.getVars(), main_bias.getConstraints());
+        // TODO Check if this is an actual copy (it should be, according to the function description)
+        ACQ_Network network = new ACQ_Network(main_bias.getNetwork().getFactory(), main_bias.getNetwork(), main_bias.getVars());
+//        ACQ_Network network = new ACQ_Network(main_bias.getNetwork().getFactory(), main_bias.getVars(), main_bias.getConstraints());
         this.bias = new ACQ_Bias(network);
         this.constraintFactory = bias.network.getFactory();
         this.satSolver = sat;
 
-//		this.queries = getQueries(queries);
+
         this.init_network = new ACQ_Network(constraintFactory, bias.getVars());
 
         for (ACQ_IConstraint c : bias.getConstraints()) {
@@ -54,19 +58,12 @@ public class ACQ_ConCONACQv1_Model {
         }
         assert mapping.size() == bias.getSize() : "mapping and bias must contain the same number of elements";
         filter_conjunctions();
-        bias_size_before_preprocess = bias.getSize();
 
         minimalNetwork = new ACQ_Network(constraintFactory, bias.getVars());
         mostSpecificNetwork = new ACQ_Network(constraintFactory, bias.getVars());
 
-        // TODO Needs an extra call to set the background knowledge before we can initialize
-//        if (this.backgroundKnowledge == null) {
-//            N = new ContradictionSet(constraintFactory, bias.network.getVariables(), mapping);
-//        } else {
-//            N = this.backgroundKnowledge;
-//        }
-
-        bias_size_after_preprocess = bias.getSize();
+        // initialize with default, can be overriden by `setBackgroundKnowledge`
+        N = new ContradictionSet(constraintFactory, bias.network.getVariables(), mapping);
 
         if (!init_network.isEmpty()) {
 
@@ -187,6 +184,15 @@ public class ACQ_ConCONACQv1_Model {
         logmsg += " |CM size|: " + minimalNetwork.size() + " ";
         logmsg += " |CS size|: " + mostSpecificNetwork.size() + "\n";
         System.out.println(logmsg);
+
+        if (this.logfile != null) {
+            try {
+                new PrintWriter(new FileWriter(this.logfile)).write(logmsg);
+            } catch (IOException e) {
+                // do nothing
+            }
+        }
+
         return true;
     }
 
@@ -234,4 +240,12 @@ public class ACQ_ConCONACQv1_Model {
 //    public void setMostSpecificNetwork(ACQ_Network mostSpecificNetwork) {
 //        this.mostSpecificNetwork = mostSpecificNetwork;
 //    }
+
+    public void setBackgroundKnowledge(ContradictionSet backgroundKnowledge) {
+        N = backgroundKnowledge;
+    }
+
+    public void setLogfile(String logfile) {
+        this.logfile = logfile;
+    }
 }
