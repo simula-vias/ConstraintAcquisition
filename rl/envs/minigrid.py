@@ -166,7 +166,7 @@ class CombinationPickerEnv8x8(CombinationPickerEnv):
 
 class CombinationPickerRandomEnv8x8(CombinationPickerEnv):
     def __init__(self):
-        super().__init__(size=8, agent_start_pos=None, n_objects=4)
+        super().__init__(size=8, agent_pos=None, n_objects=4)
 
 
 class CombinationPickerEnv16x16(CombinationPickerEnv):
@@ -176,7 +176,7 @@ class CombinationPickerEnv16x16(CombinationPickerEnv):
 
 class CombinationPickerRandomEnv16x16(CombinationPickerEnv):
     def __init__(self):
-        super().__init__(size=16, agent_start_pos=None, n_objects=8)
+        super().__init__(size=16, agent_pos=None, n_objects=8)
 
 
 class CombinationPickerEnv32x32(CombinationPickerEnv):
@@ -186,4 +186,4 @@ class CombinationPickerEnv32x32(CombinationPickerEnv):
 
 class CombinationPickerRandomEnv32x32(CombinationPickerEnv):
     def __init__(self):
-        super().__init__(size=32, agent_start_pos=None, n_objects=16)
+        super().__init__(size=32, agent_pos=None, n_objects=16)
