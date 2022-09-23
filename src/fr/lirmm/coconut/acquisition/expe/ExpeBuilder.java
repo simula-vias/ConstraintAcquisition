@@ -156,6 +156,8 @@ public class ExpeBuilder {
 				exp.setExamplesfile(examplesfile);
 			if(Algo.equals(ACQ_Algorithm.CONACQ2))
 				exp.setMaxqueries(maxqueries);
+			if(Algo.equals(ACQ_Algorithm.ConCONACQ1))
+				exp.setNb_contexts(e.getNbContexts());
 
 			return exp;
 		}

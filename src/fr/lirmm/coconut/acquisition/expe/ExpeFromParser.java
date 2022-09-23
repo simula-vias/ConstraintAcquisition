@@ -125,7 +125,7 @@ public class ExpeFromParser extends DefaultExperience {
 		constraints = (convert(exp));
 
 		ACQ_Network network = new ACQ_Network(constraintFactory, allVarSet, constraints);
-		System.out.print(network.size());
+		System.out.println(network.size());
 		return new ACQ_Bias(network);
 	}
 
@@ -229,6 +229,9 @@ public class ExpeFromParser extends DefaultExperience {
 			break;
 		case CONACQ2:
 			ACQ_WS.executeConacqV2Experience(this);
+			break;
+		case ConCONACQ1:
+			ACQ_WS.executeContextualConacqV1Experience(this);
 			break;
 		default:
 			ACQ_WS.executeExperience(this, this.getAlgo(), this.getNb_threads(), this.getPartition());

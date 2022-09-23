@@ -200,8 +200,8 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         # fobsImage = obsImage.flatten()
 
         # HS: This is lavagap/gridworld specific
-        if action == 0:
-            action = 7  # java carl not consider action=0
+        # if action == 0:
+        #     action = 7  # java carl not consider action=0
 
         observation_str = ' '.join([str(int(elem)) for elem in self.prev_obs])
         obs_action_pair = observation_str + " " + str(int(action))
@@ -388,7 +388,8 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
 
     for i in range(env.unwrapped.action_space.n):
         # CA dont accept 0 value, GYM action 0 replace with 7
-        obs_action_pair = observation_str + " " + str(int(7 if i == 0 else i))
+        # obs_action_pair = observation_str + " " + str(int(7 if i == 0 else i))  # not needed for contextual conacq
+        obs_action_pair = f"{observation_str} {i}"
 
         result = True
         # observation/action pair exists cache,

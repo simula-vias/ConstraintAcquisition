@@ -4,6 +4,7 @@ public enum ACQ_Algorithm {
 	QUACQ,
 	PACQ,
 	CONACQ1,
-	CONACQ2
+	CONACQ2,
+	ConCONACQ1
 }
 // launch one of them

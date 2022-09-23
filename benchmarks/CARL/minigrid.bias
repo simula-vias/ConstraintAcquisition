@@ -1,10 +1,9 @@
 nbVars 148
 domainSize 0 10
+nbContexts 7
 
 Gamma
 DifferentXY
-LessXY
 EqualXY
-GreaterXY
 DifferentX_
 EqualX_

@@ -2,8 +2,6 @@ package fr.lirmm.coconut.acquisition.core.workspace;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.net.ServerSocket;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
@@ -18,6 +16,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import fr.lirmm.coconut.acquisition.core.algorithms.ACQ_ConCONACQv1;
 import org.chocosolver.util.tools.StringUtils;
 import org.json.JSONObject;
 
@@ -1204,6 +1203,83 @@ public class ACQ_WS {
 			FileManager.printResults(input, expe.getName() + "_" + instance + "_" + dtf.format(now) + ".results");
 			}
 		}
+		return stats;
+	}
+
+	public static Collective_Stats executeContextualConacqV1Experience(IExperience expe) {
+		/*
+		 * prepare bias + solver
+		 */
+		TimeUnit unit = TimeUnit.S;
+		Chrono chrono = new Chrono(expe.getClass().getName(), true);
+		final TimeManager satTimeManager = new TimeManager("SAT");
+		satTimeManager.setUnit(unit);
+
+		int numContexts = expe.getNb_contexts();
+
+		if (numContexts == 0) {
+			System.out.println("Contextual ConacqV1 called without contexts! Setting numContexts = 1");
+			numContexts = 1;
+		}
+
+		ACQ_Bias[] bias = new ACQ_Bias[numContexts];
+		final SATSolver[] solver = new SATSolver[numContexts];
+
+		for (int i = 0; i < numContexts; i++) {
+			bias[i] = expe.createBias();
+			solver[i] = expe.createSATSolver();
+			solver[i].setLimit(expe.getTimeout());
+			solver[i].addPropertyChangeListener((PropertyChangeListener) evt -> {
+				if (evt.getPropertyName().startsWith("BEG")) {
+					chrono.start(evt.getPropertyName().substring(4));
+				} else if (evt.getPropertyName().startsWith("END")) {
+					chrono.stop(evt.getPropertyName().substring(4));
+
+					if (evt.getPropertyName().startsWith("END_TIMECOUNT")) {
+						satTimeManager.add(chrono.getLast(evt.getPropertyName().substring(4), unit));
+					}
+				}
+			});
+		}
+
+		/*
+		 * Instantiate Acquisition algorithms
+		 */
+		ACQ_ConCONACQv1 acquisition = ACQ_ConCONACQv1.initiate(bias, solver, chrono);
+
+		if (expe.isVerbose())
+			System.out.println(String.format("Bias size: %d", acquisition.getBias(0).getSize()));
+
+		/*
+		 * Instantiate Background knowledge
+		 */
+//		ContradictionSet backknow = expe.createBackgroundKnowledge(bias, acquisition.mapping);
+//		if (expe.isVerbose() && backknow != null)
+//			System.out.println(String.format("BN size : %d", backknow.getSize()));
+//		acquisition.setBackgroundKnowledge(backknow);
+
+		// Param
+		acquisition.setVerbose(expe.isVerbose());
+		acquisition.setLog_queries(expe.isLog_queries());
+		acquisition.setMaxRand(expe.getMaxRand());
+
+		/*
+		 * Run
+		 */
+		chrono.start("total");
+		boolean result;
+		try {
+			result = acquisition.process(chrono, expe.getMaxQueries());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		chrono.stop("total");
+
+		/*
+		* ConCONACQ is not supposed to finish, the code for printing results and measurements is therefore not used.
+		* If needed, it can be adopted from `executeConacqV1Experience`.
+		 */
 		return stats;
 	}
 
