@@ -23,6 +23,28 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+        <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <descriptorRefs>
+                    <!-- This tells Maven to include all dependencies -->
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <archive>
+                    <manifest>
+                        <mainClass>fr.lirmm.coconut.acquisition.expe.AcqApp</mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -100,11 +122,12 @@
           <dependency>
               <groupId>io.javalin</groupId>
               <artifactId>javalin</artifactId>
-              <version>4.6.0</version>
+              <version>4.6.4</version>
           </dependency>
           <!-- Morena -->
 
   </dependencies>
+
 </project>
 
 

@@ -12,6 +12,7 @@
       <change beforePath="$PROJECT_DIR$/CAT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CAT.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/acq-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/acq-1.0.0_old.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/CARL/exm8.bias" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/CARL/exm8.bias" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/CARL/exm8.target" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/CARL/exm8.target" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/CARL/minigrid.bias" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/CARL/minigrid.bias" afterDir="false" />
@@ -56,7 +57,6 @@
       <change beforePath="$PROJECT_DIR$/benchmarks/sudoku/sudoku_81.target" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/sudoku/sudoku_81.target" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/toy/alldiff.bias" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/toy/alldiff.bias" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/toy/alldiff.target" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/toy/alldiff.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ca.py" beforeDir="false" afterPath="$PROJECT_DIR$/ca.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/results/exm8_0_2022_06_03_16_20_344.results" beforeDir="false" afterPath="$PROJECT_DIR$/results/exm8_0_2022_06_03_16_20_344.results" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/results/exm8_2022_06_03_16_20_344.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/results/exm8_2022_06_03_16_20_344.LearnedNetwork" afterDir="false" />
@@ -97,9 +97,7 @@
       <change beforePath="$PROJECT_DIR$/rl/ca.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/ca.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/envs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/envs/minigrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/envs/minigrid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rl/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/example.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/main_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/main_rl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rl/maskable_carl.py" beforeDir="false" afterPath="$PROJECT_DIR$/rl/maskable_carl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rl/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/rl/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BIOS.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/BIOS.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" afterDir="false" />
@@ -305,7 +303,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.build&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -313,7 +311,7 @@
       <recent name="D:\BigData\MyWork\GitHub\ConstraintAcquisition\benchmarks\CARL" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.AcqApp">
     <configuration name="AcqApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="fr.lirmm.coconut.acquisition.expe.AcqApp" />
       <module name="CAT" />
@@ -327,9 +325,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BIOSService" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="nill.morena.services.BIOSService" />
+      <module name="CAT" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.AcqApp" />
+        <item itemvalue="Application.BIOSService" />
       </list>
     </recent_temporary>
   </component>
@@ -343,6 +349,9 @@
       <updated>1655646162749</updated>
     </task>
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:com.google.protobuf:protobuf-java" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

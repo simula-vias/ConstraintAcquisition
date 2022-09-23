@@ -4,6 +4,7 @@ import os.path as osp
 
 import gym
 import gym_minigrid
+import stable_baselines3
 
 import stable_baselines3 as sb3
 from stable_baselines3 import PPO
@@ -79,6 +80,7 @@ env = gym.make(args.env)
 env.seed(args.seed)
 env = Monitor(env, filename=bios.GYM_MONITOR_PATH)  # from sb3 for logging
 env = ca.FlatObsImageOnlyWrapper(env)
+env = ca.GridworldInteractionFileLoggerWrapper(env)
 
 if use_carl:
     if args.carl == "mask":
@@ -113,8 +115,7 @@ if use_carl:
     mean_reward, std_reward = sb3_contrib.common.maskable.evaluation.evaluate_policy(model, env,
                                                                                      n_eval_episodes=20)  # change 1 to 100 (prod)
 else:
-    mean_reward, std_reward = sb3.common.evaluation.evaluate_policy(model, env,
-                                                                    n_eval_episodes=20)  # change 1 to 100 (prod)
+    mean_reward, std_reward = stable_baselines3.common.evaluation.evaluate_policy(model, env,n_eval_episodes=1000)  # change 1 to 100 (prod)
 
 print(f"mean_reward:{mean_reward:.2f} +/- {std_reward:.2f}")
 
