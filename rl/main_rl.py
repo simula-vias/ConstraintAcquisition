@@ -1,12 +1,13 @@
 import argparse
 import os
 import os.path as osp
+import subprocess
+import time
 
 import gym
-import gym_minigrid
-import stable_baselines3
+import gym_minigrid  # not used, but necessary for gym registration
+import envs  # not used, but necessary for gym registration
 
-import stable_baselines3 as sb3
 from stable_baselines3 import PPO
 from stable_baselines3.common.logger import configure
 from stable_baselines3.common.monitor import Monitor
@@ -15,7 +16,6 @@ from sb3_contrib import MaskablePPO
 from sb3_contrib.common.wrappers import ActionMasker
 import sb3_contrib.common.maskable.evaluation
 
-import envs
 import ca
 import bios
 
@@ -59,6 +59,12 @@ parser.add_argument(
     help="Run name for logs",
     default=bios.RUN_NAME,
 )
+parser.add_argument(
+    "-b",
+    "--backend",
+    help="Path to java jar file for CA backend process (None: connect to running process)s",
+    default=None,
+)
 
 args = parser.parse_args()
 
@@ -75,6 +81,21 @@ bios.GYM_MONITOR_PATH = osp.join(run_directory, "monitor.csv")
 
 use_carl = args.carl in ("mask", "replace")
 is_minigrid_env = args.env.lower().startswith("minigrid-")
+
+if use_carl and args.backend is not None:
+    if not (osp.exists(args.backend) or osp.isfile(args.backend)):
+        raise FileNotFoundError(f"Backend file {args.backend} does not exist")
+
+    # TODO: If environment is not minigrid, then we must adjust the BIOS.properties
+
+    # Cheap hack: assume we are in the repo, either in rl/ subdir or main directory
+    working_dir = ".." if os.getcwd().endswith("rl") else "."
+    cmd = ["java", "-jar", osp.abspath(args.backend)]
+    backend_process = subprocess.Popen(cmd, cwd=working_dir)
+    print("Started backend process, wait for 20 sec")
+    time.sleep(20)
+else:
+    backend_process = None
 
 env = gym.make(args.env)
 env.seed(args.seed)
@@ -115,7 +136,7 @@ if use_carl:
     mean_reward, std_reward = sb3_contrib.common.maskable.evaluation.evaluate_policy(model, env,
                                                                                      n_eval_episodes=20)  # change 1 to 100 (prod)
 else:
-    mean_reward, std_reward = stable_baselines3.common.evaluation.evaluate_policy(model, env,n_eval_episodes=1000)  # change 1 to 100 (prod)
+    mean_reward, std_reward = sb3_contrib.common.maskable.evaluation.evaluate_policy(model, env,n_eval_episodes=1000)  # change 1 to 100 (prod)
 
 print(f"mean_reward:{mean_reward:.2f} +/- {std_reward:.2f}")
 
