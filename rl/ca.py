@@ -14,15 +14,13 @@ import requests
 from gym import ObservationWrapper
 
 from multiprocessing import Pool
-import gym_minigrid.minigrid as mg
 from gym import spaces, core
-from numpy import random
 
 import bios as BIOS
 
 hlogs = set()
 salogs = set()
-cacheObsr = set()
+cacheObsr = dict()
 N = 1
 cacheCAserver = dict()
 server_health = None
@@ -226,8 +224,6 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         # Send new observation/action pair to CA, if not already in cache
         if is_safe is not None:
             if obs_action_pair not in cacheObsr:
-                cacheObsr.add(obs_action_pair)
-
                 if is_safe:
                     record = obs_action_pair + " 1"
                     self.posq = self.posq + 1
@@ -402,36 +398,25 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
                 # print("un-safe Q-observation/action prevented by make action illegal from RL Observerd cache:",CASkipAction)
             # print("existing Q-observation/action get from RL cache:", RLCache)
         else:
+            # Send new observation/action pair to CA, if not already in cache
+            QResultStr = queryCAServer(obs_action_pair)
+            global CACalls
+            CACalls += 1
+            # print("new Q-observation/action called to CA Server:",CACalls)
 
-            num = random.random()
-            # UseCAServerCacheFlag = False
-            if ((num >= 1 - (float(BIOS.CA_SERVER_CACHE))) and (obs_action_pair in cacheCAserver)) :
-                result = cacheCAserver.get(obs_action_pair)
-                action_mask[i] = result
-                global CACache
-                CACache += 1
+            if QResultStr.__contains__("NEGATIVE"):
+                result = False
 
-                # print("existing Q-observation/action get from CA Server cache:", CACache)
-            else:
-                # Send new observation/action pair to CA, if not already in cache
-                QResultStr = queryCAServer(obs_action_pair);
-                global CACalls
-                CACalls += 1
-                # print("new Q-observation/action called to CA Server:",CACalls)
-
-                if QResultStr.__contains__("NEGATIVE"):
-                    env.front_pos
-                    result = False
-
-                if (not result):
-                    global CASkipAction
-                    CASkipAction += 1
-                    # print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
-                # grant action per result
-                action_mask[i] = result
-                # insert new observation into cache
-                if not QResultStr.__contains__("UNKNOWN"):
-                    cacheCAserver.update({obs_action_pair: result})
+            if (not result):
+                global CASkipAction
+                CASkipAction += 1
+                # print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
+            # grant action per result
+            action_mask[i] = result
+            # insert new observation into cache
+            if not QResultStr.__contains__("UNKNOWN"):
+                cacheCAserver.update({obs_action_pair: result})
+                cacheObsr[obs_action_pair] = result
 
     return action_mask
 
