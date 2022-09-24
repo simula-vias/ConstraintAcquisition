@@ -92,7 +92,7 @@ public class ACQ_Network implements Iterable<ACQ_IConstraint> {
 	 * specified set of constraints
 	 * 
 	 * @param variables     Scope
-	 * @param constraints   Set of constraints
+	 * @param constraintSet   Set of constraints
 	 * @param add_variables if false constraints are only added when all variables
 	 *                      are already contained in variable set, else it will add
 	 *                      the constraint and the missing variables
@@ -354,10 +354,9 @@ public class ACQ_Network implements Iterable<ACQ_IConstraint> {
 
 	public ACQ_IConstraint[] getArrayConstraints() {
 		ACQ_IConstraint[] csts = new ACQ_IConstraint[this.constraints.size()];
-		int index = 0;
-		for (ACQ_IConstraint cst : this.constraints)
-			csts[index++] = cst;
-		return csts;
+		ArrayList<ACQ_IConstraint> cstsList = new ArrayList<>(this.constraints.size());
+		this.constraints.iterator().forEachRemaining(cstsList::add);
+		return cstsList.toArray(csts);
 	}
 
 	public void clean() {
