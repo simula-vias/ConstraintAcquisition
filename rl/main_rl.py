@@ -86,14 +86,33 @@ if use_carl and args.backend is not None:
     if not (osp.exists(args.backend) or osp.isfile(args.backend)):
         raise FileNotFoundError(f"Backend file {args.backend} does not exist")
 
-    # TODO: If environment is not minigrid, then we must adjust the BIOS.properties
-
     # Cheap hack: assume we are in the repo, either in rl/ subdir or main directory
     working_dir = ".." if os.getcwd().endswith("rl") else "."
+
+    old_style_queries_file = osp.join(working_dir, "benchmarks", "queries", "minigrid", "queries.txt")
+    if osp.exists(old_style_queries_file):
+        os.unlink(old_style_queries_file)
+
+
+    bios.EXAMPLE_PATH = old_style_queries_file
+    # Adjust BIOS.properties for log path + queries file
+    bios_file_path = osp.join(working_dir, "target", "classes", "BIOS.properties") 
+    bios_file_orig = open(bios_file_path, "r").readlines()
+    with open(bios_file_path, "w") as f:
+        for l in bios_file_orig:
+            if l.startswith("examplesfile"):
+                new_l = f"examplesfile={args.run_name}\n" 
+            elif l.startswith("file"):
+                new_l = f"file={args.run_name}\n"
+            else:
+                new_l = l
+            f.write(new_l)
+
+    # Finally, start CA backend process
     cmd = ["java", "-jar", osp.abspath(args.backend)]
     backend_process = subprocess.Popen(cmd, cwd=working_dir)
-    print("Started backend process, wait for 20 sec")
-    time.sleep(20)
+    print("Started backend process, wait for 30 sec")
+    time.sleep(30)
 else:
     backend_process = None
 
@@ -101,7 +120,6 @@ env = gym.make(args.env)
 env.seed(args.seed)
 env = Monitor(env, filename=bios.GYM_MONITOR_PATH)  # from sb3 for logging
 env = ca.FlatObsImageOnlyWrapper(env)
-env = ca.GridworldInteractionFileLoggerWrapper(env)
 
 if use_carl:
     if args.carl == "mask":
@@ -147,3 +165,6 @@ print("Skip false actions ", ca.CASkipAction)
 print("query cache size: ", len(ca.cacheObsr))
 print("CA Server cache size: ", len(ca.cacheCAserver))
 print("Result mismatch bet CA server & cache .queries : ", ca.dup_diff_results)
+
+if backend_process is not None:
+    backend_process.terminate()
