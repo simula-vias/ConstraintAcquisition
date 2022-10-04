@@ -6,7 +6,11 @@ import time
 
 import gym
 import gym_minigrid  # not used, but necessary for gym registration
+import stable_baselines3.common.evaluation
+from gym_minigrid.wrappers import RGBImgPartialObsWrapper
+
 import envs  # not used, but necessary for gym registration
+import gym_snake  # not used, but necessary for gym registration
 
 from stable_baselines3 import PPO
 from stable_baselines3.common.logger import configure
@@ -15,6 +19,8 @@ from stable_baselines3.common.monitor import Monitor
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.wrappers import ActionMasker
 import sb3_contrib.common.maskable.evaluation
+
+import torch
 
 import ca
 import bios
@@ -93,33 +99,30 @@ if use_carl and args.backend is not None:
     if osp.exists(old_style_queries_file):
         os.unlink(old_style_queries_file)
 
-
     bios.EXAMPLE_PATH = old_style_queries_file
-    # Adjust BIOS.properties for log path + queries file
-    bios_file_path = osp.join(working_dir, "target", "classes", "BIOS.properties") 
-    bios_file_orig = open(bios_file_path, "r").readlines()
-    with open(bios_file_path, "w") as f:
-        for l in bios_file_orig:
-            if l.startswith("examplesfile"):
-                new_l = f"examplesfile={args.run_name}\n" 
-            elif l.startswith("file"):
-                new_l = f"file={args.run_name}\n"
-            else:
-                new_l = l
-            f.write(new_l)
+
+    if args.env.lower().startswith("minigrid-combination-picker"):
+        bias_name = "combinationpicker"
+    else:
+        bias_name = "minigrid"
 
     # Finally, start CA backend process
-    cmd = ["java", "-jar", osp.abspath(args.backend)]
+    cmd = ["java", "-jar", osp.abspath(args.backend), "-f", bias_name]
     backend_process = subprocess.Popen(cmd, cwd=working_dir)
-    print("Started backend process, wait for 30 sec")
-    time.sleep(30)
+    print("Started backend process, wait for 60 sec")
+    time.sleep(60)
 else:
     backend_process = None
 
 env = gym.make(args.env)
 env.seed(args.seed)
 env = Monitor(env, filename=bios.GYM_MONITOR_PATH)  # from sb3 for logging
-env = ca.FlatObsImageOnlyWrapper(env)
+
+if is_minigrid_env:
+    # TODO Use flat obs only for CA interaction, but use CNN+MLP for RL (as in CGRL paper)
+    # env = ca.FlatObsMinigridWrapper(env)
+    env = gym_minigrid.wrappers.RGBImgPartialObsWrapper(env)  # Get pixel observations
+    env = gym_minigrid.wrappers.ImgObsWrapper(env)
 
 if use_carl:
     if args.carl == "mask":
@@ -137,10 +140,13 @@ if use_carl:
 else:
     env_train = env
 
+policy_kwargs = {} #dict(activation_fn=torch.nn.ReLU,
+                    # net_arch=[128, 64, 32,dict(pi=[32, 32], vf=[32,32])])
+
 if use_carl:
-    model = MaskablePPO("MlpPolicy", env_train, n_steps=512, verbose=1, seed=args.seed)
+    model = MaskablePPO("CnnPolicy", env_train, n_steps=512, verbose=1, seed=args.seed, policy_kwargs=policy_kwargs)
 else:
-    model = PPO("MlpPolicy", env_train, n_steps=512, verbose=1, seed=args.seed)
+    model = PPO("CnnPolicy", env_train, n_steps=512, verbose=1, seed=args.seed, policy_kwargs=policy_kwargs)
 
 # Train the agent for `num_steps` steps
 new_logger = configure(bios.GYM_LOGGER_PATH, ["stdout", "csv", "tensorboard"])
@@ -152,9 +158,10 @@ print("Learning complete")
 # Evaluate the trained agent
 if use_carl:
     mean_reward, std_reward = sb3_contrib.common.maskable.evaluation.evaluate_policy(model, env,
-                                                                                     n_eval_episodes=20)  # change 1 to 100 (prod)
+                                                                                     n_eval_episodes=100)
 else:
-    mean_reward, std_reward = sb3_contrib.common.maskable.evaluation.evaluate_policy(model, env,n_eval_episodes=1000)  # change 1 to 100 (prod)
+    mean_reward, std_reward = stable_baselines3.common.evaluation.evaluate_policy(model, env,
+                                                                                  n_eval_episodes=100)
 
 print(f"mean_reward:{mean_reward:.2f} +/- {std_reward:.2f}")
 

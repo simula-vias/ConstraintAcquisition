@@ -11,13 +11,13 @@ class CombinationPickerEnv(MiniGridEnv):
     def __init__(
             self,
             size=8,
-            agent_pos=(1, 1),
-            goal_pos=None,
+            agent_start_pos=(1, 1),
+            agent_start_dir=0,
             n_objects=3,
             n_duplicates=2,
     ):
-        self._agent_default_pos = agent_pos
-        self._goal_default_pos = goal_pos
+        self.agent_start_pos = agent_start_pos
+        self.agent_start_dir = agent_start_dir
 
         self.max_inventory_size = 16
         self.items = (Ball, Key)
@@ -59,11 +59,8 @@ class CombinationPickerEnv(MiniGridEnv):
         # Create an empty grid
         self.grid = Grid(width, height)
 
-        # Generate the surrounding walls
-        self.grid.horz_wall(0, 0)
-        self.grid.horz_wall(0, height - 1)
-        self.grid.vert_wall(0, 0)
-        self.grid.vert_wall(width - 1, 0)
+        ## Generate the surrounding walls
+        self.grid.wall_rect(0, 0, width, height)
 
         room_w = width // 2
         room_h = height // 2
@@ -91,19 +88,14 @@ class CombinationPickerEnv(MiniGridEnv):
                     self.grid.set(*pos, None)
 
         # Randomize the player start position and orientation
-        if self._agent_default_pos is not None:
-            self.agent_pos = self._agent_default_pos
-            self.grid.set(*self._agent_default_pos, None)
-            self.agent_dir = self._rand_int(0, 4)  # assuming random start direction
+        if self.agent_start_pos is not None:
+            self.agent_pos = self.agent_start_pos
+            self.agent_dir = self.agent_start_dir
         else:
             self.place_agent()
 
-        if self._goal_default_pos is not None:
-            goal = Goal()
-            self.grid.set(*self._goal_default_pos, goal)
-            goal.init_pos, goal.cur_pos = self._goal_default_pos
-        else:
-            self.place_obj(Goal())
+        # Place a goal square in the bottom-right corner
+        self.put_obj(Goal(), width - 2, height - 2)
 
         # Place objects
         self.inventory = -np.ones((self.max_inventory_size, 2), dtype=np.int)
@@ -166,7 +158,7 @@ class CombinationPickerEnv8x8(CombinationPickerEnv):
 
 class CombinationPickerRandomEnv8x8(CombinationPickerEnv):
     def __init__(self):
-        super().__init__(size=8, agent_pos=None, n_objects=4)
+        super().__init__(size=8, agent_start_pos=None, n_objects=4)
 
 
 class CombinationPickerEnv16x16(CombinationPickerEnv):
@@ -176,7 +168,7 @@ class CombinationPickerEnv16x16(CombinationPickerEnv):
 
 class CombinationPickerRandomEnv16x16(CombinationPickerEnv):
     def __init__(self):
-        super().__init__(size=16, agent_pos=None, n_objects=8)
+        super().__init__(size=16, agent_start_pos=None, n_objects=8)
 
 
 class CombinationPickerEnv32x32(CombinationPickerEnv):
@@ -186,4 +178,4 @@ class CombinationPickerEnv32x32(CombinationPickerEnv):
 
 class CombinationPickerRandomEnv32x32(CombinationPickerEnv):
     def __init__(self):
-        super().__init__(size=32, agent_pos=None, n_objects=16)
+        super().__init__(size=32, agent_start_pos=None, n_objects=16)

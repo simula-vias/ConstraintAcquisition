@@ -330,7 +330,7 @@ class ParallelConstraintWrapper(ObservationWrapper):
         return observation
 
 
-class FlatObsImageOnlyWrapper(ObservationWrapper):
+class FlatObsMinigridWrapper(ObservationWrapper):
     """
     Encode mission strings using a one-hot scheme,
     and combine these with observed images into one flat array
@@ -342,16 +342,29 @@ class FlatObsImageOnlyWrapper(ObservationWrapper):
         imgSpace = env.observation_space.spaces['image']
         imgSize = reduce(operator.mul, imgSpace.shape, 1)
 
+        self.has_inventory = "inventory" in env.observation_space.spaces
+
+        if self.has_inventory:
+            inventorySpace = env.observation_space.spaces['inventory']
+            inventorySize = reduce(operator.mul, inventorySpace.shape, 1)
+        else:
+            inventorySize = 0
+
         self.observation_space = spaces.Box(
             low=0,
             high=255,
-            shape=(imgSize,),
+            shape=(imgSize+inventorySize,),
             dtype='uint8'
         )
 
     def observation(self, obs):
-        image = obs['image']
-        return image.flatten()
+        image = obs['image'].flatten()
+
+        if self.has_inventory:
+            inventory = obs["inventory"].flatten()
+            return np.hstack((image, inventory))
+        else:
+            return image
 
 
 class LavaAvoidanceWrapper(core.Wrapper):

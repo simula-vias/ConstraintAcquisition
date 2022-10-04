@@ -1,0 +1,9 @@
+nbVars 180
+domainSize 0 10
+nbContexts 7
+
+Gamma
+DifferentXY
+EqualXY
+DifferentX_
+EqualX_
