@@ -24,6 +24,7 @@ To use and compile the source code, make sure you have binded the following libr
 - [javax activation](https://mvnrepository.com/artifact/javax.activation/activation/1.1)
 - [choco solver 4.10.0](https://github.com/chocoteam/choco-solver/releases/tag/4.10.0)
 - [javamail api](https://javaee.github.io/javamail/)
+- [javalin] (https://javalin.io/)
 
 
 For more uses (unit tests and graphic mode), add the extra librairies :
