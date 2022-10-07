@@ -23,9 +23,10 @@ SKIP_LOGS_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "skips.csv")
 # GYM_MONITOR_PATH = osp.join(LOG_BASE_DIRECTORY, RUN_NAME, "monitor.csv")
 
 #GYM ENVIRONMENT SETUP
-GYM_ENVIRONMENT = "MiniGrid-LavaCrossingS11N5-v0"
+# GYM_ENVIRONMENT = "MiniGrid-LavaCrossingS11N5-v0"
 # GYM_ENVIRONMENT = "MiniGrid-LavaGapS5-v0"
-STEPS = 5000
+GYM_ENVIRONMENT = "Snake-16x16-v0"
+STEPS = 50000
 SEED = 20
-CARL = "mask"  # none/mask/replace
+CARL = "none"  # none/mask/replace
 CA_SERVER_CACHE = 0.01

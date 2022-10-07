@@ -338,8 +338,10 @@ class FlatObsImageOnlyWrapper(ObservationWrapper):
 
     def __init__(self, env):
         super().__init__(env)
-
-        imgSpace = env.observation_space.spaces['image']
+        if self.spec.entry_point.startswith('gym_snake'):
+            imgSpace = env.observation_space
+        else:
+            imgSpace = env.observation_space.spaces['image']
         imgSize = reduce(operator.mul, imgSpace.shape, 1)
 
         self.observation_space = spaces.Box(
@@ -350,8 +352,12 @@ class FlatObsImageOnlyWrapper(ObservationWrapper):
         )
 
     def observation(self, obs):
-        image = obs['image']
-        return image.flatten()
+        if not self.spec.entry_point.startswith('gym_snake'):
+            image = obs['image']
+            img = image.flatten()
+        else:
+            img = obs.flatten()
+        return img
 
 
 class LavaAvoidanceWrapper(core.Wrapper):
