@@ -4,272 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="239204cd-0997-4953-89e2-a0e6e0a6cb8e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AUTHORS.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../AUTHORS.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CAT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../CAT.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../LICENSE.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../acq-1.0.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/CARL/exm8.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/CARL/exm8.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/CARL/exm8.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/CARL/exm8.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/CARL/minigrid.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/CARL/minigrid.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/CARL/minigrid.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/CARL/minigrid.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/CARL/toy1.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/CARL/toy1.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/golomb/golomb_4.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/golomb/golomb_4.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/golomb/golomb_4.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/golomb/golomb_4.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/golomb/golomb_8.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/golomb/golomb_8.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/golomb/golomb_8.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/golomb/golomb_8.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/instance00.data/instance00.data_30.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/instance00.data/instance00.data_30.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/jsudoku/jsudoku.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/jsudoku/jsudoku.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/jsudoku/jsudoku_81.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/jsudoku/jsudoku_81.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/jsudoku/jsudoku_81.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/jsudoku/jsudoku_81.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/latinSquare/latinSquare_100.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/latinSquare/latinSquare_100.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/latinSquare/latinSquare_100.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/latinSquare/latinSquare_100.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/queens/queens_30.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queens/queens_30.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/queens/queens_30.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queens/queens_30.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/queens/queens_8.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queens/queens_8.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/queens/queens_8.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queens/queens_8.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/queries/exm8/exm8.queries" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queries/exm8/exm8.queries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/queries/scheduling00.queries" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queries/scheduling00.queries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/queries/sudoku9.queries" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queries/sudoku9.queries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/queries/toy1.queries" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/queries/toy1.queries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/random/random_50.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/random/random_50.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/random/random_50_122_101618829379804.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/random/random_50_122_101618829379804.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/random/random_50_122_101618831137960.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/random/random_50_122_101618831137960.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/random/random_50_122_101619003567810.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/random/random_50_122_101619003567810.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/random/random_50_122_101619003660896.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/random/random_50_122_101619003660896.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/10.data" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/10.data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/instance00.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/instance00.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/instance00.data" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/instance00.data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/instance00.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/instance00.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/scheduling00.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/scheduling00.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/scheduling00.data" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/scheduling00.data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/scheduling00.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/scheduling00.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/schedulingpack007.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/schedulingpack007.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/schedulingpack007.data" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/schedulingpack007.data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/schedulingpack007.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/scheduling/rcpsp/schedulingpack007.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_16.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_16.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_16.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_16.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_81.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_81.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_81.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/sudoku/sudoku_81.target" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/toy/alldiff.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/toy/alldiff.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/toy/alldiff.target" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/toy/alldiff.target" afterDir="false" />
+    <list default="true" id="ac374f9b-5d2d-4515-b983-12d5cfae1a66" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../benchmarks/CARL/snake.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/CARL/snake.bias" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/exm8_0_2022_06_03_16_20_344.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/exm8_0_2022_06_03_16_20_344.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/exm8_2022_06_03_16_20_344.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/exm8_2022_06_03_16_20_344.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/golomb_4_0_2021_10_08_12_29_15.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/golomb_4_0_2021_10_08_12_29_15.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/golomb_4_2021_10_08_12_28_855.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/golomb_4_2021_10_08_12_28_855.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/golomb_4_2021_10_08_12_29_15.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/golomb_4_2021_10_08_12_29_15.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_160_2021_10_08_12_41_13.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_160_2021_10_08_12_41_13.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_162021_10_08_12_41_13.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_162021_10_08_12_41_13.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_28_55.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_28_55.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_29_13.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_29_13.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_29_21.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_29_21.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_29_26.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_29_26.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_29_34.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_0_2021_10_08_17_29_34.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_28_55.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_28_55.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_29_13.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_29_13.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_29_21.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_29_21.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_29_26.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_29_26.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_29_34.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_16_2021_10_08_17_29_34.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_810_2021_10_08_12_40_00.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_810_2021_10_08_12_40_00.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_812021_10_08_12_40_00.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_812021_10_08_12_40_00.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_81_0_2021_10_08_12_29_853.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_81_0_2021_10_08_12_29_853.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_81_0_2021_10_08_12_30_840.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_81_0_2021_10_08_12_30_840.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_81_0_2021_10_08_16_26_811.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_81_0_2021_10_08_16_26_811.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_81_0_2021_10_14_11_17_1426.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_81_0_2021_10_14_11_17_1426.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_81_2021_10_08_12_29_853.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_81_2021_10_08_12_29_853.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_81_2021_10_08_12_30_840.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_81_2021_10_08_12_30_840.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_81_2021_10_08_16_26_811.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_81_2021_10_08_16_26_811.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/sudoku_81_2021_10_14_11_17_1426.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/sudoku_81_2021_10_14_11_17_1426.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/zebra0_2021_10_08_12_44_08.results" beforeDir="false" afterPath="$PROJECT_DIR$/../results/zebra0_2021_10_08_12_44_08.results" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results/zebra2021_10_08_12_44_08.LearnedNetwork" beforeDir="false" afterPath="$PROJECT_DIR$/../results/zebra2021_10_08_12_44_08.LearnedNetwork" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/rl.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rl.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bios.py" beforeDir="false" afterPath="$PROJECT_DIR$/bios.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ca.py" beforeDir="false" afterPath="$PROJECT_DIR$/ca.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/envs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/envs/minigrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/minigrid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_rl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym_snake/envs/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/gym_snake/envs/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snake_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/snake_rl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/BIOS.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../src/BIOS.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/JigSawSudoku/problem1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem0.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem10.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem10.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem11.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem11.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem12.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem12.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem13.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem13.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem14.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem14.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem15.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem15.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem16.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem16.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem17.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem17.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem18.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem18.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem19.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem19.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem20.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem20.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem21.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem21.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem22.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem22.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem23.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem23.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem24.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem24.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem25.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem25.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem26.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem26.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem27.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem27.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem3.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem4.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem5.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem6.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem7.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem7.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem8.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem8.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem9.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/bench/Meetings/problem9.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_CNF.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_CNF.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Clause.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Clause.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_ConjunctionConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_ConjunctionConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_DNF.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_DNF.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_DisjunctionConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_DisjunctionConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Formula.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Formula.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_IConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_IConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Language.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Language.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_MetaConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_MetaConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Network.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Network.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Relation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ACQ_Relation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/AllDiff.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/AllDiff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/BinaryArithmetic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/BinaryArithmetic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/BinaryConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/BinaryConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Conj.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Conj.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ConstraintFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ConstraintFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ConstraintMapping.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ConstraintMapping.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Contradiction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Contradiction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ContradictionSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ContradictionSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Generation_Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Generation_Type.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Operator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ScalarArithmetic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ScalarArithmetic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ScalarConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/ScalarConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/TernaryArithmetic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/TernaryArithmetic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/TernaryConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/TernaryConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/UnaryArithmetic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/UnaryArithmetic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/UnaryConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/UnaryConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Unit.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqconstraint/Unit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_BiasDegVarSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_BiasDegVarSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_ChocoSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_ChocoSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_ConstraintSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_ConstraintSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_Criterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_Criterion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_Domain.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_Domain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_Heuristic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_Heuristic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_IDomain.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_IDomain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_ModelVariables.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ACQ_ModelVariables.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/MiniSatModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/MiniSatModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/MiniSatSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/MiniSatSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/SATModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/SATModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/SATSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/SATSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ValSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/ValSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/VarSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/VarSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/Z3SATModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/Z3SATModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/Z3SATSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/acqsolver/Z3SATSolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_CONACQv2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_PACQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_PACQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_QUACQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/algorithms/ACQ_QUACQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/combinatorial/AllPermutationIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/combinatorial/AllPermutationIterator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/combinatorial/CombinationIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/combinatorial/CombinationIterator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/combinatorial/PermutationIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/combinatorial/PermutationIterator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Algorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Algorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Bias.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Bias.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Learner.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Learner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Query.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Query.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Scope.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ACQ_Scope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/Classification.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/Classification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ILearner.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ILearner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ObservedLearner.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/ObservedLearner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/Query_type.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/learner/Query_type.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_ASRelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_ASRelations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_PACQ_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_PACQ_Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_PACQ_Runnable.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_PACQ_Runnable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_Partition.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_Partition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_QueryMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_QueryMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_Relations.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_Relations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_ScopeMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_ScopeMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_TRelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_TRelations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_URelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ACQ_URelations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/IManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/IManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ObservedProtfolioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/parallel/ObservedProtfolioManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/Chrono.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/Chrono.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/ChronoCPU.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/ChronoCPU.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/Collective_Stats.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/Collective_Stats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/ExpeGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/ExpeGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/FileManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/NameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/NameService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/StatManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/StatManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/TimeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/TimeManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/TimeUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/TimeUnit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/convergenceTest/AcquisitionRate.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/tools/convergenceTest/AcquisitionRate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/ACQ_WS.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/ACQ_WS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/DefaultExperience.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/DefaultExperience.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/DefaultExperienceConacq.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/DefaultExperienceConacq.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/IExperience.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/IExperience.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/IExperienceConacq.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/core/workspace/IExperienceConacq.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/AcqApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/AcqApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeCustomized.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeCustomized.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeFromParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeFromParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeFromParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeFromParserTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeGOLOMB.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeGOLOMB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeLatinSquare.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeLatinSquare.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeMeetings.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeMeetings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpePurdey.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpePurdey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeQueens.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeQueens.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeRLFAP.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeRLFAP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeRandom.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeRandom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeSUDOKU4.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeSUDOKU4.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeTOY2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeTOY2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeTOY3.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeTOY3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeTarget.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeTarget.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeZebra.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/ExpeZebra.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/Experience.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/Experience.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/File_Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe/File_Type.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeCONACQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeCONACQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeCgrlGridworldServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeCgrlGridworldServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_GOLOMB.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_GOLOMB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_LatinSquare.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_LatinSquare.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_Purdey.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_Purdey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_Random.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_Random.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_SUDOKU9.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_SUDOKU9.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_SUDOKUHybrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_SUDOKUHybrid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_SchedulingHybrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeConacq_SchedulingHybrid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeFromParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeFromParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/expe_conacq/ExpeParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/AskViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/AskViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/ExpeHandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/ExpeHandle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/ExpeHandleMono.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/ExpeHandleMono.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/ExpeHandleParallel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/ExpeHandleParallel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/GSLegend.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/GSLegend.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/GSViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/GSViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/GUI_Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/GUI_Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/GraphStreamTopComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/GraphStreamTopComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/InfoAcqTopComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/InfoAcqTopComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/InfoViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/InfoViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/Plateau.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/PlateauClassic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/PlateauClassic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/PlateauQueens.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/PlateauQueens.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/PlateauTopComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/PlateauTopComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/TopComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/TopComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/VerticalFlowLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/VerticalFlowLayout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/ZebraViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/gui/ZebraViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/resource/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/resource/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/webserver/javalinServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/fr/lirmm/coconut/acquisition/webserver/javalinServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/nill/morena/services/BIOSService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/nill/morena/services/BIOSService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../updates.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../updates.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,7 +52,7 @@
       <recent name="D:\BigData\MyWork\GitHub\ConstraintAcquisition\rl" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main_rl">
+  <component name="RunManager" selected="Python.snake_rl">
     <configuration name="ca" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -351,7 +95,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="maskable_carl (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="snake_rl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -363,33 +107,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/maskable_carl.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="maskable_carl" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="rl" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="software.aws.toolkits.jetbrains.core.execution.PythonAwsConnectionExtension">
-        <option name="credential" />
-        <option name="region" />
-        <option name="useCurrentConnection" value="false" />
-      </EXTENSION>
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/maskable_carl.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/snake_rl.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -442,18 +160,18 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.snake_rl" />
+        <item itemvalue="Python.ca" />
         <item itemvalue="Python.main_rl" />
         <item itemvalue="Python.visual_carl (1)" />
         <item itemvalue="Python.visual_carl" />
-        <item itemvalue="Python.ca" />
-        <item itemvalue="Python.maskable_carl (1)" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="239204cd-0997-4953-89e2-a0e6e0a6cb8e" name="Changes" comment="" />
+      <changelist id="ac374f9b-5d2d-4515-b983-12d5cfae1a66" name="Changes" comment="" />
       <created>1655646037452</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -477,18 +195,38 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>186</line>
+          <line>194</line>
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>209</line>
+          <line>226</line>
           <option name="timeStamp" value="93" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main_rl.py</url>
           <line>82</line>
           <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ca.py</url>
+          <line>37</line>
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ca.py</url>
+          <line>39</line>
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ca.py</url>
+          <line>371</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ca.py</url>
+          <line>377</line>
+          <option name="timeStamp" value="101" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

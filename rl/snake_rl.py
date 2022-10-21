@@ -99,14 +99,14 @@ else:
     env_train = env
 
 if use_carl:
-    model = MaskablePPO("MlpPolicy", env_train, n_steps=1024, verbose=0, seed=args.seed)
+    model = MaskablePPO("MlpPolicy", env_train, n_steps=1024, verbose=1, seed=args.seed)
 else:
     model = PPO("MlpPolicy", env_train, n_steps=1024, verbose=1, seed=args.seed)
 
 # Train the agent for `num_steps` steps
 new_logger = configure(bios.GYM_LOGGER_PATH, ["stdout", "csv", "tensorboard"])
 model.set_logger(new_logger)
-model.learn(total_timesteps=args.num_steps, eval_env=env, eval_freq=100_000)  # change 1 to 10000 (prod)
+model.learn(total_timesteps=args.num_steps, eval_env=env, eval_freq=1000)  # change 1 to 10000 (prod)
 
 print("Learning complete")
 

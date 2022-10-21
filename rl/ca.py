@@ -35,20 +35,28 @@ dup_diff_results = 0
 # This is the action masking function; it needs to query CA on which actions are safe/unsafe
 # Potential problem: We need to figure out the current observation, because it is not a parameter of the function.
 def mask_fn_minigrid(env: gym.Env) -> np.ndarray:
-    obs = env.unwrapped.gen_obs()
-    forward_cell = obs["image"][7//2, 7-2]
+    if env.spec.entry_point.startswith('gym_snake'):
+        # obs = env.unwrapped.get_obs(env.unwrapped.height)
+        # forward_cell = obs[0][env.unwrapped.width // 2, env.unwrapped.height - 2]
+        # observation = obs[0]
+        observation = env.unwrapped.grid.encode(int(env.observation_space.shape[0]))
+        action_mask = gen_safe_actions(observation[0].flatten(), env)
+    else:
+        obs = env.unwrapped.gen_obs()
+        forward_cell = obs["image"][7//2, 7-2]
+        observation = obs['image']
     # forward_cell = obs["image"][env.front_pos[0], env.front_pos[1]]  # get front position from environment
     # action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
-    observation = obs['image']
-    action_mask = gen_safe_actions(observation.flatten(), env)
-    if np.all(forward_cell == [9, 0, 0]):
-    #     action_mask[2] = False
-        SKIPLOGS = BIOS.SKIP_LOGS_PATH
-        action_mask_str = ','.join([str(int(elem)) for elem in action_mask])
-        with open(SKIPLOGS, "a") as g:
-                dt = datetime.now()
-                logger = "9," + action_mask_str +"," +str(int(datetime.timestamp(dt)*1000))
-                g.write(logger + "\n")
+    # observation = obs['image']
+        action_mask = gen_safe_actions(observation.flatten(), env)
+        if np.all(forward_cell == [9, 0, 0]):
+        #     action_mask[2] = False
+            SKIPLOGS = BIOS.SKIP_LOGS_PATH
+            action_mask_str = ','.join([str(int(elem)) for elem in action_mask])
+            with open(SKIPLOGS, "a") as g:
+                    dt = datetime.now()
+                    logger = "9," + action_mask_str +"," +str(int(datetime.timestamp(dt)*1000))
+                    g.write(logger + "\n")
     return action_mask
 
 
@@ -148,7 +156,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     # TODO : check the future conference (Next week)
     # TODO : add cache (safe/un-safe action only) for state/action not to call API each time
     # TODO : 1. create lava gap .queries
-    #  2. ask CA to learn constraints
+    #  2. ask CA to learn
     #  3. run RL again by asking action type ( safe/not safe) before taking decision
     #       3.1 if action was unsafe query all action and select which action is safe.
     #       3.2 if action was uncertain/safe  then continue explore
@@ -205,12 +213,21 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         obs_action_pair = observation_str + " " + str(int(action))
 
         # HS: This is lavagap/gridworld specific
-        is_safe = (not done) or (done and reward > 0)
+        # is_safe = (not done) or (done and reward > 0)
+
+        #Morena : snake environment
+        is_safe = (reward > -1) or (not done)
+        # if is_safe & reward > 0:
+        #         print('reward is ',reward,' done is :',done)
+        if done and reward > -1:
+            print('reward is ', reward, ' done is :', done, 'steps are ',self.steps)
+        # Morena : snake environment
+
         # if (self.step_count == int(BIOS.MAX_EPISODE_STEPS) and reward==0) :
 
-        if self.env.steps_remaining == 0:
-            is_safe = None
-            done = True
+        # if self.env.steps_remaining == 0:
+        #     is_safe = None
+        #     done = True
 
         self.steps += 1
 
@@ -352,11 +369,15 @@ class FlatObsImageOnlyWrapper(ObservationWrapper):
         )
 
     def observation(self, obs):
-        if not self.spec.entry_point.startswith('gym_snake'):
-            image = obs['image']
-            img = image.flatten()
-        else:
-            img = obs.flatten()
+        # if self.spec.entry_point.startswith('gym_snake'):
+        #     image = obs
+            # one_dim_obs = np.zeros((self.env.width,self.env.height,1))
+            # for width in range(self.env.width):
+            #     for height in range(self.env.height):
+            #         one_dim_obs[width][height][0] = obs[width][height][0]
+            # img = one_dim_obs.flatten()
+        # else:
+        img = obs.flatten()
         return img
 
 
