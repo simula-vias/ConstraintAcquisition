@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ac374f9b-5d2d-4515-b983-12d5cfae1a66" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../benchmarks/CARL/snake.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/CARL/snake.bias" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bios.py" beforeDir="false" afterPath="$PROJECT_DIR$/bios.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ca.py" beforeDir="false" afterPath="$PROJECT_DIR$/ca.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gym_snake/envs/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/gym_snake/envs/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snake_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/snake_rl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/BIOS.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../src/BIOS.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,12 +214,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>371</line>
+          <line>374</line>
           <option name="timeStamp" value="99" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>377</line>
+          <line>380</line>
           <option name="timeStamp" value="101" />
         </line-breakpoint>
       </breakpoints>

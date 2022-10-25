@@ -244,10 +244,12 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
                 if is_safe:
                     record = obs_action_pair + " 1"
                     self.posq = self.posq + 1
+                    cacheObsr.update({obs_action_pair:True})
                     # print('a SAFE observation added , queries size :', self.posq)
                 else:
                     record = obs_action_pair + " 0"
                     self.negq = self.negq + 1
+                    cacheObsr.update({obs_action_pair: False})
                     # print('a SAFE observation added , queries size :', self.posq)
 
                 LOGFILE = BIOS.EXAMPLE_PATH

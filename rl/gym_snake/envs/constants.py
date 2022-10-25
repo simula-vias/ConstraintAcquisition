@@ -6,12 +6,12 @@ class ObjectColor:
     empty = 0, 0, 0
     apple = 200, 200, 200
     own_head = 100, 100, 100
-    own_body = 55, 55, 55
-    other_head = 128, 128, 255
-    other_body = 128, 255, 128
-    dead_head = 128, 128, 128
-    dead_body = 64, 64, 64
-    wall = 0, 0, 0
+    own_body = 50, 50, 50
+    other_head = 240, 240, 240
+    other_body = 120, 120, 120
+    dead_head = 220, 220, 220
+    dead_body = 110, 110, 110
+    wall = 1, 1, 1
 
 
 class GridType(IntEnum):

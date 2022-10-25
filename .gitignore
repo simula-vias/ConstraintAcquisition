@@ -122,3 +122,7 @@ benchmarks/queries/snake/queries.csv
 rl/.idea/misc.xml
 pom.xml
 rl/.idea/workspace.xml
+benchmarks/queries/snake/logger.txt/events.out.tfevents.1666727144.MorenaStation.6564.0
+benchmarks/queries/snake/logger.txt/events.out.tfevents.1666727290.MorenaStation.21072.0
+benchmarks/queries/snake/logger.txt/events.out.tfevents.1666727600.MorenaStation.19404.0
+rl/.idea/workspace.xml
