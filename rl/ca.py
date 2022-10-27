@@ -30,7 +30,10 @@ RLCache = 0
 OASkipAction = 0
 CASkipAction = 0
 dup_diff_results = 0
-
+min_ca_time = 1000
+max_ca_time = 0
+sumTime = 0
+Ca_100_Calls = 0
 
 # This is the action masking function; it needs to query CA on which actions are safe/unsafe
 # Potential problem: We need to figure out the current observation, because it is not a parameter of the function.
@@ -427,10 +430,32 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
                 # print("un-safe Q-observation/action prevented by make action illegal from RL Observerd cache:",CASkipAction)
             # print("existing Q-observation/action get from RL cache:", RLCache)
         else:
+            startTime = time.time()
             # Send new observation/action pair to CA, if not already in cache
             QResultStr = queryCAServer(obs_action_pair)
+
+            executionTime = (time.time() - startTime)
+            global max_ca_time
+            if ( executionTime> max_ca_time ):
+                max_ca_time = executionTime
+
+            global min_ca_time
+            if (executionTime < min_ca_time):
+                min_ca_time = executionTime
+
+
             global CACalls
             CACalls += 1
+
+            global Ca_100_Calls
+            Ca_100_Calls += 1
+
+            global sumTime
+            sumTime = sumTime + executionTime
+
+            if ((Ca_100_Calls % 100)==0 ):
+                print('Average resp.time for lass 100 calls is ',str((sumTime/Ca_100_Calls)),'(s) Min is',min_ca_time,' Max is ',max_ca_time," and total calls:",CACalls)
+                Ca_100_Calls = 0
             # print("new Q-observation/action called to CA Server:",CACalls)
 
             if QResultStr.__contains__("NEGATIVE"):

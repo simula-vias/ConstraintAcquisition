@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import fr.lirmm.coconut.acquisition.core.algorithms.ACQ_ConCONACQv1;
 import fr.lirmm.coconut.acquisition.core.learner.ACQ_Query;
+import nill.morena.services.MathHelper;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -48,6 +49,7 @@ public class AcqApp {
 
 
 	private static Javalin app;
+
 	public static void main(String args[]) throws IOException, ParseException {
 
 		final Options options = configParameters();
@@ -113,12 +115,16 @@ public class AcqApp {
 		app = Javalin.create(config ->{
 			config.maxRequestSize = Long.valueOf(BIOSService.getBIOS().getString("maxqueries"));
 		}).start(Integer.valueOf(BIOSService.getBIOS().getString("serverPort")));
-		app.post("/check/*", ctx -> {
 
+		app.post("/check/*", ctx -> {
+			long startTime = System.nanoTime();
 			String line = ctx.body();
 			ACQ_ConCONACQv1 ca = ACQ_ConCONACQv1.getInstance();
 			ACQ_Query query = ACQ_ConCONACQv1.getQuery(line);
 			ctx.result(ca.classify(query).toString());
+			long endTime = System.nanoTime();
+
+			MathHelper.avgRespTime((endTime - startTime) /1000000);
 		});
 
 	}

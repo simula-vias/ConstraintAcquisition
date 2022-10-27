@@ -78,12 +78,13 @@ public class ACQ_ConCONACQv1 {
         assert (line != null) : "the sample is null";
 
         String[] lineSplited = line.split(" ");
-        int[] values = new int[lineSplited.length - 1];
+        int lengthSplit = lineSplited.length;
+        int[] values = new int[lengthSplit - 1];
 
-        int label = Integer.parseInt(lineSplited[lineSplited.length - 1]);
+        int label = Integer.parseInt(lineSplited[lengthSplit - 1]);
         int i = 0;
         for (String s : lineSplited) {
-            if (i == lineSplited.length - 1) break;
+            if (i == lengthSplit - 1) break;
             if (s != null && !s.trim().isEmpty()) {
                 values[i] = Integer.parseInt(s);
                 i++;
@@ -93,6 +94,7 @@ public class ACQ_ConCONACQv1 {
         bs.set(0, i);
         ACQ_Scope scope = new ACQ_Scope(bs);
         ACQ_Query q = new ACQ_Query(scope, values);
+//        System.out.println("bitSet length: " + i + "values in line: " + values.length);
         q.classify(label == 1);
 
         return q;
@@ -190,7 +192,7 @@ public class ACQ_ConCONACQv1 {
                     }
                 }
 
-                Thread.sleep(10000);
+                Thread.sleep(15000);
             }
         } catch (Exception e) {
             e.printStackTrace();
