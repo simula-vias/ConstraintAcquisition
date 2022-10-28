@@ -222,8 +222,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         is_safe = (reward > -1) or (not done)
         # if is_safe & reward > 0:
         #         print('reward is ',reward,' done is :',done)
-        if done and reward > -1:
-            print('reward is ', reward, ' done is :', done, 'steps are ',self.steps)
+
         # Morena : snake environment
 
         # if (self.step_count == int(BIOS.MAX_EPISODE_STEPS) and reward==0) :
@@ -456,6 +455,7 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
             if ((Ca_100_Calls % 100)==0 ):
                 print('Average resp.time for lass 100 calls is ',str((sumTime/Ca_100_Calls)),'(s) Min is',min_ca_time,' Max is ',max_ca_time," and total calls:",CACalls)
                 Ca_100_Calls = 0
+                sumTime = 0
             # print("new Q-observation/action called to CA Server:",CACalls)
 
             if QResultStr.__contains__("NEGATIVE"):
