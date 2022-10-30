@@ -204,7 +204,7 @@ class BaseGrid:
         if snake.alive:
             self.grid, vis_mask = self.gen_obs_grid(snake_v,grid_size)
 
-        return self.grid.encode(grid_size)
+        return self.grid.encode(self.width) # modified 20201030
         # return result
 
     # Morena
@@ -535,8 +535,13 @@ class Grid:
 
                         else:
                             array_16[i, j+(grid_size- self.height ), :] = v
-            # arr7 = array;
-            # arr16 = arr7.resize(0,(16,16,3))
+            # observation mask logic to make body, outzone and wall same color as wall
+            for col in range(grid_size):
+                for row in range(grid_size):
+                    if not np.array_equal(array_16[col][row], (200,200,200)) and  not np.array_equal(array_16[col][row],(100,100,100)) and not np.array_equal(array_16[col][row], (0,0,0)):
+                        array_16[col,row] = ObjectColor.wall
+            # observation mask logic to make body, outzone and wall same color as wall
+
             return array_16
 
         @staticmethod
