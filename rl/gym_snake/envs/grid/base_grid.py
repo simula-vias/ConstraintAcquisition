@@ -201,7 +201,8 @@ class BaseGrid:
             # print("snake head is",last_p)
 
         self.init_view = result
-        if snake.alive:
+        if not (snake_v is None) and snake_v.alive:
+        # if snake.alive:
             self.grid, vis_mask = self.gen_obs_grid(snake_v,grid_size)
 
         return self.grid.encode(self.width) # modified 20201030
@@ -518,7 +519,7 @@ class Grid:
             if vis_mask is None:
                 vis_mask = np.ones((self.width, self.height), dtype=bool)
 
-            array = np.zeros((self.width, self.height, 3), dtype='uint8')
+            # array = np.zeros((self.width, self.height, 3), dtype='uint8')
             array_16 = np.ones((grid_size, grid_size, 3), dtype='uint8')
 
             # for col in range(self.width):
@@ -536,10 +537,10 @@ class Grid:
                         else:
                             array_16[i, j+(grid_size- self.height ), :] = v
             # observation mask logic to make body, outzone and wall same color as wall
-            for col in range(grid_size):
-                for row in range(grid_size):
-                    if not np.array_equal(array_16[col][row], (200,200,200)) and  not np.array_equal(array_16[col][row],(100,100,100)) and not np.array_equal(array_16[col][row], (0,0,0)):
-                        array_16[col,row] = ObjectColor.wall
+            # for col in range(grid_size):
+            #     for row in range(grid_size):
+            #         if not np.array_equal(array_16[col][row], (200,200,200)) and  not np.array_equal(array_16[col][row],(100,100,100)) and not np.array_equal(array_16[col][row], (0,0,0)):
+            #             array_16[col,row] = ObjectColor.wall
             # observation mask logic to make body, outzone and wall same color as wall
 
             return array_16

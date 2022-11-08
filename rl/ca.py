@@ -203,8 +203,12 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     def step(self, action):
         observation, reward, done, info = self.env.step(action)
 
-        # if done:
-        #         print('done and reward :',reward)
+        if done and action == 0 and observation[92]==0:
+            print('done and reward :',reward)
+            print('done and action :', action)
+            print('done and alldone? :', self.grid.all_done)
+            print('done and observation :', observation)
+
         # obsImage = observation['image']
         # fobsImage = obsImage.flatten()
 
@@ -220,6 +224,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         #Morena : snake environment
         is_safe = (reward > -1) or (not done)
+        # is_safe = False if ( done and self.grid.all_done == False) else True
         # if is_safe & reward > 0:
         #         print('reward is ',reward,' done is :',done)
 
@@ -241,6 +246,10 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         #     self.negq = self.negq + 1
 
         # Send new observation/action pair to CA, if not already in cache
+
+        # Morena minigird env 20221106
+        # if is_safe is not None:
+        #Morena minigird env
         if is_safe is not None:
             if obs_action_pair not in cacheObsr:
                 if is_safe:
@@ -432,6 +441,8 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
             startTime = time.time()
             # Send new observation/action pair to CA, if not already in cache
             QResultStr = queryCAServer(obs_action_pair)
+
+            # QResultStr = "UNKNOWN"
 
             executionTime = (time.time() - startTime)
             global max_ca_time
