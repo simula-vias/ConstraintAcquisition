@@ -203,7 +203,7 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     def step(self, action):
         observation, reward, done, info = self.env.step(action)
 
-        if done and action == 0 and observation[92]==0:
+        if reward > -1  and action == 0 and observation[92]==50:
             print('done and reward :',reward)
             print('done and action :', action)
             print('done and alldone? :', self.grid.all_done)
