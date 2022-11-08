@@ -114,8 +114,8 @@ class SnakeEnv(gym.Env):
             obs = obs[0]
             rewards = rewards[0]
             dones = dones[0]
-        if dones == True:
-            self.reset()
+        # if dones == True:
+        #     self.reset()
         # print("obs share",obs.shape)
         return obs, rewards, dones, {}
 
