@@ -203,11 +203,11 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
     def step(self, action):
         observation, reward, done, info = self.env.step(action)
 
-        if reward > -1  and action == 0 and observation[92]==50:
-            print('done and reward :',reward)
-            print('done and action :', action)
-            print('done and alldone? :', self.grid.all_done)
-            print('done and observation :', observation)
+        # if reward ==0 and self.prev_obs[92] == 50 and action == 0:
+        #     print('done and reward :',reward)
+        #     print('done and action :', action)
+        #     print('done and alldone? :', self.grid.all_done)
+        #     print('done and observation :', observation)
 
         # obsImage = observation['image']
         # fobsImage = obsImage.flatten()
@@ -215,8 +215,11 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         # HS: This is lavagap/gridworld specific
         # if action == 0:
         #     action = 7  # java carl not consider action=0
+        if self.env.spec.entry_point.startswith('gym_snake'):
+            observation_str = ' '.join([str(int(elem)) for elem in self.previous_obs_flat])
+        else:
+            observation_str = ' '.join([str(int(elem)) for elem in self.prev_obs])
 
-        observation_str = ' '.join([str(int(elem)) for elem in self.prev_obs])
         obs_action_pair = observation_str + " " + str(int(action))
 
         # HS: This is lavagap/gridworld specific
@@ -441,7 +444,7 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
             startTime = time.time()
             # Send new observation/action pair to CA, if not already in cache
             QResultStr = queryCAServer(obs_action_pair)
-
+            #
             # QResultStr = "UNKNOWN"
 
             executionTime = (time.time() - startTime)

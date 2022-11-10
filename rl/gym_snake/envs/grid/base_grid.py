@@ -71,7 +71,8 @@ class BaseGrid:
                 if snake.alive:
                     # Only contract if not about to eat apple
                     next_head = snake.next_head(action)
-                    if next_head not in self.apples:
+                    #modified by Morena if the snake hit his body , the tail get removed
+                    if next_head not in self.apples and next_head not in snake:
                         snake.contract()
 
         for i, snake, action in zip(range(self.num_snakes), self.snakes, actions):
@@ -79,11 +80,14 @@ class BaseGrid:
                 continue
 
             next_head = snake.next_head(action)
+
             if self.is_blocked(next_head):
                 snake.kill()
                 rewards[i] = self.reward_collision
             else:
+                # print("snake direction before action:",snake._direction)
                 snake.expand(action)
+                # print("snake direction AFTER action:", snake._direction)
                 if next_head in self.apples:
                     if self.done_apple:
                         snake.kill()
@@ -164,6 +168,7 @@ class BaseGrid:
 
         for snake in self.snakes:
             if p in snake:
+                # print("snake hit the body...!")
                 return True
 
         return False
@@ -188,6 +193,7 @@ class BaseGrid:
                 head_color = ObjectColor.own_head
                 # print("snake direction: ", snake._direction)
                 snake_v = snake
+                # print("snake direction is", snake_v._direction)
             else:
                 body_color = ObjectColor.other_body
                 head_color = ObjectColor.other_head
@@ -198,11 +204,13 @@ class BaseGrid:
                 last_p = p
 
             result[last_p] = head_color
-            # print("snake head is",last_p)
+
 
         self.init_view = result
         if not (snake_v is None) and snake_v.alive:
         # if snake.alive:
+            if grid_size is None:
+                grid_size = self.width
             self.grid, vis_mask = self.gen_obs_grid(snake_v,grid_size)
 
         return self.grid.encode(self.width) # modified 20201030

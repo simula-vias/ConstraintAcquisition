@@ -58,6 +58,8 @@ class SnakeEnv(gym.Env):
         self.actions = []
         self.action_space = []
         self.observation_space = []
+        self.previous_obs = None
+        self.previous_obs_flat = None
 
         action_class = Action4 if grid_type == GridType.square else Action6
 
@@ -99,7 +101,13 @@ class SnakeEnv(gym.Env):
                 assert self.action_space[i].contains(actions[i]), "%r (%s) invalid" % (actions[i], type(actions[i]))
 
         self.step_count += 1
+
+        #added morena to save previous obs
+        self.previous_obs = self.get_obs(int(self.observation_space.shape[0]))
+        self.previous_obs_flat = self.previous_obs[0].flatten()
+
         rewards, dones = self.grid.move(actions)
+
 
         if self.step_count >= self.max_steps:
             self.grid.all_done = True
