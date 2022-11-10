@@ -7,10 +7,13 @@ class ObjectColor:
     apple = 200, 200, 200
     own_head = 100, 100, 100
     own_body = 50, 50, 50
+    own_tail = 5, 5, 5
     other_head = 240, 240, 240
     other_body = 120, 120, 120
+    other_tail = 220, 220, 220
     dead_head = 220, 220, 220
     dead_body = 110, 110, 110
+    dead_tail = 110, 110, 110
     wall = 1, 1, 1
 
 

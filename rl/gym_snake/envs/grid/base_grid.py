@@ -71,8 +71,8 @@ class BaseGrid:
                 if snake.alive:
                     # Only contract if not about to eat apple
                     next_head = snake.next_head(action)
-                    #modified by Morena if the snake hit his body , the tail get removed
-                    if next_head not in self.apples and next_head not in snake:
+
+                    if next_head not in self.apples:
                         snake.contract()
 
         for i, snake, action in zip(range(self.num_snakes), self.snakes, actions):
@@ -198,12 +198,18 @@ class BaseGrid:
                 body_color = ObjectColor.other_body
                 head_color = ObjectColor.other_head
 
-            last_p = None
+            head_p = None
+            # tail_p = None
+            is_tail = True
             for p in snake:
-                result[p] = body_color
-                last_p = p
+                if is_tail:
+                    result[p] = ObjectColor.own_tail
+                    is_tail = False
+                else:
+                    result[p] = body_color
+                    head_p = p
 
-            result[last_p] = head_color
+            result[head_p] = head_color
 
 
         self.init_view = result
