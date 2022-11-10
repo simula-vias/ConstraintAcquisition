@@ -117,14 +117,18 @@ public class AcqApp {
 		}).start(Integer.valueOf(BIOSService.getBIOS().getString("serverPort")));
 
 		app.post("/check/*", ctx -> {
-			long startTime = System.nanoTime();
+//			long startTime = System.nanoTime();
 			String line = ctx.body();
+
+			// only snake environment
+			line = MathHelper.squeeze(line);
+			// only snake environment
 			ACQ_ConCONACQv1 ca = ACQ_ConCONACQv1.getInstance();
 			ACQ_Query query = ACQ_ConCONACQv1.getQuery(line);
 			ctx.result(ca.classify(query).toString());
-			long endTime = System.nanoTime();
+//			long endTime = System.nanoTime();
 
-			MathHelper.avgRespTime((endTime - startTime) /1000000);
+//			MathHelper.avgRespTime((endTime - startTime) /1000000);
 		});
 
 	}

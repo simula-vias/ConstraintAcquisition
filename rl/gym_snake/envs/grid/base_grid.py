@@ -534,7 +534,7 @@ class Grid:
                 vis_mask = np.ones((self.width, self.height), dtype=bool)
 
             # array = np.zeros((self.width, self.height, 3), dtype='uint8')
-            array_16 = np.ones((grid_size, grid_size, 3), dtype='uint8')
+            array_16 = np.full((grid_size, grid_size,3), 20)
 
             # for col in range(self.width):
             #     for row in range(self.height):

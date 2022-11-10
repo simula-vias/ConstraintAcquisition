@@ -1,5 +1,9 @@
 package nill.morena.services;
 
+import scala.util.parsing.combinator.testing.Str;
+
+import java.util.Arrays;
+
 public class MathHelper {
     public static long calls=0;
     private static long call=0;
@@ -18,6 +22,22 @@ public class MathHelper {
             call = 0;
             sum = 0;
         }
+    }
+
+    public static String squeeze(String str){
+        String[] strs = str.split(" ");
+        String[] queryStr = new String[65];
+        int leng = strs.length;
+        int count = 0;
+        int step = 3;
+        for(int i=0 ; i < leng+1;){
+            queryStr[count] = strs[i];
+            ++count;
+            i +=step;
+//            if ( (count * step) > leng)  queryStr[count-1] = strs[leng - 1];
+        }
+
+        return String.join(" ",queryStr);
     }
 
 }

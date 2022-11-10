@@ -216,7 +216,8 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
         # if action == 0:
         #     action = 7  # java carl not consider action=0
         if self.env.spec.entry_point.startswith('gym_snake'):
-            observation_str = ' '.join([str(int(elem)) for elem in self.previous_obs_flat])
+            one_dime = squeez(self.previous_obs_flat)
+            observation_str = ' '.join([str(int(elem)) for elem in one_dime])
         else:
             observation_str = ' '.join([str(int(elem)) for elem in self.prev_obs])
 
@@ -514,3 +515,21 @@ class NumpyEncoder(json.JSONEncoder):
         if isinstance(obj, np.ndarray):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
+#
+def squeez(three_d):
+    one_d_array = np.zeros(64)
+    count = 0
+    leng = len(three_d)
+    for i in range(0,leng,3):
+        one_d_array[count] = three_d[i if i==0 else i-1]
+        count = count +1
+    return one_d_array
+
+def expand(one_d):
+    three_d_array = np.zeros(192)
+
+    leng = len(one_d)
+    for i in range(0,leng):
+        for j in (0,3):
+            three_d_array[j] = one_d[i]
+    return three_d_array
