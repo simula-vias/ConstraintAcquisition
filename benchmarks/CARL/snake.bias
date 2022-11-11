@@ -1,5 +1,5 @@
-nbVars 192
-domainSize 0 255
+nbVars 65
+domainSize 0 15
 nbContexts 3
 
 Gamma

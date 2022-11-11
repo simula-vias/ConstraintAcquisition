@@ -8,13 +8,14 @@ class ObjectColor:
     own_head = 10, 10, 10
     own_body = 11, 11, 11
     own_tail = 2, 2,2
+    wall = 12, 12, 12
     other_head = 240, 240, 240
     other_body = 120, 120, 120
     other_tail = 220, 220, 220
     dead_head = 220, 220, 220
     dead_body = 110, 110, 110
     dead_tail = 110, 110, 110
-    wall = 12, 12, 12
+
 
 
 class GridType(IntEnum):

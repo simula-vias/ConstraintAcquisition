@@ -121,7 +121,7 @@ public class AcqApp {
 			String line = ctx.body();
 
 			// only snake environment
-			line = MathHelper.squeeze(line);
+//			line = MathHelper.squeeze(line);
 			// only snake environment
 			ACQ_ConCONACQv1 ca = ACQ_ConCONACQv1.getInstance();
 			ACQ_Query query = ACQ_ConCONACQv1.getQuery(line);

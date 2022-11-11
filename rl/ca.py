@@ -424,8 +424,14 @@ class LavaAvoidanceWrapper(core.Wrapper):
 
 def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
     action_mask = np.ones(env.unwrapped.action_space.n, dtype=bool)
-    observation_str = ' '.join([str(int(elem)) for elem in obs])
-
+    #Reduce dimension
+    if env.spec.entry_point.startswith('gym_snake'):
+        one_dime = squeez(obs)
+        observation_str = ' '.join([str(int(elem)) for elem in one_dime])
+    else:
+        observation_str = ' '.join([str(int(elem)) for elem in obs])
+    #Reduce dimension
+    # observation_str = squeez(observation_str)
     for i in range(env.unwrapped.action_space.n):
         # CA dont accept 0 value, GYM action 0 replace with 7
         # obs_action_pair = observation_str + " " + str(int(7 if i == 0 else i))  # not needed for contextual conacq
@@ -433,59 +439,60 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
 
         result = True
         # observation/action pair exists cache,
-        if obs_action_pair in cacheObsr:
-            result = cacheObsr.get(obs_action_pair)
-            action_mask[i] = result
-            if (not result):
-                global OASkipAction
-                OASkipAction += 1
-                # print("un-safe Q-observation/action prevented by make action illegal from RL Observerd cache:",CASkipAction)
-            # print("existing Q-observation/action get from RL cache:", RLCache)
-        else:
-            startTime = time.time()
+        # if obs_action_pair in cacheObsr:
+        #     result = cacheObsr.get(obs_action_pair)
+        #     action_mask[i] = result
+        #     if (not result):
+        #         global OASkipAction
+        #         OASkipAction += 1
+        #         print("un-safe Q-observation/action prevented by make action illegal from RL Observerd cache:",OASkipAction)
+        #     # print("existing Q-observation/action get from RL cache:", RLCache)
+        # else:
+            # startTime = time.time()
             # Send new observation/action pair to CA, if not already in cache
-            QResultStr = queryCAServer(obs_action_pair)
+        QResultStr = queryCAServer(obs_action_pair)
+
+        # QResultStr = "UNKNOWN"
+
+            # executionTime = (time.time() - startTime)
+            # global max_ca_time
+            # if ( executionTime> max_ca_time ):
+            #     max_ca_time = executionTime
             #
-            # QResultStr = "UNKNOWN"
-
-            executionTime = (time.time() - startTime)
-            global max_ca_time
-            if ( executionTime> max_ca_time ):
-                max_ca_time = executionTime
-
-            global min_ca_time
-            if (executionTime < min_ca_time):
-                min_ca_time = executionTime
+            # global min_ca_time
+            # if (executionTime < min_ca_time):
+            #     min_ca_time = executionTime
 
 
-            global CACalls
-            CACalls += 1
+        global CACalls
+        CACalls += 1
 
-            global Ca_100_Calls
-            Ca_100_Calls += 1
+            # global Ca_100_Calls
+            # Ca_100_Calls += 1
+            #
+            # # global sumTime
+            # # sumTime = sumTime + executionTime
+            #
+            # if ((Ca_100_Calls % 100)==0 ):
+            #     print('Average resp.time for lass 100 calls is ',str((sumTime/Ca_100_Calls)),'(s) Min is',min_ca_time,' Max is ',max_ca_time," and total calls:",CACalls)
+            #     Ca_100_Calls = 0
+            #     sumTime = 0
+            # # print("new Q-observation/action called to CA Server:",CACalls)
 
-            global sumTime
-            sumTime = sumTime + executionTime
+        if QResultStr.__contains__("NEGATIVE"):
+            result = False
 
-            if ((Ca_100_Calls % 100)==0 ):
-                print('Average resp.time for lass 100 calls is ',str((sumTime/Ca_100_Calls)),'(s) Min is',min_ca_time,' Max is ',max_ca_time," and total calls:",CACalls)
-                Ca_100_Calls = 0
-                sumTime = 0
-            # print("new Q-observation/action called to CA Server:",CACalls)
 
-            if QResultStr.__contains__("NEGATIVE"):
-                result = False
-
-            if (not result):
-                global CASkipAction
-                CASkipAction += 1
-                # print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
+        if (not result):
+            global CASkipAction
+            CASkipAction += 1
+            print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
             # grant action per result
             action_mask[i] = result
-            # insert new observation into cache
-            if not QResultStr.__contains__("UNKNOWN"):
-                cacheCAserver.update({obs_action_pair: result})
-                cacheObsr[obs_action_pair] = result
+        # insert new observation into cache
+        # if not QResultStr.__contains__("UNKNOWN"):
+        #     cacheCAserver.update({obs_action_pair: result})
+        #     cacheObsr[obs_action_pair] = result
 
     return action_mask
 
