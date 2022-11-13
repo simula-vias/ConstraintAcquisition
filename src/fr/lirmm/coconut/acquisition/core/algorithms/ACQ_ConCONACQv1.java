@@ -95,7 +95,10 @@ public class ACQ_ConCONACQv1 {
         ACQ_Scope scope = new ACQ_Scope(bs);
         ACQ_Query q = new ACQ_Query(scope, values);
 //        System.out.println("bitSet length: " + i + "values in line: " + values.length);
-        q.classify(label == 1);
+
+        if (label != -1) {
+            q.classify(label == 1);
+        }
 
         return q;
     }
