@@ -190,7 +190,7 @@ public class ACQ_ConCONACQv1 {
                     n_asked++;
                     if (membership_query.isPositive()) {
                         n_asked_positive++;
-                    } else {
+                    } else if (membership_query.isNegative()) {
                         n_asked_negative++;
                     }
                 }
@@ -212,15 +212,20 @@ public class ACQ_ConCONACQv1 {
     }
 
     private static int getContext(ACQ_Query query) {
+        assert  query != null : " query is null ";
+        assert query.values[query.values.length - 1] != -1 :" query is -1";
+
         return query.values[query.values.length - 1];
     }
 
     private boolean isValidContext(int context) {
+        assert 0 <= context && context < models.length : "context is not valid";
         return 0 <= context && context < models.length;
     }
 
     public Classification classify(ACQ_Query query) {
         int context = getContext(query);
+        assert context != -1 : "context is -1";
 
         if (!isValidContext(context)) return Classification.UNKNOWN;
 

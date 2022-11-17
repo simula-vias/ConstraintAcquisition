@@ -88,7 +88,7 @@ public class ACQ_ConCONACQv1_Model {
 
         if (answer) {
             n_asked_positive += 1;
-        } else {
+        } else if(membership_query.isNegative()) {
             n_asked_negative += 1;
         }
 
@@ -181,12 +181,16 @@ public class ACQ_ConCONACQv1_Model {
         logmsg += " |CM size|: " + minimalNetwork.size() + " ";
         logmsg += " |CS size|: " + mostSpecificNetwork.size() + "\n";
         System.out.println(logmsg);
-
+        PrintWriter a = null;
         if (this.logfile != null) {
             try {
-                new PrintWriter(new FileWriter(this.logfile)).write(logmsg);
+                a =   new PrintWriter(new FileWriter(this.logfile,true));
+                a.write(logmsg);
             } catch (IOException e) {
+                e.printStackTrace();
                 // do nothing
+            }finally {
+                a.close();
             }
         }
 

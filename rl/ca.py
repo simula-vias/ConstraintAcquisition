@@ -435,7 +435,7 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
     for i in range(env.unwrapped.action_space.n):
         # CA dont accept 0 value, GYM action 0 replace with 7
         # obs_action_pair = observation_str + " " + str(int(7 if i == 0 else i))  # not needed for contextual conacq
-        obs_action_pair = f"{observation_str} {i}"
+        obs_action_pair = f"{observation_str} {i} {-1}"
 
         result = True
         # observation/action pair exists cache,
@@ -486,7 +486,7 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
         if (not result):
             global CASkipAction
             CASkipAction += 1
-            print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
+            # print("un-safe Q-observation/action prevented by make action illegal:",CASkipAction)
             # grant action per result
             action_mask[i] = result
         # insert new observation into cache

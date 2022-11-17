@@ -24,7 +24,7 @@ import fr.lirmm.coconut.acquisition.core.tools.FileManager;
 import fr.lirmm.coconut.acquisition.core.workspace.IExperience;
 
 import io.javalin.Javalin;
-import io.javalin.core.JavalinConfig;
+import io.javalin.http.*;
 import nill.morena.services.BIOSService;
 
 public class AcqApp {
@@ -112,9 +112,9 @@ public class AcqApp {
 	protected static void runServer(){
 
 
-		app = Javalin.create(config ->{
-			config.maxRequestSize = Long.valueOf(BIOSService.getBIOS().getString("maxqueries"));
-		}).start(Integer.valueOf(BIOSService.getBIOS().getString("serverPort")));
+		app = Javalin.create(
+//				config ->{config.http.maxRequestSize = Long.valueOf(BIOSService.getBIOS().getString("maxqueries"));}
+		).start(Integer.valueOf(BIOSService.getBIOS().getString("serverPort")));
 
 		app.post("/check/*", ctx -> {
 //			long startTime = System.nanoTime();
