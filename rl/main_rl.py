@@ -11,6 +11,7 @@ import envs  # not used, but necessary for gym registration
 from stable_baselines3 import PPO
 from stable_baselines3.common.logger import configure
 from stable_baselines3.common.monitor import Monitor
+import stable_baselines3 as sb3
 
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.wrappers import ActionMasker
@@ -145,7 +146,7 @@ else:
 # Train the agent for `num_steps` steps
 new_logger = configure(bios.GYM_LOGGER_PATH, ["stdout", "csv", "tensorboard"])
 model.set_logger(new_logger)
-model.learn(total_timesteps=args.num_steps, eval_env=env, eval_freq=100_000)  # change 1 to 10000 (prod)
+model.learn(total_timesteps=args.num_steps, eval_env=env, eval_freq=10000)  # change 1 to 10000 (prod)
 
 print("Learning complete")
 
@@ -154,7 +155,7 @@ if use_carl:
     mean_reward, std_reward = sb3_contrib.common.maskable.evaluation.evaluate_policy(model, env,
                                                                                      n_eval_episodes=20)  # change 1 to 100 (prod)
 else:
-    mean_reward, std_reward = sb3_contrib.common.maskable.evaluation.evaluate_policy(model, env,n_eval_episodes=1000)  # change 1 to 100 (prod)
+    mean_reward, std_reward = sb3.common.evaluation.evaluate_policy(model, env,n_eval_episodes=10000)  # change 1 to 100 (prod)
 
 print(f"mean_reward:{mean_reward:.2f} +/- {std_reward:.2f}")
 

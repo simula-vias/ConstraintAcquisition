@@ -223,36 +223,26 @@ class GridworldInteractionFileLoggerWrapper(ObservationWrapper):
 
         obs_action_pair = observation_str + " " + str(int(action))
 
+        # Morena : minigrid environment
         # HS: This is lavagap/gridworld specific
-        # is_safe = (not done) or (done and reward > 0)
+        is_safe = (not done) or (done and reward > 0)
+        # Morena : minigrid environment
 
         #Morena : snake environment
-        is_safe = (reward > -1) or (not done)
-        # is_safe = False if ( done and self.grid.all_done == False) else True
-        # if is_safe & reward > 0:
-        #         print('reward is ',reward,' done is :',done)
-
+        # is_safe = (reward > -1) or (not done)
         # Morena : snake environment
 
-        # if (self.step_count == int(BIOS.MAX_EPISODE_STEPS) and reward==0) :
-
-        # if self.env.steps_remaining == 0:
-        #     is_safe = None
-        #     done = True
-
-        self.steps += 1
-
-        # if is_safe is None:
-        #     pass
-        # elif is_safe:
-        #     self.posq = self.posq + 1
-        # else:
-        #     self.negq = self.negq + 1
+        # Morena : minigrid environment
+        if self.env.steps_remaining == 0:
+            is_safe = None
+            done = True
+        # self.steps += 1
+        # Morena : minigrid environment
 
         # Send new observation/action pair to CA, if not already in cache
 
-        # Morena minigird env 20221106
-        # if is_safe is not None:
+
+
         #Morena minigird env
         if is_safe is not None:
             if obs_action_pair not in cacheObsr:
@@ -386,15 +376,15 @@ class FlatObsImageOnlyWrapper(ObservationWrapper):
         )
 
     def observation(self, obs):
-        # if self.spec.entry_point.startswith('gym_snake'):
-        #     image = obs
+        if self.spec.entry_point.startswith('gym_snake'):
+            image = obs
             # one_dim_obs = np.zeros((self.env.width,self.env.height,1))
             # for width in range(self.env.width):
             #     for height in range(self.env.height):
             #         one_dim_obs[width][height][0] = obs[width][height][0]
             # img = one_dim_obs.flatten()
-        # else:
-        img = obs.flatten()
+        else:
+            img = obs['image'].flatten()
         return img
 
 

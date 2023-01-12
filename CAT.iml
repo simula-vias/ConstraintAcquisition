@@ -65,5 +65,10 @@
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.32" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.32" level="project" />
+    <orderEntry type="library" name="eclipse.jetty.websocket.servlet" level="project" />
+    <orderEntry type="library" name="eclipse.jetty.util" level="project" />
+    <orderEntry type="library" name="eclipse.jetty.server" level="project" />
+    <orderEntry type="library" name="eclipse.jetty.servlet" level="project" />
+    <orderEntry type="library" name="eclipse.jetty.websocket.server" level="project" />
   </component>
 </module>

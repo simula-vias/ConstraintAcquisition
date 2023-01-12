@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ac374f9b-5d2d-4515-b983-12d5cfae1a66" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../benchmarks/CARL/snake.bias" beforeDir="false" afterPath="$PROJECT_DIR$/../benchmarks/CARL/snake.bias" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CAT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../CAT.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bios.py" beforeDir="false" afterPath="$PROJECT_DIR$/bios.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ca.py" beforeDir="false" afterPath="$PROJECT_DIR$/ca.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym_snake/envs/grid/base_grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/gym_snake/envs/grid/base_grid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_rl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visual_carl.py" beforeDir="false" afterPath="$PROJECT_DIR$/visual_carl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/BIOS.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../src/BIOS.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +50,7 @@
       <recent name="D:\BigData\MyWork\GitHub\ConstraintAcquisition\rl" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.snake_rl">
+  <component name="RunManager" selected="Python.visual_carl_2">
     <configuration name="ca" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -92,27 +93,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="manual_snake" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="rl" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manual_snake.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="snake_rl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -126,6 +106,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/snake_rl.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="visual_carl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="rl" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/visual_carl.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -157,11 +158,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.snake_rl" />
-        <item itemvalue="Python.manual_snake" />
         <item itemvalue="Python.visual_carl_2" />
-        <item itemvalue="Python.ca" />
         <item itemvalue="Python.main_rl" />
+        <item itemvalue="Python.visual_carl" />
+        <item itemvalue="Python.snake_rl" />
+        <item itemvalue="Python.ca" />
       </list>
     </recent_temporary>
   </component>
@@ -192,28 +193,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>197</line>
-          <option name="timeStamp" value="64" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main_rl.py</url>
-          <line>82</line>
-          <option name="timeStamp" value="94" />
+          <line>486</line>
+          <option name="timeStamp" value="133" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>384</line>
-          <option name="timeStamp" value="99" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>390</line>
-          <option name="timeStamp" value="101" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ca.py</url>
-          <line>205</line>
-          <option name="timeStamp" value="125" />
+          <line>203</line>
+          <option name="timeStamp" value="136" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -226,20 +212,8 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="self.env.agent_pos" language="Python" />
-        <watch expression="self.env.agent_dir" language="Python" />
-        <watch expression="self.seed" language="Python" />
-        <watch expression="self.prev_obs" language="Python" />
-        <watch expression="self.grid[j * self.width + i] " language="Python" />
-        <watch expression="j * self.width + i" language="Python" />
-        <watch expression="env.front_pos" language="Python" />
-        <watch expression="self.env.step_count" language="Python" />
-        <watch expression="self.step_count" language="Python" />
-        <watch expression="done" language="Python" />
-        <watch expression="self.step_count" language="Python" />
-        <watch expression="self.env.steps_remaining" language="Python" />
-        <watch expression="reward" />
-        <watch expression="is_safe" />
+        <watch expression="self.previous_obs" language="Python" />
+        <watch expression="self.previous_obs_flat" language="Python" />
       </configuration>
     </watches-manager>
   </component>
