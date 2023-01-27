@@ -420,6 +420,7 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
         observation_str = ' '.join([str(int(elem)) for elem in one_dime])
     else:
         observation_str = ' '.join([str(int(elem)) for elem in obs])
+
     #Reduce dimension
     # observation_str = squeez(observation_str)
     for i in range(env.unwrapped.action_space.n):
@@ -440,6 +441,11 @@ def gen_safe_actions(obs, env: gym.Env) -> np.ndarray:
         # else:
             # startTime = time.time()
             # Send new observation/action pair to CA, if not already in cache
+
+        # Minigrid lavaCross & lavagrid just need three actions
+        if  env.spec.entry_point.startswith('gym_minigrid.envs:Lava') and i > 2:
+            continue
+
         QResultStr = queryCAServer(obs_action_pair)
 
         # QResultStr = "UNKNOWN"
